@@ -1,0 +1,148 @@
+﻿// ReservationService.cs
+using GolAhora.DTOs;
+using GolAhora.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace GolAhora.Services
+{
+    public class ReservationService
+    {
+        private readonly GolAhora.Data.AppContext _context;
+
+        public ReservationService(GolAhora.Data.AppContext context)
+        {
+            _context = context;
+        }
+
+        // RF19 + RF24 + RF17 + RS01 + RS02
+        public async Task<(bool success, string message)> AgregarReservation(ReservationDTO dto)
+        {
+            // RS01 – no más de 30 días de antelación
+            if ((dto.reservationDate - DateTime.Now).TotalDays > 30)
+                return (false, "No se pueden realizar reservas con más de 30 días de antelación.");
+
+            // Validar duración máxima según tipo de cancha
+            var cancha = await _context.Courts
+                .Include(c => c.courtType)
+                .FirstOrDefaultAsync(c => c.idCourt == dto.idCourt);
+
+            if (cancha == null)
+                return (false, "La cancha no existe.");
+
+            var duracion = (dto.endTime - dto.startTime).TotalHours;
+
+            // Puse aca el tiempo de cada cancha para no tener que migrar de nuevo
+            var maxHoras = cancha.courtType.name.ToLower() switch
+            {
+                "fútbol 5" => 1.0,
+                "fútbol 7" => 1.5,
+                "fútbol 11" => 2.0,
+                _ => 2.0
+            };
+
+            if (duracion > maxHoras)
+                return (false, $"La duración máxima para este tipo de cancha es {maxHoras} horas.");
+
+            // RS02 + RF17 – verificar disponibilidad y que no esté bloqueada
+            var disponible = await _context.Disponibilities.AnyAsync(d =>
+                d.courtId == dto.idCourt &&
+                d.day == dto.reservationDate.DayOfWeek &&
+                d.startTime <= dto.startTime &&
+                d.endTime >= dto.endTime &&
+                d.isAvailable
+            );
+
+            if (!disponible)
+                return (false, "La cancha no está disponible en ese horario.");
+
+            var nuevaReservation = new Reservation
+            {
+                idClient = dto.idClient,
+                idCourt = dto.idCourt,
+                reservationDate = dto.reservationDate,
+                startTime = dto.startTime,
+                endTime = dto.endTime,
+                totalPrice = dto.totalPrice,
+                idPayment = dto.idPayment ?? 0,
+                isPaid = false
+            };
+
+            // RF24 – confirmar si el pago ya está registrado y validado
+            if (dto.idPayment != null)
+            {
+                var pago = await _context.Payments.FindAsync(dto.idPayment);
+                if (pago != null && pago.isSuccessful && pago.amount >= dto.totalPrice)
+                    nuevaReservation.isPaid = true;
+            }
+
+            _context.Reservations.Add(nuevaReservation);
+            await _context.SaveChangesAsync();
+            return (true, "Reserva registrada exitosamente.");
+        }
+
+        // RF20 – Modificar una reserva existente
+        public async Task<bool> ModificarReservation(int id, ReservationDTO dto)
+        {
+            var reservation = await _context.Reservations.FindAsync(id);
+            if (reservation == null)
+                return false;
+
+            reservation.idClient = dto.idClient;
+            reservation.idCourt = dto.idCourt;
+            reservation.reservationDate = dto.reservationDate;
+            reservation.startTime = dto.startTime;
+            reservation.endTime = dto.endTime;
+            reservation.totalPrice = dto.totalPrice;
+            reservation.idPayment = dto.idPayment ?? 0;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        // RF21 – Listar todas las reservas
+        public async Task<List<Reservation>> ListarReservations()
+        {
+            return await _context.Reservations
+                .Include(r => r.client)
+                .Include(r => r.court)
+                .Include(r => r.payment)
+                .ToListAsync();
+        }
+
+        // RF22 + RF25 + RF26 – Cancelar reserva con validación de antelación y reembolso
+        public async Task<(bool success, string message)> EliminarReservation(int id)
+        {
+            var reservation = await _context.Reservations
+                .Include(r => r.payment)
+                .FirstOrDefaultAsync(r => r.idReservation == id);
+
+            if (reservation == null)
+                return (false, "Reserva no encontrada.");
+
+            var antelacion = reservation.reservationDate - DateTime.Now;
+
+            if (antelacion.TotalHours < 48)
+            {
+                // RF25 – cancelación fuera de plazo, cargo sin reembolso
+                _context.Reservations.Remove(reservation);
+                await _context.SaveChangesAsync();
+                return (true, "Reserva cancelada. Por cancelar fuera del plazo de 48 horas se aplica un cargo y no corresponde reembolso.");
+            }
+
+            // RF26 – cancelación dentro del plazo, reembolso total
+            _context.Reservations.Remove(reservation);
+            await _context.SaveChangesAsync();
+            return (true, "Reserva cancelada. Se procesará un reembolso total del pago.");
+        }
+
+        // RF23 – Consultar una reserva por ID
+        public async Task<Reservation?> ConsultarReservation(int id)
+        {
+            return await _context.Reservations
+                .Include(r => r.client)
+                .Include(r => r.court)
+                .Include(r => r.payment)
+                .FirstOrDefaultAsync(r => r.idReservation == id);
+        }
+    }
+}

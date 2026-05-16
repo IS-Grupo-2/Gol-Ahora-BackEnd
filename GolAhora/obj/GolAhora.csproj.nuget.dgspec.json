@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nico_\\source\\repos\\GolAhora\\GolAhora\\GolAhora.csproj": {}
+    "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\GolAhora.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nico_\\source\\repos\\GolAhora\\GolAhora\\GolAhora.csproj": {
+    "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\GolAhora.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nico_\\source\\repos\\GolAhora\\GolAhora\\GolAhora.csproj",
+        "projectUniqueName": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\GolAhora.csproj",
         "projectName": "GolAhora",
-        "projectPath": "C:\\Users\\nico_\\source\\repos\\GolAhora\\GolAhora\\GolAhora.csproj",
-        "packagesPath": "C:\\Users\\nico_\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nico_\\source\\repos\\GolAhora\\GolAhora\\obj\\",
+        "projectPath": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\GolAhora.csproj",
+        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\nico_\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -90,7 +90,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.314/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

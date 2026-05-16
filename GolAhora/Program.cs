@@ -1,3 +1,5 @@
+using GolAhora.Services;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using AppContext = GolAhora.Data.AppContext;
 
@@ -14,6 +16,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
+// Registro de servicios
+builder.Services.AddScoped<CourtTypeService>();
+builder.Services.AddScoped<CourtService>();
+builder.Services.AddScoped<DisponibilityService>();
+builder.Services.AddScoped<ReservationService>();
+
+
 
 var app = builder.Build();
 
