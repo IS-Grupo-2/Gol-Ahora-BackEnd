@@ -1,4 +1,4 @@
-﻿// CourtService.cs
+﻿using GolAhora.DTOs;
 using GolAhora.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +11,27 @@ namespace GolAhora.Services
         public CourtService(GolAhora.Data.AppContext context)
         {
             _context = context;
+        }
+
+        // Registrar una nueva cancha
+        public async Task<(bool success, string message)> AgregarCourt(CourtDTO dto)
+        {
+            var courtType = await _context.CourtTypes.FindAsync(dto.courtTypeId);
+            if (courtType == null)
+                return (false, "El tipo de cancha no existe.");
+
+            var court = new Court
+            {
+                name = dto.name,
+                description = dto.description,
+                imageUrl = dto.imageUrl,
+                courtTypeId = dto.courtTypeId,
+                isAvailable = true
+            };
+
+            _context.Courts.Add(court);
+            await _context.SaveChangesAsync();
+            return (true, "Cancha registrada exitosamente.");
         }
 
         // RF13 – Listar todas las canchas
@@ -34,8 +55,8 @@ namespace GolAhora.Services
 
             court.isAvailable = false;
 
-            foreach (var disponibility in court.disponibilities)
-                disponibility.isAvailable = false;
+            foreach (var disp in court.disponibilities)
+                disp.isAvailable = false;
 
             await _context.SaveChangesAsync();
             return (true, "Cancha dada de baja exitosamente.");

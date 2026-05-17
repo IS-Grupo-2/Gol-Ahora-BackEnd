@@ -1,5 +1,4 @@
-﻿// DisponibilityDTO.cs
-namespace GolAhora.DTOs
+﻿namespace GolAhora.DTOs
 {
     public class DisponibilityDTO
     {

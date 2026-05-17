@@ -1,5 +1,4 @@
-﻿// ReservationsController.cs
-using GolAhora.DTOs;
+﻿using GolAhora.DTOs;
 using GolAhora.Services;
 using Microsoft.AspNetCore.Mvc;
 

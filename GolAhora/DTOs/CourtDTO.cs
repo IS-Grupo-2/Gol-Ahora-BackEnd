@@ -1,5 +1,4 @@
-﻿// CourtDTO.cs
-namespace GolAhora.DTOs
+﻿namespace GolAhora.DTOs
 {
     public class CourtDTO
     {

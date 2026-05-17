@@ -1,6 +1,5 @@
-﻿// CourtsController.cs
+﻿using GolAhora.DTOs;
 using GolAhora.Services;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GolAhora.Controllers
@@ -14,6 +13,21 @@ namespace GolAhora.Controllers
         public CourtsController(CourtService courtService)
         {
             _courtService = courtService;
+        }
+
+        // POST api/courts
+        [HttpPost]
+        public async Task<IActionResult> AgregarCourt([FromBody] CourtDTO dto)
+        {
+            if (dto == null)
+                return BadRequest("Los datos de la cancha son inválidos.");
+
+            var (success, message) = await _courtService.AgregarCourt(dto);
+
+            if (!success)
+                return BadRequest(new { mensaje = message });
+
+            return Ok(new { mensaje = message });
         }
 
         // RF13 – GET api/courts

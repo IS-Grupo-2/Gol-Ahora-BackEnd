@@ -1,5 +1,4 @@
-﻿// ReservationService.cs
-using GolAhora.DTOs;
+﻿using GolAhora.DTOs;
 using GolAhora.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,7 +30,6 @@ namespace GolAhora.Services
 
             var duracion = (dto.endTime - dto.startTime).TotalHours;
 
-            // Puse aca el tiempo de cada cancha para no tener que migrar de nuevo
             var maxHoras = cancha.courtType.name.ToLower() switch
             {
                 "fútbol 5" => 1.0,
@@ -68,7 +66,7 @@ namespace GolAhora.Services
             };
 
             // RF24 – confirmar si el pago ya está registrado y validado
-            if (dto.idPayment != null)
+            if (dto.idPayment != null && dto.idPayment != 0)
             {
                 var pago = await _context.Payments.FindAsync(dto.idPayment);
                 if (pago != null && pago.isSuccessful && pago.amount >= dto.totalPrice)

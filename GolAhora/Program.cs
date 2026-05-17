@@ -1,28 +1,28 @@
 using GolAhora.Services;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using AppContext = GolAhora.Data.AppContext;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+});
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Conexion a la base de datos
 builder.Services.AddDbContext<AppContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-    );
+);
+
 // Registro de servicios
 builder.Services.AddScoped<CourtTypeService>();
 builder.Services.AddScoped<CourtService>();
 builder.Services.AddScoped<DisponibilityService>();
 builder.Services.AddScoped<ReservationService>();
-
-
 
 var app = builder.Build();
 

@@ -1,5 +1,4 @@
-﻿// DisponibilityService.cs
-using GolAhora.DTOs;
+﻿using GolAhora.DTOs;
 using GolAhora.Models;
 
 namespace GolAhora.Services
@@ -28,6 +27,18 @@ namespace GolAhora.Services
             _context.Disponibilities.Add(disponibility);
             await _context.SaveChangesAsync();
             return (true, "Disponibilidad registrada exitosamente.");
+        }
+
+        // RF18 – Deshabilitar disponibilidad
+        public async Task<(bool success, string message)> DeshabilitarDisponibility(int id)
+        {
+            var disponibility = await _context.Disponibilities.FindAsync(id);
+            if (disponibility == null)
+                return (false, "Disponibilidad no encontrada.");
+
+            disponibility.isAvailable = false;
+            await _context.SaveChangesAsync();
+            return (true, "Disponibilidad deshabilitada exitosamente.");
         }
     }
 }

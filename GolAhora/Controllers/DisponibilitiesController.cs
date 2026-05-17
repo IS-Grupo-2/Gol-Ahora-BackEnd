@@ -1,5 +1,4 @@
-﻿// DisponibilitiesController.cs
-using GolAhora.DTOs;
+﻿using GolAhora.DTOs;
 using GolAhora.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +26,18 @@ namespace GolAhora.Controllers
 
             if (!success)
                 return BadRequest(new { mensaje = message });
+
+            return Ok(new { mensaje = message });
+        }
+
+        // RF18 – PATCH api/disponibilities/{id}/deshabilitar
+        [HttpPatch("{id}/deshabilitar")]
+        public async Task<IActionResult> DeshabilitarDisponibility(int id)
+        {
+            var (success, message) = await _disponibilityService.DeshabilitarDisponibility(id);
+
+            if (!success)
+                return NotFound(new { mensaje = message });
 
             return Ok(new { mensaje = message });
         }

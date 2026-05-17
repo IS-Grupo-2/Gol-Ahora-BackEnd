@@ -1,6 +1,22 @@
 [
   {
     "ContainingType": "GolAhora.Controllers.CourtsController",
+    "Method": "AgregarCourt",
+    "RelativePath": "api/Courts",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "GolAhora.DTOs.CourtDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.CourtsController",
     "Method": "ListarCourts",
     "RelativePath": "api/Courts",
     "HttpMethod": "GET",
@@ -75,6 +91,16 @@
   },
   {
     "ContainingType": "GolAhora.Controllers.CourtTypesController",
+    "Method": "ListarCourtTypes",
+    "RelativePath": "api/CourtTypes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.CourtTypesController",
     "Method": "ModificarCourtType",
     "RelativePath": "api/CourtTypes/{id}",
     "HttpMethod": "PUT",
@@ -95,6 +121,38 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "GolAhora.Controllers.CourtTypesController",
+    "Method": "ConsultarCourtType",
+    "RelativePath": "api/CourtTypes/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.CourtTypesController",
+    "Method": "EliminarCourtType",
+    "RelativePath": "api/CourtTypes/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "GolAhora.Controllers.DisponibilitiesController",
     "Method": "AgregarDisponibility",
     "RelativePath": "api/Disponibilities",
@@ -105,6 +163,22 @@
       {
         "Name": "dto",
         "Type": "GolAhora.DTOs.DisponibilityDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.DisponibilitiesController",
+    "Method": "DeshabilitarDisponibility",
+    "RelativePath": "api/Disponibilities/{id}/deshabilitar",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
