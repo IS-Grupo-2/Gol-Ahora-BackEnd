@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "targets": {
     "net8.0": {
       "Azure.Core/1.38.0": {
@@ -5158,23 +5158,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\nico_\\.nuget\\packages\\": {},
+    "C:\\Users\\naguc\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nico_\\source\\repos\\GolAhora\\GolAhora\\GolAhora.csproj",
+      "projectUniqueName": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\GolAhora.csproj",
       "projectName": "GolAhora",
-      "projectPath": "C:\\Users\\nico_\\source\\repos\\GolAhora\\GolAhora\\GolAhora.csproj",
-      "packagesPath": "C:\\Users\\nico_\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nico_\\source\\repos\\GolAhora\\GolAhora\\obj\\",
+      "projectPath": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\GolAhora.csproj",
+      "packagesPath": "C:\\Users\\naguc\\.nuget\\packages\\",
+      "outputPath": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\nico_\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\naguc\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -5183,10 +5183,12 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
+          "framework": "net8.0",
           "targetAlias": "net8.0",
           "projectReferences": {}
         }
@@ -5201,10 +5203,11 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
       "net8.0": {
+        "framework": "net8.0",
         "targetAlias": "net8.0",
         "dependencies": {
           "Microsoft.EntityFrameworkCore.Design": {
@@ -5247,7 +5250,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.314/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

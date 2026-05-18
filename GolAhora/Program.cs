@@ -15,6 +15,10 @@ builder.Services.AddDbContext<AppContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
 
+//ligas
+builder.Services.AddScoped<GolAhora.Services.LeagueService>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
