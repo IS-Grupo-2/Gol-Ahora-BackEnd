@@ -28,6 +28,10 @@ namespace GolAhora.Services
             if (cancha == null)
                 return (false, "La cancha no existe.");
 
+            // Validar que la cancha esté activa
+            if (!cancha.isAvailable)
+                return (false, "La cancha no está disponible.");
+
             var duracion = (dto.endTime - dto.startTime).TotalHours;
 
             var nombre = cancha.courtType.name.ToLower();
@@ -140,6 +144,7 @@ namespace GolAhora.Services
                 .Include(r => r.payment)
                 .FirstOrDefaultAsync(r => r.idReservation == id);
         }
+
         // CalcularMonto – calcula el monto total en base a duración y precio por hora
         public async Task<(bool success, string message, double monto)> CalcularMonto(int idCourt, TimeSpan startTime, TimeSpan endTime)
         {
