@@ -30,13 +30,11 @@ namespace GolAhora.Services
 
             var duracion = (dto.endTime - dto.startTime).TotalHours;
 
-            var maxHoras = cancha.courtType.name.ToLower() switch
-            {
-                "fútbol 5" => 1.0,
-                "fútbol 7" => 1.5,
-                "fútbol 11" => 2.0,
-                _ => 2.0
-            };
+            var nombre = cancha.courtType.name.ToLower();
+            var maxHoras = nombre.Contains("5") ? 1.0
+                         : nombre.Contains("7") ? 1.5
+                         : nombre.Contains("11") ? 2.0
+                         : 2.0;
 
             if (duracion > maxHoras)
                 return (false, $"La duración máxima para este tipo de cancha es {maxHoras} horas.");
