@@ -20,12 +20,27 @@ namespace GolAhora.Controllers
         public async Task<IActionResult> AgregarCourt([FromBody] CourtDTO dto)
         {
             if (dto == null)
-                return BadRequest("Los datos de la cancha son inválidos.");
+                return BadRequest("Los datos de la cancha son invalidos.");
 
             var (success, message) = await _courtService.AgregarCourt(dto);
 
             if (!success)
                 return BadRequest(new { mensaje = message });
+
+            return Ok(new { mensaje = message });
+        }
+
+        // PUT api/courts/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> ModificarCourt(int id, [FromBody] CourtDTO dto)
+        {
+            if (dto == null)
+                return BadRequest("Los datos de la cancha son invalidos.");
+
+            var (success, message) = await _courtService.ModificarCourt(id, dto);
+
+            if (!success)
+                return NotFound(new { mensaje = message });
 
             return Ok(new { mensaje = message });
         }
@@ -56,21 +71,17 @@ namespace GolAhora.Controllers
         {
             var court = await _courtService.ConsultarCourt(id);
             if (court == null)
-                return NotFound($"No se encontró la cancha con ID {id}.");
+                return NotFound($"No se encontro la cancha con ID {id}.");
 
             return Ok(court);
         }
 
-        // RF18 – PATCH api/courts/disponibility/{id}/habilitar
-        [HttpPatch("disponibility/{id}/habilitar")]
-        public async Task<IActionResult> HabilitarDisponibility(int id)
+        // disponible(fecha, hora) – GET api/courts/{id}/disponible
+        [HttpGet("{id}/disponible")]
+        public async Task<IActionResult> ConsultarDisponibilidadCancha(int id, [FromQuery] DateTime fecha, [FromQuery] TimeSpan hora)
         {
-            var (success, message) = await _courtService.HabilitarDisponibility(id);
-
-            if (!success)
-                return NotFound(new { mensaje = message });
-
-            return Ok(new { mensaje = message });
+            var (success, message) = await _courtService.ConsultarDisponibilidadCancha(id, fecha, hora);
+            return Ok(new { disponible = success, mensaje = message });
         }
     }
 }

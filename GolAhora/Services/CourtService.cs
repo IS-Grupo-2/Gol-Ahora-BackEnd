@@ -13,6 +13,18 @@ namespace GolAhora.Services
             _context = context;
         }
 
+        // disponible(fecha, hora) – verifica si la cancha esta disponible
+        private async Task<bool> EsDisponible(int courtId, DateTime fecha, TimeSpan hora)
+        {
+            return await _context.Disponibilities.AnyAsync(d =>
+                d.courtId == courtId &&
+                d.day == fecha.DayOfWeek &&
+                d.startTime <= hora &&
+                d.endTime >= hora &&
+                d.isAvailable
+            );
+        }
+
         // Registrar una nueva cancha
         public async Task<(bool success, string message)> AgregarCourt(CourtDTO dto)
         {
@@ -34,6 +46,22 @@ namespace GolAhora.Services
             return (true, "Cancha registrada exitosamente.");
         }
 
+        // Modificar cancha
+        public async Task<(bool success, string message)> ModificarCourt(int id, CourtDTO dto)
+        {
+            var court = await _context.Courts.FindAsync(id);
+            if (court == null)
+                return (false, "Cancha no encontrada.");
+
+            court.name = dto.name;
+            court.description = dto.description;
+            court.imageUrl = dto.imageUrl;
+            court.courtTypeId = dto.courtTypeId;
+
+            await _context.SaveChangesAsync();
+            return (true, "Cancha modificada exitosamente.");
+        }
+
         // RF13 – Listar todas las canchas
         public async Task<List<Court>> ListarCourts()
         {
@@ -43,7 +71,7 @@ namespace GolAhora.Services
                 .ToListAsync();
         }
 
-        // RF14 – Baja lógica de cancha y sus disponibilidades
+        // RF14 – Baja logica de cancha y sus disponibilidades
         public async Task<(bool success, string message)> DarDeBajaCourt(int id)
         {
             var court = await _context.Courts
@@ -71,16 +99,17 @@ namespace GolAhora.Services
                 .FirstOrDefaultAsync(c => c.idCourt == id);
         }
 
-        // RF18 – Habilitar disponibilidad de una cancha
-        public async Task<(bool success, string message)> HabilitarDisponibility(int id)
+        // disponible(fecha, hora) – consultar si cancha esta disponible
+        public async Task<(bool success, string message)> ConsultarDisponibilidadCancha(int id, DateTime fecha, TimeSpan hora)
         {
-            var disponibility = await _context.Disponibilities.FindAsync(id);
-            if (disponibility == null)
-                return (false, "Disponibilidad no encontrada.");
+            var court = await _context.Courts.FindAsync(id);
+            if (court == null)
+                return (false, "Cancha no encontrada.");
 
-            disponibility.isAvailable = true;
-            await _context.SaveChangesAsync();
-            return (true, "Disponibilidad habilitada exitosamente.");
+            var disponible = await EsDisponible(id, fecha, hora);
+            return disponible
+                ? (true, "La cancha esta disponible en ese horario.")
+                : (false, "La cancha no esta disponible en ese horario.");
         }
     }
 }

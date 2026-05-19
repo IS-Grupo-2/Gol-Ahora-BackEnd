@@ -63,7 +63,7 @@ namespace GolAhora.Services
                 .FirstOrDefaultAsync(ct => ct.idTypeCourt == id);
         }
 
-        // RF14 – Baja lógica: deshabilita todas las canchas y disponibilidades del tipo
+        // RF14 – Baja lógica que deshabilita todas las canchas y disponibilidades del tipo de cancha
         public async Task<(bool success, string message)> EliminarCourtType(int id)
         {
             var courtType = await _context.CourtTypes
@@ -83,6 +83,36 @@ namespace GolAhora.Services
 
             await _context.SaveChangesAsync();
             return (true, "Tipo de cancha dado de baja exitosamente.");
+        }
+
+        // GenerarReporte de tipos de cancha
+        public async Task<object> GenerarReporte()
+        {
+            var courtTypes = await _context.CourtTypes
+                .Include(ct => ct.courts)
+                .ThenInclude(c => c.reservations)
+                .ToListAsync();
+
+            var reporte = courtTypes.Select(ct => new
+            {
+                idTipoCancha = ct.idTypeCourt,
+                nombre = ct.name,
+                superficie = ct.superficie,
+                capacidad = ct.capacity,
+                precioPorHora = ct.pricePerHour,
+                totalCanchas = ct.courts.Count,
+                canchasActivas = ct.courts.Count(c => c.isAvailable),
+                totalReservas = ct.courts.Sum(c => c.reservations.Count),
+                ingresosTotales = ct.courts
+                                    .SelectMany(c => c.reservations)
+                                    .Sum(r => r.totalPrice)
+            });
+
+            return new
+            {
+                fechaGeneracion = DateTime.Now,
+                tiposDeCanchas = reporte
+            };
         }
     }
 }

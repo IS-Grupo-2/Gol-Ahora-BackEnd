@@ -27,6 +27,27 @@
   },
   {
     "ContainingType": "GolAhora.Controllers.CourtsController",
+    "Method": "ModificarCourt",
+    "RelativePath": "api/Courts/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "GolAhora.DTOs.CourtDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.CourtsController",
     "Method": "DarDeBajaCourt",
     "RelativePath": "api/Courts/{id}",
     "HttpMethod": "DELETE",
@@ -59,9 +80,9 @@
   },
   {
     "ContainingType": "GolAhora.Controllers.CourtsController",
-    "Method": "HabilitarDisponibility",
-    "RelativePath": "api/Courts/disponibility/{id}/habilitar",
-    "HttpMethod": "PATCH",
+    "Method": "ConsultarDisponibilidadCancha",
+    "RelativePath": "api/Courts/{id}/disponible",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -69,6 +90,16 @@
         "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
+      },
+      {
+        "Name": "fecha",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "hora",
+        "Type": "System.TimeSpan",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -153,6 +184,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "GolAhora.Controllers.CourtTypesController",
+    "Method": "GenerarReporte",
+    "RelativePath": "api/CourtTypes/GenerarRporteTipoDeCancha",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "GolAhora.Controllers.DisponibilitiesController",
     "Method": "AgregarDisponibility",
     "RelativePath": "api/Disponibilities",
@@ -170,8 +211,71 @@
   },
   {
     "ContainingType": "GolAhora.Controllers.DisponibilitiesController",
+    "Method": "ListarDisponibilities",
+    "RelativePath": "api/Disponibilities",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.DisponibilitiesController",
+    "Method": "ModificarDisponibility",
+    "RelativePath": "api/Disponibilities/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "GolAhora.DTOs.DisponibilityDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.DisponibilitiesController",
+    "Method": "ConsultarDisponibility",
+    "RelativePath": "api/Disponibilities/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.DisponibilitiesController",
     "Method": "DeshabilitarDisponibility",
     "RelativePath": "api/Disponibilities/{id}/deshabilitar",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.DisponibilitiesController",
+    "Method": "HabilitarDisponibility",
+    "RelativePath": "api/Disponibilities/{id}/habilitar",
     "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,

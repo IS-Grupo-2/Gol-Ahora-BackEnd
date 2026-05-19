@@ -76,5 +76,12 @@ namespace GolAhora.Controllers
 
             return Ok(new { mensaje = message });
         }
+        // GET api/courttypes/reporte
+        [HttpGet("GenerarRporteTipoDeCancha")]
+        public async Task<IActionResult> GenerarReporte()
+        {
+            var reporte = await _courtTypeService.GenerarReporte();
+            return Ok(reporte);
+        }
     }
 }

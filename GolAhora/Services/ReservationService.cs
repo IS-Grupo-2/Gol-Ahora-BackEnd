@@ -142,5 +142,22 @@ namespace GolAhora.Services
                 .Include(r => r.payment)
                 .FirstOrDefaultAsync(r => r.idReservation == id);
         }
+        // CalcularMonto – calcula el monto total en base a duración y precio por hora
+        public async Task<(bool success, string message, double monto)> CalcularMonto(int idCourt, TimeSpan startTime, TimeSpan endTime)
+        {
+            var cancha = await _context.Courts
+                .Include(c => c.courtType)
+                .FirstOrDefaultAsync(c => c.idCourt == idCourt);
+
+            if (cancha == null)
+                return (false, "La cancha no existe.", 0);
+
+            var duracionHoras = (endTime - startTime).TotalHours;
+            if (duracionHoras <= 0)
+                return (false, "El horario de fin debe ser posterior al horario de inicio.", 0);
+
+            var monto = duracionHoras * cancha.courtType.pricePerHour;
+            return (true, $"Monto calculado: {monto:C}", monto);
+        }
     }
 }
