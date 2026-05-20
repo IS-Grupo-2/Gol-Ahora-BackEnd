@@ -342,3 +342,4 @@ C:\Users\user\OneDrive\Julieta\Desktop\Repo\Gol-Ahora-BackEnd\GolAhora\obj\Debug
 C:\Users\user\OneDrive\Julieta\Desktop\Repo\Gol-Ahora-BackEnd\GolAhora\obj\Debug\net8.0\GolAhora.pdb
 C:\Users\user\OneDrive\Julieta\Desktop\Repo\Gol-Ahora-BackEnd\GolAhora\obj\Debug\net8.0\GolAhora.genruntimeconfig.cache
 C:\Users\user\OneDrive\Julieta\Desktop\Repo\Gol-Ahora-BackEnd\GolAhora\obj\Debug\net8.0\ref\GolAhora.dll
+C:\Users\nico_\source\repos\GolAhora\GolAhora\obj\Debug\net8.0\GolAhora.sourcelink.json
