@@ -80,6 +80,22 @@
   },
   {
     "ContainingType": "GolAhora.Controllers.CourtsController",
+    "Method": "DeshabilitarCourt",
+    "RelativePath": "api/Courts/{id}/deshabilitar",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.CourtsController",
     "Method": "ConsultarDisponibilidadCancha",
     "RelativePath": "api/Courts/{id}/disponible",
     "HttpMethod": "GET",
@@ -100,6 +116,22 @@
         "Name": "hora",
         "Type": "System.TimeSpan",
         "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.CourtsController",
+    "Method": "HabilitarCourt",
+    "RelativePath": "api/Courts/{id}/habilitar",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []

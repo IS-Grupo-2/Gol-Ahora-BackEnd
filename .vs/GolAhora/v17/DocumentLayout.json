@@ -3,16 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\controllers\\reservationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\controllers\\reservationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\controllers\\courtscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\controllers\\courtscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\services\\courtservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\services\\courtservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\services\\reservationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\services\\reservationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\controllers\\disponibilitiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\controllers\\disponibilitiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\services\\disponibilityservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\services\\disponibilityservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\dtos\\reservationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\dtos\\reservationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\dtos\\disponibilitydtocs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -23,40 +31,32 @@
       "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\dtos\\courtdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\services\\reservationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\services\\reservationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\services\\courttypeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\services\\courttypeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\dtos\\courttypedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\dtos\\courttypedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\controllers\\courttypescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\controllers\\courttypescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\services\\courtservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\services\\courtservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\models\\reservation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\models\\reservation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\services\\courttypeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\services\\courttypeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\controllers\\courttypescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\controllers\\courttypescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\controllers\\disponibilitiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\controllers\\disponibilitiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\controllers\\reservationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\controllers\\reservationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\controllers\\courtscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\controllers\\courtscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\dtos\\reservationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\dtos\\reservationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\models\\reservation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\models\\reservation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\users\\user\\onedrive\\julieta\\desktop\\repo\\gol-ahora-backend\\golahora\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -101,7 +101,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 297,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -109,68 +109,150 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "ReservationService.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Services\\ReservationService.cs",
-              "RelativeDocumentMoniker": "GolAhora\\Services\\ReservationService.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Services\\ReservationService.cs",
-              "RelativeToolTip": "GolAhora\\Services\\ReservationService.cs",
-              "ViewState": "AgIAALIAAAAAAAAAAAAwwMAAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-16T00:56:34.965Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CourtDTO.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\DTOs\\CourtDTO.cs",
-              "RelativeDocumentMoniker": "GolAhora\\DTOs\\CourtDTO.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\DTOs\\CourtDTO.cs",
-              "RelativeToolTip": "GolAhora\\DTOs\\CourtDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-16T15:16:32.799Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ReservationsController.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\ReservationsController.cs",
-              "RelativeDocumentMoniker": "GolAhora\\Controllers\\ReservationsController.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\ReservationsController.cs",
-              "RelativeToolTip": "GolAhora\\Controllers\\ReservationsController.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAQwBYAAABMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-16T01:09:05.709Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "CourtTypeDTO.cs",
               "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\DTOs\\CourtTypeDTO.cs",
               "RelativeDocumentMoniker": "GolAhora\\DTOs\\CourtTypeDTO.cs",
               "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\DTOs\\CourtTypeDTO.cs",
               "RelativeToolTip": "GolAhora\\DTOs\\CourtTypeDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACYAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-16T15:17:58.603Z"
+              "WhenOpened": "2026-05-16T15:17:58.603Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
+              "Title": "CourtDTO.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\DTOs\\CourtDTO.cs",
+              "RelativeDocumentMoniker": "GolAhora\\DTOs\\CourtDTO.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\DTOs\\CourtDTO.cs",
+              "RelativeToolTip": "GolAhora\\DTOs\\CourtDTO.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAzwCcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-16T15:16:32.799Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "DisponibilityDTOcs.cs",
               "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\DTOs\\DisponibilityDTOcs.cs",
               "RelativeDocumentMoniker": "GolAhora\\DTOs\\DisponibilityDTOcs.cs",
               "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\DTOs\\DisponibilityDTOcs.cs",
               "RelativeToolTip": "GolAhora\\DTOs\\DisponibilityDTOcs.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAEAAAAAAAAAA==",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAzwB8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-16T15:15:54.088Z"
+              "WhenOpened": "2026-05-16T15:15:54.088Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DisponibilitiesController.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\DisponibilitiesController.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Controllers\\DisponibilitiesController.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\DisponibilitiesController.cs",
+              "RelativeToolTip": "GolAhora\\Controllers\\DisponibilitiesController.cs",
+              "ViewState": "AgIAAEMAAAAAAAAAAAAAAFsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-16T15:10:36.118Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "ReservationService.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Services\\ReservationService.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Services\\ReservationService.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Services\\ReservationService.cs",
+              "RelativeToolTip": "GolAhora\\Services\\ReservationService.cs",
+              "ViewState": "AgIAAKkAAAAAAAAAAAAAwMIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-16T00:56:34.965Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CourtsController.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\CourtsController.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Controllers\\CourtsController.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\CourtsController.cs",
+              "RelativeToolTip": "GolAhora\\Controllers\\CourtsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-15T22:16:14.199Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CourtService.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Services\\CourtService.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Services\\CourtService.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Services\\CourtService.cs",
+              "RelativeToolTip": "GolAhora\\Services\\CourtService.cs",
+              "ViewState": "AgIAAIAAAAAAAAAAAAAQwJoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-16T15:14:07.789Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Program.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Program.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Program.cs",
+              "RelativeToolTip": "GolAhora\\Program.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAQwCkAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-15T00:25:49.078Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "CourtTypeService.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Services\\CourtTypeService.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Services\\CourtTypeService.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Services\\CourtTypeService.cs",
+              "RelativeToolTip": "GolAhora\\Services\\CourtTypeService.cs",
+              "ViewState": "AgIAAHMAAAAAAAAAAAAQwI0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-16T15:14:44.527Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DisponibilityService.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Services\\DisponibilityService.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Services\\DisponibilityService.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Services\\DisponibilityService.cs",
+              "RelativeToolTip": "GolAhora\\Services\\DisponibilityService.cs",
+              "ViewState": "AgIAAG0AAAAAAAAAAAAAAIUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-16T15:13:25.355Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "CourtTypesController.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\CourtTypesController.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Controllers\\CourtTypesController.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\CourtTypesController.cs",
+              "RelativeToolTip": "GolAhora\\Controllers\\CourtTypesController.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAwEoAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-16T15:12:03.865Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
               "Title": "ReservationDTO.cs",
               "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\DTOs\\ReservationDTO.cs",
               "RelativeDocumentMoniker": "GolAhora\\DTOs\\ReservationDTO.cs",
@@ -182,43 +264,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "DisponibilityService.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Services\\DisponibilityService.cs",
-              "RelativeDocumentMoniker": "GolAhora\\Services\\DisponibilityService.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Services\\DisponibilityService.cs",
-              "RelativeToolTip": "GolAhora\\Services\\DisponibilityService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHsAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 11,
+              "Title": "ReservationsController.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\ReservationsController.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Controllers\\ReservationsController.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\ReservationsController.cs",
+              "RelativeToolTip": "GolAhora\\Controllers\\ReservationsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAABMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-16T15:13:25.355Z"
+              "WhenOpened": "2026-05-16T01:09:05.709Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "CourtTypesController.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\CourtTypesController.cs",
-              "RelativeDocumentMoniker": "GolAhora\\Controllers\\CourtTypesController.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\CourtTypesController.cs",
-              "RelativeToolTip": "GolAhora\\Controllers\\CourtTypesController.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAAwEoAAAA7AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-16T15:12:03.865Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "CourtService.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Services\\CourtService.cs",
-              "RelativeDocumentMoniker": "GolAhora\\Services\\CourtService.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Services\\CourtService.cs",
-              "RelativeToolTip": "GolAhora\\Services\\CourtService.cs",
-              "ViewState": "AgIAAFkAAAAAAAAAAAAQwHMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-16T15:14:07.789Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 13,
               "Title": "Reservation.cs",
               "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Models\\Reservation.cs",
               "RelativeDocumentMoniker": "GolAhora\\Models\\Reservation.cs",
@@ -227,54 +286,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-15T22:16:03.326Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Program.cs",
-              "RelativeDocumentMoniker": "GolAhora\\Program.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Program.cs",
-              "RelativeToolTip": "GolAhora\\Program.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAUwB0AAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-15T00:25:49.078Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "DisponibilitiesController.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\DisponibilitiesController.cs",
-              "RelativeDocumentMoniker": "GolAhora\\Controllers\\DisponibilitiesController.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\DisponibilitiesController.cs",
-              "RelativeToolTip": "GolAhora\\Controllers\\DisponibilitiesController.cs",
-              "ViewState": "AgIAAFgAAAAAAAAAAAAwwFsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-16T15:10:36.118Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "CourtTypeService.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Services\\CourtTypeService.cs",
-              "RelativeDocumentMoniker": "GolAhora\\Services\\CourtTypeService.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Services\\CourtTypeService.cs",
-              "RelativeToolTip": "GolAhora\\Services\\CourtTypeService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEEAAABlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-16T15:14:44.527Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "CourtsController.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\CourtsController.cs",
-              "RelativeDocumentMoniker": "GolAhora\\Controllers\\CourtsController.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Julieta\\Desktop\\Repo\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\CourtsController.cs",
-              "RelativeToolTip": "GolAhora\\Controllers\\CourtsController.cs",
-              "ViewState": "AgIAADEAAAAAAAAAAAA5wFcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-15T22:16:14.199Z"
             },
             {
               "$type": "Document",

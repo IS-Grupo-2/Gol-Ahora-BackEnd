@@ -23,7 +23,6 @@ namespace GolAhora.Controllers
                 return BadRequest("Los datos de la cancha son invalidos.");
 
             var (success, message) = await _courtService.AgregarCourt(dto);
-
             if (!success)
                 return BadRequest(new { mensaje = message });
 
@@ -38,7 +37,6 @@ namespace GolAhora.Controllers
                 return BadRequest("Los datos de la cancha son invalidos.");
 
             var (success, message) = await _courtService.ModificarCourt(id, dto);
-
             if (!success)
                 return NotFound(new { mensaje = message });
 
@@ -58,7 +56,6 @@ namespace GolAhora.Controllers
         public async Task<IActionResult> DarDeBajaCourt(int id)
         {
             var (success, message) = await _courtService.DarDeBajaCourt(id);
-
             if (!success)
                 return NotFound(new { mensaje = message });
 
@@ -74,6 +71,28 @@ namespace GolAhora.Controllers
                 return NotFound($"No se encontro la cancha con ID {id}.");
 
             return Ok(court);
+        }
+
+        // PATCH api/courts/{id}/habilitar
+        [HttpPatch("{id}/habilitar")]
+        public async Task<IActionResult> HabilitarCourt(int id)
+        {
+            var (success, message) = await _courtService.HabilitarCourt(id);
+            if (!success)
+                return NotFound(new { mensaje = message });
+
+            return Ok(new { mensaje = message });
+        }
+
+        // PATCH api/courts/{id}/deshabilitar
+        [HttpPatch("{id}/deshabilitar")]
+        public async Task<IActionResult> DeshabilitarCourt(int id)
+        {
+            var (success, message) = await _courtService.DeshabilitarCourt(id);
+            if (!success)
+                return NotFound(new { mensaje = message });
+
+            return Ok(new { mensaje = message });
         }
 
         // disponible(fecha, hora) – GET api/courts/{id}/disponible

@@ -48,19 +48,43 @@ namespace GolAhora.Services
         }
 
         // RF13 – Listar todos los tipos de cancha
-        public async Task<List<CourtType>> ListarCourtTypes()
+        public async Task<List<CourtTypeResponseDTO>> ListarCourtTypes()
         {
             return await _context.CourtTypes
-                .Include(ct => ct.courts)
+                .Select(ct => new CourtTypeResponseDTO
+                {
+                    idTypeCourt = ct.idTypeCourt,
+                    name = ct.name,
+                    superficie = ct.superficie,
+                    capacity = ct.capacity,
+                    pricePerHour = ct.pricePerHour,
+                    description = ct.description
+                })
                 .ToListAsync();
         }
 
         // RF15 – Consultar tipo de cancha por ID
-        public async Task<CourtType?> ConsultarCourtType(int id)
+        public async Task<CourtTypeDetailDTO?> ConsultarCourtType(int id)
         {
             return await _context.CourtTypes
                 .Include(ct => ct.courts)
-                .FirstOrDefaultAsync(ct => ct.idTypeCourt == id);
+                .Where(ct => ct.idTypeCourt == id)
+                .Select(ct => new CourtTypeDetailDTO
+                {
+                    idTypeCourt = ct.idTypeCourt,
+                    name = ct.name,
+                    superficie = ct.superficie,
+                    capacity = ct.capacity,
+                    pricePerHour = ct.pricePerHour,
+                    description = ct.description,
+                    courts = ct.courts.Select(c => new CourtSummaryDTO
+                    {
+                        idCourt = c.idCourt,
+                        name = c.name,
+                        isAvailable = c.isAvailable
+                    }).ToList()
+                })
+                .FirstOrDefaultAsync();
         }
 
         // RF14 – Baja lógica que deshabilita todas las canchas y disponibilidades del tipo de cancha
