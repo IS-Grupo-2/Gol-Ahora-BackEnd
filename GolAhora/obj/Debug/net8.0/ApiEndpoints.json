@@ -74,6 +74,80 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "GolAhora.Controllers.TournamentController",
+    "Method": "CreateTournament",
+    "RelativePath": "api/Tournament",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tournamentDto",
+        "Type": "GolAhora.DTOs.TournamentDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.TournamentController",
+    "Method": "UpdateTournament",
+    "RelativePath": "api/Tournament",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tournamentDto",
+        "Type": "GolAhora.DTOs.TournamentDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.TournamentController",
+    "Method": "GetAllTournaments",
+    "RelativePath": "api/Tournament",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.TournamentController",
+    "Method": "DeleteTournament",
+    "RelativePath": "api/Tournament/{idTournament}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idTournament",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.TournamentController",
+    "Method": "GetTournamentById",
+    "RelativePath": "api/Tournament/{idTournament}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idTournament",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "GolAhora.Controllers.WeatherForecastController",
     "Method": "Get",
     "RelativePath": "WeatherForecast",

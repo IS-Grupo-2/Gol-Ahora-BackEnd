@@ -17,6 +17,8 @@ builder.Services.AddDbContext<AppContext>(
 
 //ligas
 builder.Services.AddScoped<GolAhora.Services.LeagueService>();
+//torneos 
+builder.Services.AddScoped<GolAhora.Services.TournamentService>();
 
 
 var app = builder.Build();
