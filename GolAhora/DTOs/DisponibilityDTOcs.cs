@@ -8,4 +8,5 @@
         public bool isAvailable { get; set; }
         public int courtId { get; set; }
     }
+    
 }

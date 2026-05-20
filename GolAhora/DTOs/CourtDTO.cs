@@ -7,4 +7,6 @@
         public string imageUrl { get; set; } = null!;
         public int courtTypeId { get; set; }
     }
+    
+
 }

@@ -20,7 +20,6 @@ namespace GolAhora.Services
             if ((dto.reservationDate - DateTime.Now).TotalDays > 30)
                 return (false, "No se pueden realizar reservas con más de 30 días de antelación.");
 
-            // Validar duración máxima según tipo de cancha
             var cancha = await _context.Courts
                 .Include(c => c.courtType)
                 .FirstOrDefaultAsync(c => c.idCourt == dto.idCourt);
@@ -100,20 +99,34 @@ namespace GolAhora.Services
         }
 
         // RF21 – Listar todas las reservas
-        public async Task<List<Reservation>> ListarReservations()
+        public async Task<List<ReservationResponseDTO>> ListarReservations()
         {
-            return await _context.Reservations
+            var reservations = await _context.Reservations
                 .Include(r => r.client)
                 .Include(r => r.court)
-                .Include(r => r.payment)
                 .ToListAsync();
+
+            return reservations.Select(r => new ReservationResponseDTO
+            {
+                idReservation = r.idReservation,
+                idClient = r.idClient,
+                clienteNombre = r.client.name,
+                clienteApellido = r.client.lastName,
+                idCourt = r.idCourt,
+                canchaNombre = r.court.name,
+                reservationDate = r.reservationDate,
+                startTime = r.startTime,
+                endTime = r.endTime,
+                isPaid = r.isPaid,
+                totalPrice = r.totalPrice,
+                idPayment = r.idPayment
+            }).ToList();
         }
 
         // RF22 + RF25 + RF26 – Cancelar reserva con validación de antelación y reembolso
         public async Task<(bool success, string message)> EliminarReservation(int id)
         {
             var reservation = await _context.Reservations
-                .Include(r => r.payment)
                 .FirstOrDefaultAsync(r => r.idReservation == id);
 
             if (reservation == null)
@@ -123,26 +136,41 @@ namespace GolAhora.Services
 
             if (antelacion.TotalHours < 48)
             {
-                // RF25 – cancelación fuera de plazo, cargo sin reembolso
                 _context.Reservations.Remove(reservation);
                 await _context.SaveChangesAsync();
                 return (true, "Reserva cancelada. Por cancelar fuera del plazo de 48 horas se aplica un cargo y no corresponde reembolso.");
             }
 
-            // RF26 – cancelación dentro del plazo, reembolso total
             _context.Reservations.Remove(reservation);
             await _context.SaveChangesAsync();
             return (true, "Reserva cancelada. Se procesará un reembolso total del pago.");
         }
 
         // RF23 – Consultar una reserva por ID
-        public async Task<Reservation?> ConsultarReservation(int id)
+        public async Task<ReservationResponseDTO?> ConsultarReservation(int id)
         {
-            return await _context.Reservations
+            var r = await _context.Reservations
                 .Include(r => r.client)
                 .Include(r => r.court)
-                .Include(r => r.payment)
                 .FirstOrDefaultAsync(r => r.idReservation == id);
+
+            if (r == null) return null;
+
+            return new ReservationResponseDTO
+            {
+                idReservation = r.idReservation,
+                idClient = r.idClient,
+                clienteNombre = r.client.name,
+                clienteApellido = r.client.lastName,
+                idCourt = r.idCourt,
+                canchaNombre = r.court.name,
+                reservationDate = r.reservationDate,
+                startTime = r.startTime,
+                endTime = r.endTime,
+                isPaid = r.isPaid,
+                totalPrice = r.totalPrice,
+                idPayment = r.idPayment
+            };
         }
 
         // CalcularMonto – calcula el monto total en base a duración y precio por hora

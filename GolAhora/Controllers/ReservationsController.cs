@@ -23,7 +23,6 @@ namespace GolAhora.Controllers
                 return BadRequest("Los datos de la reserva son inválidos.");
 
             var (success, message) = await _reservationService.AgregarReservation(dto);
-
             if (!success)
                 return BadRequest(new { mensaje = message });
 
@@ -41,7 +40,7 @@ namespace GolAhora.Controllers
             if (!resultado)
                 return NotFound($"No se encontró la reserva con ID {id}.");
 
-            return NoContent();
+            return Ok(new { mensaje = "Reserva modificada exitosamente." });
         }
 
         // RF21 – GET api/reservations
@@ -57,7 +56,6 @@ namespace GolAhora.Controllers
         public async Task<IActionResult> EliminarReservation(int id)
         {
             var (success, message) = await _reservationService.EliminarReservation(id);
-
             if (!success)
                 return NotFound(new { mensaje = message });
 

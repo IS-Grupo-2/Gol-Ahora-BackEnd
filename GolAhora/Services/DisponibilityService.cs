@@ -28,6 +28,18 @@ namespace GolAhora.Services
         // RF16 – Registrar disponibilidad de una cancha
         public async Task<(bool success, string message)> AgregarDisponibility(DisponibilityDTO dto)
         {
+            // Validar que no haya superposición de horarios para la misma cancha y día
+            var superpuesta = await _context.Disponibilities.AnyAsync(d =>
+                d.courtId == dto.courtId &&
+                d.day == dto.day &&
+                d.isAvailable &&
+                d.startTime < dto.endTime &&
+                d.endTime > dto.startTime
+            );
+
+            if (superpuesta)
+                return (false, "Ya existe una disponibilidad activa que se superpone en ese horario.");
+
             var disponibility = new Disponibility
             {
                 day = dto.day,
@@ -59,7 +71,7 @@ namespace GolAhora.Services
             return (true, "Disponibilidad modificada exitosamente.");
         }
 
-        // Consultar disponibilidad por ID
+        // RF17 – Consultar disponibilidad por ID
         public async Task<Disponibility?> ConsultarDisponibility(int id)
         {
             return await _context.Disponibilities
@@ -104,8 +116,8 @@ namespace GolAhora.Services
         {
             var disponible = await Verificar(courtId, fecha, hora);
             return disponible
-                ? (true, "La cancha esta disponible en ese horario.")
-                : (false, "La cancha no esta disponible en ese horario.");
+                ? (true, "La cancha está disponible en ese horario.")
+                : (false, "La cancha no está disponible en ese horario.");
         }
     }
 }
