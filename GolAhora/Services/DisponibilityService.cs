@@ -13,7 +13,6 @@ namespace GolAhora.Services
             _context = context;
         }
 
-        // verificar(fecha, hora) – verifica disponibilidad en fecha y hora especifica
         private async Task<bool> Verificar(int courtId, DateTime fecha, TimeSpan hora)
         {
             return await _context.Disponibilities.AnyAsync(d =>
@@ -25,10 +24,8 @@ namespace GolAhora.Services
             );
         }
 
-        // RF16 – Registrar disponibilidad de una cancha
         public async Task<(bool success, string message)> AgregarDisponibility(DisponibilityDTO dto)
         {
-            // Validar que no haya superposición de horarios para la misma cancha y día
             var superpuesta = await _context.Disponibilities.AnyAsync(d =>
                 d.courtId == dto.courtId &&
                 d.day == dto.day &&
@@ -54,7 +51,6 @@ namespace GolAhora.Services
             return (true, "Disponibilidad registrada exitosamente.");
         }
 
-        // Modificar disponibilidad
         public async Task<(bool success, string message)> ModificarDisponibility(int id, DisponibilityDTO dto)
         {
             var disponibility = await _context.Disponibilities.FindAsync(id);
@@ -71,23 +67,40 @@ namespace GolAhora.Services
             return (true, "Disponibilidad modificada exitosamente.");
         }
 
-        // RF17 – Consultar disponibilidad por ID
-        public async Task<Disponibility?> ConsultarDisponibility(int id)
+        public async Task<DisponibilityDetailDTO?> ConsultarDisponibility(int id)
         {
             return await _context.Disponibilities
                 .Include(d => d.court)
-                .FirstOrDefaultAsync(d => d.idDisponibility == id);
+                .Where(d => d.idDisponibility == id)
+                .Select(d => new DisponibilityDetailDTO
+                {
+                    idDisponibility = d.idDisponibility,
+                    day = d.day,
+                    startTime = d.startTime,
+                    endTime = d.endTime,
+                    isAvailable = d.isAvailable,
+                    courtId = d.courtId,
+                    courtName = d.court.name
+                })
+                .FirstOrDefaultAsync();
         }
 
-        // Listar todas las disponibilidades
-        public async Task<List<Disponibility>> ListarDisponibilities()
+        public async Task<List<DisponibilityResponseDTO>> ListarDisponibilities()
         {
             return await _context.Disponibilities
                 .Include(d => d.court)
+                .Select(d => new DisponibilityResponseDTO
+                {
+                    idDisponibility = d.idDisponibility,
+                    day = d.day,
+                    startTime = d.startTime,
+                    endTime = d.endTime,
+                    isAvailable = d.isAvailable,
+                    courtName = d.court.name
+                })
                 .ToListAsync();
         }
 
-        // RF18 – Habilitar disponibilidad
         public async Task<(bool success, string message)> HabilitarDisponibility(int id)
         {
             var disponibility = await _context.Disponibilities.FindAsync(id);
@@ -99,7 +112,6 @@ namespace GolAhora.Services
             return (true, "Disponibilidad habilitada exitosamente.");
         }
 
-        // RF18 – Deshabilitar disponibilidad
         public async Task<(bool success, string message)> DeshabilitarDisponibility(int id)
         {
             var disponibility = await _context.Disponibilities.FindAsync(id);
@@ -111,7 +123,6 @@ namespace GolAhora.Services
             return (true, "Disponibilidad deshabilitada exitosamente.");
         }
 
-        // Consultar disponibilidad en fecha y hora especifica
         public async Task<(bool success, string message)> ConsultarDisponibilidadEnHorario(int courtId, DateTime fecha, TimeSpan hora)
         {
             var disponible = await Verificar(courtId, fecha, hora);
