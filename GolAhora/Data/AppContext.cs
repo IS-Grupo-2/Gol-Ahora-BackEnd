@@ -1,17 +1,19 @@
 ﻿using GolAhora.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 
 namespace GolAhora.Data
 {
-    public class AppContext : DbContext
+    public class AppContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
-        public DbSet<User> USers => Set<User>();
-        public DbSet<Client> Clients => Set<Client>();
-        public DbSet<PersonalClub> PersonalClubs => Set<PersonalClub>();
-        public DbSet<Professor> Professors => Set<Professor>();
-        public DbSet<Admin> Admins => Set<Admin>();
-        public DbSet<Employee> Employees => Set<Employee>();
+        public DbSet<ClientProfile> ClientProfiles => Set<ClientProfile>();
+        public DbSet<PersonalClubProfile> PersonalClubProfiles => Set<PersonalClubProfile>();
+        public DbSet<ProfessorProfile> ProfessorProfiles => Set<ProfessorProfile>();
+        public DbSet<AdminProfile> AdminProfiles => Set<AdminProfile>();
+        public DbSet<EmployeeProfile> EmployeeProfiles => Set<EmployeeProfile>();
+
         public DbSet<Class> Classes => Set<Class>();
         public DbSet<Assistance> Assistances => Set<Assistance>();
         public DbSet<Certification> Certifications => Set<Certification>();
@@ -40,21 +42,18 @@ namespace GolAhora.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<User>().ToTable("Users");
-            modelBuilder.Entity<Client>().ToTable("Clients");
-            modelBuilder.Entity<PersonalClub>().ToTable("PersonalClubs");
-            modelBuilder.Entity<Professor>().ToTable("Professors");
-            modelBuilder.Entity<Admin>().ToTable("Admins");
-            modelBuilder.Entity<Employee>().ToTable("Employees");
 
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.email)
-                .IsUnique();
 
             modelBuilder.Entity<Competence>().ToTable("Competences");
             modelBuilder.Entity<League>().ToTable("Leagues");
             modelBuilder.Entity<Tournament>().ToTable("Tournaments");
 
-            modelBuilder.Entity<User>().HasKey(u => u.id);
+            modelBuilder.Entity<ClientProfile>().HasKey(cp => cp.idClient);
+            modelBuilder.Entity<PersonalClubProfile>().HasKey(pcp => pcp.idPersonalClub);
+            modelBuilder.Entity<ProfessorProfile>().HasKey(pp => pp.idProfessor);
+            modelBuilder.Entity<AdminProfile>().HasKey(ap => ap.idAdmin);
+            modelBuilder.Entity<EmployeeProfile>().HasKey(ep => ep.idEmployee);
+
             modelBuilder.Entity<Assistance>().HasKey(a => a.idAssistance);
             modelBuilder.Entity<Certification>().HasKey(c => c.idCertification);
             modelBuilder.Entity<Class>().HasKey(c => c.idClass);
@@ -71,6 +70,43 @@ namespace GolAhora.Data
             modelBuilder.Entity<Receipts>().HasKey(r => r.idReceipt);
             modelBuilder.Entity<Discounts>().HasKey(d => d.idDiscount);
             modelBuilder.Entity<Reports>().HasKey(r => r.idReport);
+
+            // User 1 - 1 ClientProfile 
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.clientProfile)
+                .WithOne(cp => cp.user)
+                .HasForeignKey<ClientProfile>(cp => cp.idUser)
+                // La siguiente linea impide que se borre un usuario si tiene un perfil de cliente asignado
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // user 1 - 1 PersonalClubProfile
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.personalClubProfile)
+                .WithOne(pcp => pcp.user)
+                .HasForeignKey<PersonalClubProfile>(pcp => pcp.idUser)
+                // La siguiente linea impide que se borre un usuario si tiene un perfil de personal de club asignado
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // PersonalClubProfile 1 - 1 AdminProfile
+            modelBuilder.Entity<PersonalClubProfile>()
+                .HasOne(pcp => pcp.adminProfile)
+                .WithOne(ap => ap.personalClubProfile)
+                .HasForeignKey<AdminProfile>(ap => ap.idPersonalClub)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // PersonalClubProfile 1 - 1 EmployeeProfile
+            modelBuilder.Entity<PersonalClubProfile>()
+                .HasOne(pcp => pcp.employeeProfile)
+                .WithOne(ep => ep.personalClubProfile)
+                .HasForeignKey<EmployeeProfile>(ep => ep.idPersonalClub)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // PersonalClubProfile 1 - 1 ProfessorProfile
+            modelBuilder.Entity<PersonalClubProfile>()
+                .HasOne(pcp => pcp.professorProfile)
+                .WithOne(pp => pp.personalClubProfile)
+                .HasForeignKey<ProfessorProfile>(pp => pp.idPersonalClub)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
             // Profesor 1 - N Certificaciones

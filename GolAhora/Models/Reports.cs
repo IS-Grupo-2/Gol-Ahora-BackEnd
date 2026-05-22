@@ -8,7 +8,7 @@
         public DateTime generatedDate { get; set; }
         public string content { get; set; } = null!;
         public int idAdmin { get; set; }
-        public Admin admin { get; set; } = null!;
+        public AdminProfile admin { get; set; } = null!;
         public DateTime from { get; set; }
         public DateTime to { get; set; }
     }

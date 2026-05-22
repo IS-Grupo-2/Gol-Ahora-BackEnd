@@ -1,21 +1,27 @@
-﻿namespace GolAhora.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace GolAhora.Models
 {
-    public class User
+    public class User: IdentityUser<int>
     {
-        public int id { get; set; }
         public string name { get; set; } = null!;
         public string lastName { get; set; } = null!;
         public string DNI { get; set; } = null!;
-        public string userName { get; set; } = null!;
-        public string password { get; set; } = null!;
-        public string email { get; set; } = null!;
-        public string phoneNumber { get; set; } = null!;
         public bool isActive { get; set; }
         public DateTime registerDate { get; set; }
+
+
+        public ClientProfile? clientProfile { get; set; }
+        public PersonalClubProfile? personalClubProfile { get; set; }
     }
 
-    public class Client: User
+    public class ClientProfile
     {
+        public int idClient { get; set; }
+
+        public int idUser { get; set; } 
+        public User user { get; set; } = null!;
+
         public int numberPartner { get; set; }
         public int idTeam { get; set; }
         public Team? team { get; set; }
@@ -35,26 +41,50 @@
         public ICollection<Team> teamsCaptain { get; set; } = new List<Team>();
     }
 
-    public class PersonalClub: User
+    public class PersonalClubProfile
     {
+        public int idPersonalClub { get; set; }
+
+        public int idUser { get; set; }
+        public User user { get; set; } = null!;
+
         public string legajo { get; set; } = null!;
         public DateTime startDate { get; set; }
         public string turno { get; set; } = null!;
+
+        public AdminProfile? adminProfile { get; set; }
+        public EmployeeProfile? employeeProfile { get; set; }
+        public ProfessorProfile? professorProfile { get; set; }
     }
 
-    public class Admin: PersonalClub
+    public class AdminProfile
     {
+        public int idAdmin { get; set; }
+
+        public int idPersonalClub { get; set; }
+        public PersonalClubProfile personalClubProfile { get; set; } = null!;
+
         public int accessLevel { get; set; }
         public ICollection<Reports> reports { get; set; } = new List<Reports>();
     }
 
-    public class Employee: PersonalClub
+    public class EmployeeProfile
     {
+        public int idEmployee { get; set; }
+
+        public int idPersonalClub { get; set; }
+        public PersonalClubProfile personalClubProfile { get; set; } = null!;
+
         public string sector { get; set; } = null!;
     }
 
-    public class Professor: PersonalClub
+    public class ProfessorProfile
     {
+        public int idProfessor { get; set; }
+
+        public int idPersonalClub { get; set; }
+        public PersonalClubProfile personalClubProfile { get; set; } = null!;
+
         public string specialty { get; set; } = null!;
 
         /**

@@ -4,7 +4,7 @@
     {
         public int idReservation { get; set; }
         public int idClient { get; set; }
-        public Client client { get; set; } = null!;
+        public ClientProfile client { get; set; } = null!;
         public int idCourt { get; set; }
         public Court court { get; set; } = null!;
         public DateTime reservationDate { get; set; }

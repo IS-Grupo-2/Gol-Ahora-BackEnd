@@ -4,7 +4,7 @@
     {
         public int idCertification { get; set; }
         public int professorId { get; set; }
-        public Professor professor { get; set; } = null!;
+        public ProfessorProfile professor { get; set; } = null!;
         public string name { get; set; } = null!;
         public string institution { get; set; } = null!;
         public DateTime dateObtained { get; set; }

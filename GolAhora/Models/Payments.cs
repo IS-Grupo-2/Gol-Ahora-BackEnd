@@ -6,7 +6,7 @@ namespace GolAhora.Models
     {
         public int idPayment { get; set; }
         public int idClient { get; set; }
-        public Client client { get; set; } = null!;
+        public ClientProfile client { get; set; } = null!;
         public double amount { get; set; }
         public DateTime paymentDate { get; set; }
         public string paymentMethod { get; set; } = null!;

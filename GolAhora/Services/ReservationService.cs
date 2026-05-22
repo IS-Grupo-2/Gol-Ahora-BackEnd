@@ -110,8 +110,8 @@ namespace GolAhora.Services
             {
                 idReservation = r.idReservation,
                 idClient = r.idClient,
-                clienteNombre = r.client.name,
-                clienteApellido = r.client.lastName,
+                clienteNombre = r.client.user.name,
+                clienteApellido = r.client.user.name,
                 idCourt = r.idCourt,
                 canchaNombre = r.court.name,
                 reservationDate = r.reservationDate,
@@ -160,8 +160,8 @@ namespace GolAhora.Services
             {
                 idReservation = r.idReservation,
                 idClient = r.idClient,
-                clienteNombre = r.client.name,
-                clienteApellido = r.client.lastName,
+                clienteNombre = r.client.user.name,
+                clienteApellido = r.client.user.name,
                 idCourt = r.idCourt,
                 canchaNombre = r.court.name,
                 reservationDate = r.reservationDate,
