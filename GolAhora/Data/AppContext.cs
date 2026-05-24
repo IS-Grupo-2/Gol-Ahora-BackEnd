@@ -280,6 +280,44 @@ namespace GolAhora.Data
                 .HasForeignKey(r => r.idAdmin)
                 // La siguiente linea impide que se borre un admin si tiene reportes asignados
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<IdentityRole<int>>().HasData(
+                new IdentityRole<int>
+                {
+                    Id = 1,
+                    Name = "Client",
+                    NormalizedName = "CLIENT",
+                    ConcurrencyStamp = "client-role"
+                },
+                new IdentityRole<int>
+                {
+                    Id= 2,
+                    Name = "PersonaClub",
+                    NormalizedName = "PERSONALCLUB",
+                    ConcurrencyStamp = "personal-club-role"
+                },
+                new IdentityRole<int>
+                {
+                    Id= 3,
+                    Name = "Admin",
+                    NormalizedName = "ADMIN",
+                    ConcurrencyStamp = "admin-role"
+                },
+                new IdentityRole<int>
+                {
+                    Id = 4,
+                    Name = "Employee",
+                    NormalizedName = "EMPLOYEE",
+                    ConcurrencyStamp = "employee-role"
+                },
+                new IdentityRole<int>
+                {
+                    Id = 5,
+                    Name = "Professor",
+                    NormalizedName = "PROFESSOR",
+                    ConcurrencyStamp = "professor-role"
+                }
+            );
         }
     }
 }

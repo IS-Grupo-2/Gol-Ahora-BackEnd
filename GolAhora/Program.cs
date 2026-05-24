@@ -1,5 +1,11 @@
+using GolAhora.Command;
+using GolAhora.Models;
 using GolAhora.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using AppContext = GolAhora.Data.AppContext;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +24,36 @@ builder.Services.AddDbContext<AppContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
+// Registro de Identity
+builder.Services.AddIdentity<User, IdentityRole<int>>()
+    .AddEntityFrameworkStores<AppContext>()
+    .AddDefaultTokenProviders();
+
+// Registro de JWT
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = builder.Configuration["JWT:Issuer"],
+                ValidAudience = builder.Configuration["JWT:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"]!)
+                    )
+            };
+        }
+    );
+
+// Registro de autenticacion
+builder.Services.AddAuthorization();
+
+// Registro de servicios Auth
+builder.Services.AddScoped<AuthServices>();
+builder.Services.AddScoped<ClientCommand>();
+
 // Registro de servicios
 builder.Services.AddScoped<CourtTypeService>();
 builder.Services.AddScoped<CourtService>();
@@ -34,6 +70,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

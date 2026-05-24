@@ -46,7 +46,7 @@ namespace GolAhora.DTOs
     public class RegisterClientDto: RegisterUserDto
     {
         public int numberPartner { get; set; }
-        public int idTeam { get; set; }
+        public int? idTeam { get; set; }
     }
 
     public class RegisterPersonalClubDto: RegisterUserDto

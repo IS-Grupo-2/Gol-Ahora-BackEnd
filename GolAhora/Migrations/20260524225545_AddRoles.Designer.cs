@@ -4,6 +4,7 @@ using GolAhora.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using AppContext = GolAhora.Data.AppContext;
 
@@ -12,9 +13,11 @@ using AppContext = GolAhora.Data.AppContext;
 namespace GolAhora.Migrations
 {
     [DbContext(typeof(AppContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20260524225545_AddRoles")]
+    partial class AddRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,7 +179,7 @@ namespace GolAhora.Migrations
                     b.Property<int?>("ClassidClass")
                         .HasColumnType("int");
 
-                    b.Property<int?>("idTeam")
+                    b.Property<int>("idTeam")
                         .HasColumnType("int");
 
                     b.Property<int>("idUser")
@@ -1074,7 +1077,8 @@ namespace GolAhora.Migrations
                     b.HasOne("GolAhora.Models.Team", "team")
                         .WithMany("players")
                         .HasForeignKey("idTeam")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("GolAhora.Models.User", "user")
                         .WithOne("clientProfile")
