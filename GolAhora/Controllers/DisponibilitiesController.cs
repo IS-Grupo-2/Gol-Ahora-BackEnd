@@ -21,12 +21,9 @@ namespace GolAhora.Controllers
         {
             if (dto == null)
                 return BadRequest("Los datos de disponibilidad son invalidos.");
-
             var (success, message) = await _disponibilityService.AgregarDisponibility(dto);
-
             if (!success)
                 return BadRequest(new { mensaje = message });
-
             return Ok(new { mensaje = message });
         }
 
@@ -36,12 +33,9 @@ namespace GolAhora.Controllers
         {
             if (dto == null)
                 return BadRequest("Los datos de disponibilidad son invalidos.");
-
             var (success, message) = await _disponibilityService.ModificarDisponibility(id, dto);
-
             if (!success)
                 return NotFound(new { mensaje = message });
-
             return Ok(new { mensaje = message });
         }
 
@@ -60,7 +54,6 @@ namespace GolAhora.Controllers
             var disponibility = await _disponibilityService.ConsultarDisponibility(id);
             if (disponibility == null)
                 return NotFound($"No se encontro la disponibilidad con ID {id}.");
-
             return Ok(disponibility);
         }
 
@@ -69,10 +62,8 @@ namespace GolAhora.Controllers
         public async Task<IActionResult> HabilitarDisponibility(int id)
         {
             var (success, message) = await _disponibilityService.HabilitarDisponibility(id);
-
             if (!success)
                 return NotFound(new { mensaje = message });
-
             return Ok(new { mensaje = message });
         }
 
@@ -81,10 +72,18 @@ namespace GolAhora.Controllers
         public async Task<IActionResult> DeshabilitarDisponibility(int id)
         {
             var (success, message) = await _disponibilityService.DeshabilitarDisponibility(id);
-
             if (!success)
                 return NotFound(new { mensaje = message });
+            return Ok(new { mensaje = message });
+        }
 
+        // DELETE api/disponibilities/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> EliminarDisponibility(int id)
+        {
+            var (success, message) = await _disponibilityService.EliminarDisponibility(id);
+            if (!success)
+                return NotFound(new { mensaje = message });
             return Ok(new { mensaje = message });
         }
     }

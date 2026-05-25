@@ -27,12 +27,10 @@ namespace GolAhora.Services
             if (cancha == null)
                 return (false, "La cancha no existe.");
 
-            // Validar que la cancha esté activa
             if (!cancha.isAvailable)
                 return (false, "La cancha no está disponible.");
 
             var duracion = (dto.endTime - dto.startTime).TotalHours;
-
             var nombre = cancha.courtType.name.ToLower();
             var maxHoras = nombre.Contains("5") ? 1.0
                          : nombre.Contains("7") ? 1.5
@@ -42,7 +40,6 @@ namespace GolAhora.Services
             if (duracion > maxHoras)
                 return (false, $"La duración máxima para este tipo de cancha es {maxHoras} horas.");
 
-            // RS02 + RF17 – verificar disponibilidad y que no esté bloqueada
             var disponible = await _context.Disponibilities.AnyAsync(d =>
                 d.courtId == dto.idCourt &&
                 d.day == dto.reservationDate.DayOfWeek &&
@@ -54,6 +51,18 @@ namespace GolAhora.Services
             if (!disponible)
                 return (false, "La cancha no está disponible en ese horario.");
 
+            var superpuesta = await _context.Reservations.AnyAsync(r =>
+                r.idCourt == dto.idCourt &&
+                r.reservationDate.Date == dto.reservationDate.Date &&
+                r.startTime < dto.endTime &&
+                r.endTime > dto.startTime
+            );
+
+            if (superpuesta)
+                return (false, "Ya existe una reserva en ese horario para esa cancha.");
+
+            var totalPrice = duracion * cancha.courtType.pricePerHour;
+
             var nuevaReservation = new Reservation
             {
                 idClient = dto.idClient,
@@ -61,37 +70,45 @@ namespace GolAhora.Services
                 reservationDate = dto.reservationDate,
                 startTime = dto.startTime,
                 endTime = dto.endTime,
-                totalPrice = dto.totalPrice,
+                totalPrice = totalPrice,
                 idPayment = dto.idPayment ?? 0,
                 isPaid = false
             };
 
-            // RF24 – confirmar si el pago ya está registrado y validado
             if (dto.idPayment != null && dto.idPayment != 0)
             {
+                nuevaReservation.idPayment = dto.idPayment.Value;
                 var pago = await _context.Payments.FindAsync(dto.idPayment);
-                if (pago != null && pago.isSuccessful && pago.amount >= dto.totalPrice)
+                if (pago != null && pago.isSuccessful && pago.amount >= totalPrice)
                     nuevaReservation.isPaid = true;
             }
 
             _context.Reservations.Add(nuevaReservation);
             await _context.SaveChangesAsync();
-            return (true, "Reserva registrada exitosamente.");
+
+            return (true, $"Reserva registrada exitosamente. Total: {totalPrice:C}");
         }
 
         // RF20 – Modificar una reserva existente
         public async Task<bool> ModificarReservation(int id, ReservationDTO dto)
         {
-            var reservation = await _context.Reservations.FindAsync(id);
+            var reservation = await _context.Reservations
+                .Include(r => r.court)
+                .ThenInclude(c => c.courtType)
+                .FirstOrDefaultAsync(r => r.idReservation == id);
+
             if (reservation == null)
                 return false;
+
+            var duracion = (dto.endTime - dto.startTime).TotalHours;
+            var totalPrice = duracion * reservation.court.courtType.pricePerHour;
 
             reservation.idClient = dto.idClient;
             reservation.idCourt = dto.idCourt;
             reservation.reservationDate = dto.reservationDate;
             reservation.startTime = dto.startTime;
             reservation.endTime = dto.endTime;
-            reservation.totalPrice = dto.totalPrice;
+            reservation.totalPrice = totalPrice;
             reservation.idPayment = dto.idPayment ?? 0;
 
             await _context.SaveChangesAsync();
@@ -103,6 +120,7 @@ namespace GolAhora.Services
         {
             var reservations = await _context.Reservations
                 .Include(r => r.client)
+                    .ThenInclude(c => c.user)
                 .Include(r => r.court)
                 .ToListAsync();
 
@@ -111,7 +129,7 @@ namespace GolAhora.Services
                 idReservation = r.idReservation,
                 idClient = r.idClient,
                 clienteNombre = r.client.user.name,
-                clienteApellido = r.client.user.name,
+                clienteApellido = r.client.user.lastName,
                 idCourt = r.idCourt,
                 canchaNombre = r.court.name,
                 reservationDate = r.reservationDate,
@@ -134,7 +152,7 @@ namespace GolAhora.Services
 
             var antelacion = reservation.reservationDate - DateTime.Now;
 
-            if (antelacion.TotalHours < 48)
+            if (antelacion.TotalHours < 6)
             {
                 _context.Reservations.Remove(reservation);
                 await _context.SaveChangesAsync();
@@ -151,6 +169,7 @@ namespace GolAhora.Services
         {
             var r = await _context.Reservations
                 .Include(r => r.client)
+                    .ThenInclude(c => c.user)
                 .Include(r => r.court)
                 .FirstOrDefaultAsync(r => r.idReservation == id);
 
@@ -161,7 +180,7 @@ namespace GolAhora.Services
                 idReservation = r.idReservation,
                 idClient = r.idClient,
                 clienteNombre = r.client.user.name,
-                clienteApellido = r.client.user.name,
+                clienteApellido = r.client.user.lastName,
                 idCourt = r.idCourt,
                 canchaNombre = r.court.name,
                 reservationDate = r.reservationDate,

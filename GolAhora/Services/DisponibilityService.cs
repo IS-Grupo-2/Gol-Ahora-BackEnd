@@ -123,6 +123,17 @@ namespace GolAhora.Services
             return (true, "Disponibilidad deshabilitada exitosamente.");
         }
 
+        public async Task<(bool success, string message)> EliminarDisponibility(int id)
+        {
+            var disponibility = await _context.Disponibilities.FindAsync(id);
+            if (disponibility == null)
+                return (false, "Disponibilidad no encontrada.");
+
+            _context.Disponibilities.Remove(disponibility);
+            await _context.SaveChangesAsync();
+            return (true, "Disponibilidad eliminada exitosamente.");
+        }
+
         public async Task<(bool success, string message)> ConsultarDisponibilidadEnHorario(int courtId, DateTime fecha, TimeSpan hora)
         {
             var disponible = await Verificar(courtId, fecha, hora);
