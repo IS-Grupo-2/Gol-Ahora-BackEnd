@@ -49,7 +49,7 @@ namespace GolAhora.Services
             );
 
             if (!disponible)
-                return (false, "La cancha no está disponible en ese horario.");
+                return (false, "Ese horario está fuera del horario habilitado de la cancha.");
 
             var superpuesta = await _context.Reservations.AnyAsync(r =>
                 r.idCourt == dto.idCourt &&
@@ -141,29 +141,26 @@ namespace GolAhora.Services
             }).ToList();
         }
 
-        // RF22 + RF25 + RF26 – Cancelar reserva con validación de antelación y reembolso
-        public async Task<(bool success, string message)> EliminarReservation(int id)
+        // RF22 + RF25 + RF26 – Cancelar reserva con validación de antelación y cargo por penalidad
+
+
+        public async Task<(bool success, string message, double montoFinal)> EliminarReservation(int id)
         {
             var reservation = await _context.Reservations
                 .FirstOrDefaultAsync(r => r.idReservation == id);
-
             if (reservation == null)
-                return (false, "Reserva no encontrada.");
-
+                return (false, "Reserva no encontrada.", 0);
             var antelacion = reservation.reservationDate - DateTime.Now;
-
+            await _context.Database.ExecuteSqlRawAsync(
+                "DELETE FROM Reservations WHERE idReservation = {0}", id);
             if (antelacion.TotalHours < 6)
             {
-                _context.Reservations.Remove(reservation);
-                await _context.SaveChangesAsync();
-                return (true, "Reserva cancelada. Por cancelar fuera del plazo de 48 horas se aplica un cargo y no corresponde reembolso.");
+                var cargo = reservation.totalPrice * 0.5;
+                var montoFinal = reservation.totalPrice - cargo;
+                return (true, $"Reserva cancelada. Se aplicó un cargo del 50% (total: {reservation.totalPrice:C}) por cancelar con menos de 6 horas de anticipación.", montoFinal);
             }
-
-            _context.Reservations.Remove(reservation);
-            await _context.SaveChangesAsync();
-            return (true, "Reserva cancelada. Se procesará un reembolso total del pago.");
+            return (true, $"Reserva cancelada. Se procesará un reembolso total del pago.", reservation.totalPrice);
         }
-
         // RF23 – Consultar una reserva por ID
         public async Task<ReservationResponseDTO?> ConsultarReservation(int id)
         {

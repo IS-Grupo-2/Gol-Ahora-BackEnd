@@ -57,6 +57,19 @@ namespace GolAhora.Services
             if (disponibility == null)
                 return (false, "Disponibilidad no encontrada.");
 
+            // Validar superposición con otras disponibilidades (excluyendo la actual)
+            var superpuesta = await _context.Disponibilities.AnyAsync(d =>
+                d.idDisponibility != id &&
+                d.courtId == dto.courtId &&
+                d.day == dto.day &&
+                d.isAvailable &&
+                d.startTime < dto.endTime &&
+                d.endTime > dto.startTime
+            );
+
+            if (superpuesta)
+                return (false, "Ya existe una disponibilidad activa que se superpone en ese horario.");
+
             disponibility.day = dto.day;
             disponibility.startTime = dto.startTime;
             disponibility.endTime = dto.endTime;
