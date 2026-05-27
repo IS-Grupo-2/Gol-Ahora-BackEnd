@@ -29,5 +29,40 @@ namespace GolAhora.Controllers
             var result = await _authServices.RegisterClient(dto);
             return new JsonResult(result) { StatusCode = 201 };
         }
+
+        [HttpPost("register/employee")]
+        public async Task<IActionResult> RegisterEmployee([FromBody] RegisterEmployeeDto dto)
+        {
+            if (dto == null)
+                return BadRequest("Los datos del empleado son invalidos");
+
+            var result = await _authServices.RegisterEmployee(dto);
+            return new JsonResult(result) { StatusCode = 201 };
+
+        }
+
+        [HttpPost("register/professor")]
+        public async Task<IActionResult> RegisterProfessor([FromBody] RegisterProfessorDto dto)
+        {
+            if (dto == null)
+                return BadRequest("Los datos del profesor");
+
+            var result = await _authServices.RegisterProfessor(dto);
+            return new JsonResult(result) { StatusCode = 201 };
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginUserDto dto)
+        {
+            if (dto == null)
+                return BadRequest("Debe completar todos los campos");
+
+            var result = await _authServices.LoginUser(dto);
+
+            if (result == null)
+                return Unauthorized("Usuario o contraseña incorrectos.");
+
+            return Ok(result);
+        }
     }
 }

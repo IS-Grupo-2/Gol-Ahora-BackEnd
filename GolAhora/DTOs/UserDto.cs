@@ -56,12 +56,12 @@ namespace GolAhora.DTOs
             public string turno { get; set; } = null!;
     }
 
-    public class RegsiterAdminDto: RegisterPersonalClubDto
+    public class RegisterAdminDto: RegisterPersonalClubDto
     {
             public int accessLevel { get; set; }
     }
 
-    public class RegsiterEmployeeDto: RegisterPersonalClubDto
+    public class RegisterEmployeeDto: RegisterPersonalClubDto
     {
         public string sector { get; set; } = null!;
     }
@@ -69,5 +69,73 @@ namespace GolAhora.DTOs
     public class RegisterProfessorDto: RegisterPersonalClubDto 
     {
         public string specialty { get; set; } = null!;
+    }
+
+    public class ClientDto : UserDto
+    {
+        public int idClient { get; set; }
+        public int numberPartner { get; set; }
+        public int? idTeam { get; set; }
+    }
+
+    public class PersonalClubDto: UserDto
+    {
+        public int idPersonalClub { get; set; }
+        public string legajo { get; set; } = null!;
+        public DateTime startDate { get; set; }
+        public string turno { get; set; } = null!;
+    }
+
+    public class AdminDto: PersonalClubDto
+    {
+        public int idAdmin { get; set; }
+        public int accessLevel { get; set; }
+    }
+
+    public class EmployeeDto: PersonalClubDto
+    {
+        public int idEmployee { get; set; }
+        public string sector { get; set; } = null!;
+    }
+
+    public class ProfessorDto: PersonalClubDto
+    {
+        public int idProfessor { get; set; }
+        public string speciality { get; set; } = null!;
+    }
+
+    public class UpdateUserDTO 
+    {
+        public string name { get; set; } = null!;
+        public string lastName { get; set; } = null!;
+        public string DNI { get; set; } = null!;
+        public string userName { get; set; } = null!;
+        public string email { get; set; } = null!;
+        public string phoneNumber { get; set; } = null!;
+    }
+
+    public class UpdateClientDTO : UpdateUserDTO
+    {
+        public int? idTeam { get; set; }
+    }
+
+    public class UpdatePersonalClubDTO : UpdateUserDTO
+    {
+        public string turno { get; set; } = null!;
+    }
+
+    public class UpdateAdminDTO : UpdatePersonalClubDTO
+    {
+        public int accessLevel { get; set; }
+    }
+
+    public class UpdateEmployeeDTO : UpdatePersonalClubDTO
+    {
+        public string sector { get; set; } = null!;
+    }
+    
+    public class UpdateProfessorDTO : UpdatePersonalClubDTO
+    {
+        public string speciality { get; set; } = null!;
     }
 }

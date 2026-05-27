@@ -292,8 +292,8 @@ namespace GolAhora.Data
                 new IdentityRole<int>
                 {
                     Id= 2,
-                    Name = "PersonaClub",
-                    NormalizedName = "PERSONALCLUB",
+                    Name = "PersonalClubProfile",
+                    NormalizedName = "PERSONALCLUBPROFILE",
                     ConcurrencyStamp = "personal-club-role"
                 },
                 new IdentityRole<int>

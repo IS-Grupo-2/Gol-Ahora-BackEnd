@@ -1,10 +1,12 @@
 using GolAhora.Command;
 using GolAhora.Models;
+using GolAhora.Query;
 using GolAhora.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 using AppContext = GolAhora.Data.AppContext;
 
@@ -17,7 +19,32 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 // Conexion a la base de datos
 builder.Services.AddDbContext<AppContext>(
@@ -30,7 +57,12 @@ builder.Services.AddIdentity<User, IdentityRole<int>>()
     .AddDefaultTokenProviders();
 
 // Registro de JWT
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
     .AddJwtBearer(options =>
         {
             options.TokenValidationParameters = new TokenValidationParameters
@@ -41,7 +73,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 ValidIssuer = builder.Configuration["JWT:Issuer"],
                 ValidAudience = builder.Configuration["JWT:Audience"],
                 IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"]!)
+                        Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!)
                     )
             };
         }
@@ -53,6 +85,10 @@ builder.Services.AddAuthorization();
 // Registro de servicios Auth
 builder.Services.AddScoped<AuthServices>();
 builder.Services.AddScoped<ClientCommand>();
+
+// Regsitor de servicios user
+builder.Services.AddScoped<UserServices>();
+builder.Services.AddScoped<UserQuery>();
 
 // Registro de servicios
 builder.Services.AddScoped<CourtTypeService>();
