@@ -21,11 +21,9 @@ namespace GolAhora.Controllers
         {
             if (dto == null)
                 return BadRequest("Los datos de la cancha son invalidos.");
-
             var (success, message) = await _courtService.AgregarCourt(dto);
             if (!success)
                 return BadRequest(new { mensaje = message });
-
             return Ok(new { mensaje = message });
         }
 
@@ -35,11 +33,9 @@ namespace GolAhora.Controllers
         {
             if (dto == null)
                 return BadRequest("Los datos de la cancha son invalidos.");
-
             var (success, message) = await _courtService.ModificarCourt(id, dto);
             if (!success)
                 return NotFound(new { mensaje = message });
-
             return Ok(new { mensaje = message });
         }
 
@@ -58,7 +54,6 @@ namespace GolAhora.Controllers
             var (success, message) = await _courtService.DarDeBajaCourt(id);
             if (!success)
                 return NotFound(new { mensaje = message });
-
             return Ok(new { mensaje = message });
         }
 
@@ -69,7 +64,6 @@ namespace GolAhora.Controllers
             var court = await _courtService.ConsultarCourt(id);
             if (court == null)
                 return NotFound($"No se encontro la cancha con ID {id}.");
-
             return Ok(court);
         }
 
@@ -80,7 +74,6 @@ namespace GolAhora.Controllers
             var (success, message) = await _courtService.HabilitarCourt(id);
             if (!success)
                 return NotFound(new { mensaje = message });
-
             return Ok(new { mensaje = message });
         }
 
@@ -91,11 +84,10 @@ namespace GolAhora.Controllers
             var (success, message) = await _courtService.DeshabilitarCourt(id);
             if (!success)
                 return NotFound(new { mensaje = message });
-
             return Ok(new { mensaje = message });
         }
 
-        // disponible(fecha, hora) – GET api/courts/{id}/disponible
+        // GET api/courts/{id}/disponible
         [HttpGet("{id}/disponible")]
         public async Task<IActionResult> ConsultarDisponibilidadCancha(int id, [FromQuery] DateTime fecha, [FromQuery] TimeSpan hora)
         {

@@ -33,8 +33,8 @@ namespace GolAhora.Services
             var court = new Court
             {
                 name = dto.name,
-                description = dto.description,
-                imageUrl = dto.imageUrl,
+                description = dto.description ?? "",
+                imageUrl = "",
                 courtTypeId = dto.courtTypeId,
                 isAvailable = true
             };
@@ -51,8 +51,7 @@ namespace GolAhora.Services
                 return (false, "Cancha no encontrada.");
 
             court.name = dto.name;
-            court.description = dto.description;
-            court.imageUrl = dto.imageUrl;
+            court.description = dto.description ?? "";
             court.courtTypeId = dto.courtTypeId;
 
             await _context.SaveChangesAsync();
@@ -69,7 +68,6 @@ namespace GolAhora.Services
                     name = c.name,
                     isAvailable = c.isAvailable,
                     description = c.description,
-                    imageUrl = c.imageUrl,
                     courtTypeName = c.courtType.name
                 })
                 .ToListAsync();
@@ -104,7 +102,6 @@ namespace GolAhora.Services
                     name = c.name,
                     isAvailable = c.isAvailable,
                     description = c.description,
-                    imageUrl = c.imageUrl,
                     courtTypeName = c.courtType.name,
                     disponibilities = c.disponibilities.Select(d => new DisponibilitySummaryDTO
                     {

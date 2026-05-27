@@ -7,7 +7,6 @@
         public DateTime reservationDate { get; set; }
         public TimeSpan startTime { get; set; }
         public TimeSpan endTime { get; set; }
-        public double totalPrice { get; set; }
         public int? idPayment { get; set; }
     }
     public class ReservationResponseDTO
