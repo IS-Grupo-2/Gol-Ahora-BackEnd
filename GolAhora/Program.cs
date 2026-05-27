@@ -95,6 +95,7 @@ builder.Services.AddScoped<CourtTypeService>();
 builder.Services.AddScoped<CourtService>();
 builder.Services.AddScoped<DisponibilityService>();
 builder.Services.AddScoped<ReservationService>();
+builder.Services.AddScoped<ReporteService>();
 
 var app = builder.Build();
 
