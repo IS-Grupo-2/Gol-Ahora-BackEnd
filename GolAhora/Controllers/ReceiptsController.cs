@@ -49,5 +49,21 @@ namespace GolAhora.Controllers
             var list = await _receiptsService.GetAllReceiptsAsync();
             return Ok(list);
         }
+
+        // DELETE: api/Receipts/5 --> RF54 Dar de baja recibo
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteReceipt(int id)
+        {
+            var result = await _receiptsService.DeleteReceiptAsync(id);
+            if (!result.success)
+            {
+                if (result.message.Contains("no encontrado"))
+                    return NotFound(new { message = result.message });
+
+                return BadRequest(new { message = result.message });
+            }
+
+            return Ok(new { message = result.message });
+        }
     }
 }

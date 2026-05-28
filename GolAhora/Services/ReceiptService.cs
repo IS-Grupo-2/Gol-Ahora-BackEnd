@@ -75,5 +75,21 @@ namespace GolAhora.Services
                 })
                 .ToListAsync();
         }
+
+        // RF54 --> Dar de baja a los recibos de pagos
+        public async Task<(bool success, string message)> DeleteReceiptAsync(int id)
+        {
+            var receipt = await _context.Receipts.FindAsync(id);
+            if (receipt == null)
+                return (false, "Recibo no encontrado para dar de baja.");
+
+            if (receipt.details.StartsWith("ANULADO -"))
+                return (false, "Este recibo ya fue dado de baja previamente.");
+
+            receipt.details = "ANULADO - " + receipt.details;
+
+            await _context.SaveChangesAsync();
+            return (true, "Recibo dado de baja exitosamente.");
+        }
     }
 }
