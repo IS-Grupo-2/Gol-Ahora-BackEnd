@@ -41,5 +41,13 @@ namespace GolAhora.Controllers
 
             return Ok(new { message = result.message });
         }
+
+        // GET: api/Receipts --> RF53 Generar listado de recibos
+        [HttpGet]
+        public async Task<IActionResult> GetAllReceipts()
+        {
+            var list = await _receiptsService.GetAllReceiptsAsync();
+            return Ok(list);
+        }
     }
 }

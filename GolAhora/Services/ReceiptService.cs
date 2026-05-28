@@ -61,5 +61,19 @@ namespace GolAhora.Services
             await _context.SaveChangesAsync();
             return (true, "Recibo modificado exitosamente");
         }
+
+        // RF53 --> Generar un listado de recibos
+        public async Task<List<ReceiptResponseDTO>> GetAllReceiptsAsync()
+        {
+            return await _context.Receipts
+                .Select(r => new ReceiptResponseDTO
+                {
+                    IdReceipt = r.idReceipt,
+                    ReceiptNumber = r.receiptNumber,
+                    TotalAmount = r.totalAmount,
+                    Date = r.date
+                })
+                .ToListAsync();
+        }
     }
 }
