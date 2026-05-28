@@ -25,5 +25,21 @@ namespace GolAhora.Controllers
 
             return Ok(new { message = result.message });
         }
+
+        // PUT: api/Receipts/5 --> RF52 Modificar recibo
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateReceipt(int id, [FromBody] ReceiptDTO dto)
+        {
+            var result = await _receiptsService.UpdateReceiptAsync(id, dto);
+            if (!result.success)
+            {
+                if (result.message.Contains("no encontrado"))
+                    return NotFound(new { message = result.message });
+
+                return BadRequest(new { message = result.message });
+            }
+
+            return Ok(new { message = result.message });
+        }
     }
 }
