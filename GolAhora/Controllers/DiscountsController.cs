@@ -1,7 +1,6 @@
-﻿using GolAhora.Models;
+﻿using GolAhora.DTOs;
 using GolAhora.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace GolAhora.Controllers;
 
@@ -13,44 +12,47 @@ public class DiscountsController : Controller
 
     public DiscountsController(DiscountsService discountsService)
     {
-        _discountsService = discountsService; 
+        _discountsService = discountsService;
     }
 
     // POST: api/Discounts --> RF50
     [HttpPost]
-    public async Task<ActionResult<Discounts>> CreateDiscount([FromBody] Discounts discount)
+    public async Task<IActionResult> CreateDiscount([FromBody] DiscountDTO dto)
     {
-        var createdDiscount = await _discountsService.CreateDiscountsAsync(discount);
-        return CreatedAtAction(nameof(GetDiscountById), new { id = createdDiscount.idDiscount }, createdDiscount);
+        var result = await _discountsService.AddDiscountAsync(dto);
+        if (!result.success)
+            return BadRequest(new { message = result.message });
+
+        return Ok(new { message = result.message });
+    }
+
+    // PUT: api/Discounts/5 --> RF50
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateDiscount(int id, [FromBody] DiscountDTO dto)
+    {
+        var result = await _discountsService.UpdateDiscountAsync(id, dto);
+        if (!result.success)
+            return NotFound(new { message = result.message });
+
+        return Ok(new { message = result.message });
     }
 
     // GET: api/Discounts/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Discounts>> GetDiscountById(int id)
+    public async Task<IActionResult> GetDiscountById(int id)
     {
         var discount = await _discountsService.GetDiscountByIdAsync(id);
-        if(discount == null)
-        {
+        if (discount == null)
             return NotFound(new { message = $"Descuento con ID {id} no encontrado." });
-        }
+
         return Ok(discount);
     }
 
-    // PUT: api/Discount/5 --> RF50
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateDiscount(int id, [FromBody] Discounts discountDetails)
+    // GET: api/Discounts
+    [HttpGet]
+    public async Task<IActionResult> GetAllDiscounts()
     {
-        if (id != discountDetails.idDiscount)
-        {
-            return BadRequest(new { message = "El ID del descuento no coincide." });
-        }
-
-        var updatedDiscount = await _discountsService.UpdateDiscountAsync(id, discountDetails);
-        if (updatedDiscount == null)
-        {
-            return NotFound(new { message = $"Descuento con ID {id} no encontrado para actualizar." });
-        }
-
-        return Ok(new { message = "Descuento gestionado y actualizado con éxito.", data = updatedDiscount });
+        var list = await _discountsService.GetAllDiscountsAsync();
+        return Ok(list);
     }
 }
