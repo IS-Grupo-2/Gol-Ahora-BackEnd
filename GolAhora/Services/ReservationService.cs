@@ -93,15 +93,13 @@ namespace GolAhora.Services
             };
 
             _context.Reservations.Add(nuevaReservation);
-
             await _context.SaveChangesAsync();
 
             return (true, $"Reserva registrada exitosamente. Total: {totalPrice:C}");
         }
 
-        
         // RF20 – Modificar una reserva existente
-        public async Task<bool> ModificarReservation(int id, ReservationDTO dto)
+        public async Task<(bool success, string message)> ModificarReservation(int id, ReservationDTO dto)
         {
             var reservation = await _context.Reservations
                 .Include(r => r.court)
@@ -109,14 +107,12 @@ namespace GolAhora.Services
                 .FirstOrDefaultAsync(r => r.idReservation == id);
 
             if (reservation == null)
-                return false;
+                return (false, "Reserva no encontrada.");
 
-            // No permitir modificar reservas pagadas
             if (reservation.isPaid)
-                return false;
+                return (false, "No se puede modificar una reserva ya pagada. Debe cancelarla y hacer una nueva.");
 
             var duracion = (dto.endTime - dto.startTime).TotalHours;
-
             var totalPrice = duracion * reservation.court.courtType.pricePerHour;
 
             reservation.idClient = dto.idClient;
@@ -129,7 +125,7 @@ namespace GolAhora.Services
 
             await _context.SaveChangesAsync();
 
-            return true;
+            return (true, "Reserva modificada exitosamente.");
         }
 
         // RF21 – Listar todas las reservas
@@ -175,7 +171,6 @@ namespace GolAhora.Services
             if (antelacion.TotalHours < 6)
             {
                 var cargo = reservation.totalPrice * 0.5;
-
                 var montoFinal = reservation.totalPrice - cargo;
 
                 return (
