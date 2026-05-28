@@ -60,6 +60,7 @@ builder.Services.AddScoped<CourtService>();
 builder.Services.AddScoped<DisponibilityService>();
 builder.Services.AddScoped<ReservationService>();
 builder.Services.AddScoped<PaymentsService>();
+builder.Services.AddScoped<DiscountsService>();
 
 var app = builder.Build();
 

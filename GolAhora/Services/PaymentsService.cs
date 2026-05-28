@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GolAhora.Services;
 
-public class PaymentsService : Controller
+public class PaymentsService
 {
     private readonly Data.AppContext _context;
 
