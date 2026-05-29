@@ -80,6 +80,14 @@ namespace GolAhora.Services
             if (pago.amount < totalPrice)
                 return (false, "El monto del pago es insuficiente.");
 
+            // Validar que el pago no esté siendo usado por otra reserva
+            var pagoEnUso = await _context.Reservations.AnyAsync(r =>
+                r.idPayment == dto.idPayment
+            );
+
+            if (pagoEnUso)
+                return (false, "Este pago ya está siendo utilizado por otra reserva.");
+
             var nuevaReservation = new Reservation
             {
                 idClient = dto.idClient,
