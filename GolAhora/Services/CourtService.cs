@@ -27,6 +27,7 @@ namespace GolAhora.Services
         public async Task<(bool success, string message)> AgregarCourt(CourtDTO dto)
         {
             var courtType = await _context.CourtTypes.FindAsync(dto.courtTypeId);
+
             if (courtType == null)
                 return (false, "El tipo de cancha no existe.");
 
@@ -40,13 +41,16 @@ namespace GolAhora.Services
             };
 
             _context.Courts.Add(court);
+
             await _context.SaveChangesAsync();
+
             return (true, "Cancha registrada exitosamente.");
         }
 
         public async Task<(bool success, string message)> ModificarCourt(int id, CourtDTO dto)
         {
             var court = await _context.Courts.FindAsync(id);
+
             if (court == null)
                 return (false, "Cancha no encontrada.");
 
@@ -55,6 +59,7 @@ namespace GolAhora.Services
             court.courtTypeId = dto.courtTypeId;
 
             await _context.SaveChangesAsync();
+
             return (true, "Cancha modificada exitosamente.");
         }
 
@@ -73,21 +78,71 @@ namespace GolAhora.Services
                 .ToListAsync();
         }
 
+        // BAJA LÓGICA
         public async Task<(bool success, string message)> DarDeBajaCourt(int id)
         {
             var court = await _context.Courts
                 .Include(c => c.disponibilities)
+                .Include(c => c.reservations)
                 .FirstOrDefaultAsync(c => c.idCourt == id);
 
             if (court == null)
                 return (false, "Cancha no encontrada.");
 
             court.isAvailable = false;
+
             foreach (var disp in court.disponibilities)
                 disp.isAvailable = false;
 
+            double totalReembolsos = 0;
+
+            foreach (var reserva in court.reservations)
+            {
+                if (reserva.isPaid)
+                    totalReembolsos += reserva.totalPrice;
+
+                _context.Reservations.Remove(reserva);
+            }
+
             await _context.SaveChangesAsync();
-            return (true, "Cancha dada de baja exitosamente.");
+
+            return (
+                true,
+                $"Cancha dada de baja exitosamente. " +
+                $"Total de reembolsos a procesar: {totalReembolsos:C}"
+            );
+        }
+
+        // BAJA FÍSICA
+        public async Task<(bool success, string message)> EliminarCourtFisico(int id)
+        {
+            var court = await _context.Courts
+                .Include(c => c.disponibilities)
+                .Include(c => c.reservations)
+                .FirstOrDefaultAsync(c => c.idCourt == id);
+
+            if (court == null)
+                return (false, "Cancha no encontrada.");
+
+            double totalReembolsos = 0;
+
+            foreach (var reserva in court.reservations)
+            {
+                if (reserva.isPaid)
+                    totalReembolsos += reserva.totalPrice;
+            }
+
+            _context.Disponibilities.RemoveRange(court.disponibilities);
+            _context.Reservations.RemoveRange(court.reservations);
+            _context.Courts.Remove(court);
+
+            await _context.SaveChangesAsync();
+
+            return (
+                true,
+                $"Cancha eliminada físicamente. " +
+                $"Total de reembolsos a procesar: {totalReembolsos:C}"
+            );
         }
 
         public async Task<CourtDetailDTO?> ConsultarCourt(int id)
@@ -118,32 +173,61 @@ namespace GolAhora.Services
         public async Task<(bool success, string message)> HabilitarCourt(int id)
         {
             var court = await _context.Courts.FindAsync(id);
+
             if (court == null)
                 return (false, "Cancha no encontrada.");
 
             court.isAvailable = true;
+
             await _context.SaveChangesAsync();
+
             return (true, "Cancha habilitada exitosamente.");
         }
 
         public async Task<(bool success, string message)> DeshabilitarCourt(int id)
         {
             var court = await _context.Courts.FindAsync(id);
+
             if (court == null)
                 return (false, "Cancha no encontrada.");
 
             court.isAvailable = false;
+
+            var reservas = await _context.Reservations
+                .Where(r => r.idCourt == id)
+                .ToListAsync();
+
+            double totalReembolsos = 0;
+
+            foreach (var reserva in reservas)
+            {
+                if (reserva.isPaid)
+                    totalReembolsos += reserva.totalPrice;
+
+                _context.Reservations.Remove(reserva);
+            }
+
             await _context.SaveChangesAsync();
-            return (true, "Cancha deshabilitada exitosamente.");
+
+            return (
+                true,
+                $"Cancha deshabilitada exitosamente. " +
+                $"Total de reembolsos a procesar: {totalReembolsos:C}"
+            );
         }
 
-        public async Task<(bool success, string message)> ConsultarDisponibilidadCancha(int id, DateTime fecha, TimeSpan hora)
+        public async Task<(bool success, string message)> ConsultarDisponibilidadCancha(
+            int id,
+            DateTime fecha,
+            TimeSpan hora)
         {
             var court = await _context.Courts.FindAsync(id);
+
             if (court == null)
                 return (false, "Cancha no encontrada.");
 
             var disponible = await EsDisponible(id, fecha, hora);
+
             return disponible
                 ? (true, "La cancha esta disponible en ese horario.")
                 : (false, "La cancha no esta disponible en ese horario.");
