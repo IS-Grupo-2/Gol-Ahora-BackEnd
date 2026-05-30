@@ -15,6 +15,7 @@ namespace GolAhora.Services
         //RF 27 - CREAR TORNEO
         public async Task<string?> CreateTournament(TournamentDto tournamentDto)
         {
+            
             if (tournamentDto == null)
             {
                 return "Datos invalidos";
@@ -39,9 +40,12 @@ namespace GolAhora.Services
             {
                 return "La capacidad debe ser 2, 4, 8, 16, 32";
             }
+            var torneos = await _context.Tournaments.ToListAsync();
+            int contador = torneos.Count()+1;
+
             var torneo = new Tournament
             {
-                idTournament = tournamentDto.IdTournament, // deberia ser generado automáticamente por la base de datos
+                idTournament = contador, // deberia ser generado automáticamente por la base de datos
                 name = tournamentDto.Name,
                 description = tournamentDto.Description,
                 startDate = tournamentDto.StartDate,

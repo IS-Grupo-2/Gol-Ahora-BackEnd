@@ -35,9 +35,13 @@ namespace GolAhora.Services
             {
                 return "La capacidad de equipos debe ser mayor a cero.";
             }
+
+            var ligas = await _context.Leagues.ToListAsync();
+            int contador = ligas.Count() + 1;
+
             var liga = new League
             {
-                idLeague = leagueDto.IdLeague, // deberia ser generado automáticamente por la base de datos
+                idLeague = contador, // deberia ser generado automáticamente por la base de datos
                 name = leagueDto.Name,
                 description = leagueDto.Description,
                 startDate = leagueDto.StartDate,
