@@ -26,10 +26,10 @@ namespace GolAhora.Controllers
             return Ok(new { message = "liga creada exitosamente" });
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateLeague([FromBody] GolAhora.DTOs.LeagueDto leagueDto)
+        [HttpPut("{idLeague}")]
+        public async Task<IActionResult> UpdateLeague(int idLeague, [FromBody] GolAhora.DTOs.LeagueDto leagueDto)
         {
-            var mensaje = await _ligasService.UpdateLeague(leagueDto);
+            var mensaje = await _ligasService.UpdateLeague(idLeague, leagueDto);
             if (mensaje != "liga actualizada exitosamente")
             {
                 return BadRequest(new { message = mensaje });

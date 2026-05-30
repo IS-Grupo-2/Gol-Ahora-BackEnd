@@ -55,13 +55,13 @@ namespace GolAhora.Services
             return "liga creada exitosamente";
         }
         //RF 28 - ACTUALIZAR LIGA
-        public async Task<string?> UpdateLeague(LeagueDto leagueDto)
+        public async Task<string?> UpdateLeague(int idLeague, LeagueDto leagueDto)
         {
             if (leagueDto == null)
             {
                 return "Datos invalidos";
             }
-            var liga = await _context.Leagues.FindAsync(leagueDto.IdLeague);
+            var liga = await _context.Leagues.FindAsync(idLeague);
             if (liga == null)
             {
                 return "Liga no encontrada";

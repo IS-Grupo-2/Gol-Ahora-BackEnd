@@ -59,13 +59,13 @@ namespace GolAhora.Services
             return "torneo creado exitosamente";
         }
         //RF 28 - ACTUALIZAR TORNEO
-        public async Task<string?> UpdateTournament(TournamentDto tournamentDto)
+        public async Task<string?> UpdateTournament(int idTournament, TournamentDto tournamentDto)
         {
             if (tournamentDto == null)
             {
                 return "Datos invalidos";
             }
-            var torneo = await _context.Tournaments.FindAsync(tournamentDto.IdTournament);
+            var torneo = await _context.Tournaments.FindAsync(idTournament);
             if (torneo == null)
             {
                 return "Torneo no encontrado";

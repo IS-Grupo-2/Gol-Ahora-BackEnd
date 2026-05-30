@@ -26,10 +26,10 @@ namespace GolAhora.Controllers
             return Ok(new { message = "torneo creado exitosamente" });
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateTournament([FromBody] GolAhora.DTOs.TournamentDto tournamentDto)
+        [HttpPut("{idTournament}")]
+        public async Task<IActionResult> UpdateTournament(int idTournament, [FromBody] GolAhora.DTOs.TournamentDto tournamentDto)
         {
-            var mensaje = await _torneoService.UpdateTournament(tournamentDto);
+            var mensaje = await _torneoService.UpdateTournament(idTournament, tournamentDto);
             if (mensaje != "torneo actualizado exitosamente")
             {
                 return BadRequest(new { message = mensaje });
