@@ -23,22 +23,34 @@ namespace GolAhora.Controllers
                 return BadRequest("Los datos de la reserva son inválidos.");
 
             var (success, message) = await _reservationService.AgregarReservation(dto);
-
             if (!success)
                 return BadRequest(new { mensaje = message });
 
             return Ok(new { mensaje = message });
         }
 
-        // RF20 – PUT api/reservations/{id}
-        [HttpPut("{id}")]
-        public async Task<IActionResult> ModificarReservation(int id, [FromBody] ReservationDTO dto)
+        // RF20a – PUT api/reservations/{id}/horario
+        [HttpPut("{id}/horario")]
+        public async Task<IActionResult> ModificarReservacionHorario(int id, [FromBody] ReservationDTO dto)
         {
             if (dto == null)
                 return BadRequest("Los datos de la reserva son inválidos.");
 
-            var (success, message) = await _reservationService.ModificarReservation(id, dto);
+            var (success, message) = await _reservationService.ModificarReservacionHorario(id, dto);
+            if (!success)
+                return BadRequest(new { mensaje = message });
 
+            return Ok(new { mensaje = message });
+        }
+
+        // RF20b – PUT api/reservations/{id}/fecha
+        [HttpPut("{id}/fecha")]
+        public async Task<IActionResult> ModificarReservacionDia(int id, [FromBody] ReservationDTO dto)
+        {
+            if (dto == null)
+                return BadRequest("Los datos de la reserva son inválidos.");
+
+            var (success, message) = await _reservationService.ModificarReservacionDia(id, dto);
             if (!success)
                 return BadRequest(new { mensaje = message });
 
@@ -58,7 +70,6 @@ namespace GolAhora.Controllers
         public async Task<IActionResult> EliminarReservation(int id)
         {
             var (success, message, montoFinal) = await _reservationService.EliminarReservation(id);
-
             if (!success)
                 return NotFound(new { mensaje = message });
 
@@ -70,7 +81,6 @@ namespace GolAhora.Controllers
         public async Task<IActionResult> ConsultarReservation(int id)
         {
             var reservation = await _reservationService.ConsultarReservation(id);
-
             if (reservation == null)
                 return NotFound($"No se encontró la reserva con ID {id}.");
 

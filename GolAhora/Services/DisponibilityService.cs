@@ -26,29 +26,42 @@ namespace GolAhora.Services
 
         public async Task<(bool success, string message)> AgregarDisponibility(DisponibilityDTO dto)
         {
-            var superpuesta = await _context.Disponibilities.AnyAsync(d =>
-                d.courtId == dto.courtId &&
-                d.day == dto.day &&
-                d.isAvailable &&
-                d.startTime < dto.endTime &&
-                d.endTime > dto.startTime
-            );
-
-            if (superpuesta)
-                return (false, "Ya existe una disponibilidad activa que se superpone en ese horario.");
-
-            var disponibility = new Disponibility
+            using (var transaction = await _context.Database.BeginTransactionAsync())
             {
-                day = dto.day,
-                startTime = dto.startTime,
-                endTime = dto.endTime,
-                isAvailable = dto.isAvailable,
-                courtId = dto.courtId
-            };
+                try
+                {
+                    var superpuesta = await _context.Disponibilities.AnyAsync(d =>
+                        d.courtId == dto.courtId &&
+                        d.day == dto.day &&
+                        d.isAvailable &&
+                        d.startTime < dto.endTime &&
+                        d.endTime > dto.startTime
+                    );
 
-            _context.Disponibilities.Add(disponibility);
-            await _context.SaveChangesAsync();
-            return (true, "Disponibilidad registrada exitosamente.");
+                    if (superpuesta)
+                        return (false, "Ya existe una disponibilidad activa que se superpone en ese horario.");
+
+                    var disponibility = new Disponibility
+                    {
+                        day = dto.day,
+                        startTime = dto.startTime,
+                        endTime = dto.endTime,
+                        isAvailable = dto.isAvailable,
+                        courtId = dto.courtId
+                    };
+
+                    _context.Disponibilities.Add(disponibility);
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+
+                    return (true, "Disponibilidad registrada exitosamente.");
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    return (false, $"Error al registrar la disponibilidad: {ex.Message}");
+                }
+            }
         }
 
         public async Task<(bool success, string message)> ModificarDisponibility(int id, DisponibilityDTO dto)
