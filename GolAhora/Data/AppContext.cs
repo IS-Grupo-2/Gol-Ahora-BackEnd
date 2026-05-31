@@ -175,7 +175,7 @@ namespace GolAhora.Data
 
             // partido 1 - 1 resultado
             modelBuilder.Entity<Result>()
-                .HasOne(r => r.game)
+                .HasOne(r => r.match) //LINEA MODIFICADA POR NAHUEL, ANTES ESTABA ASI: .HasOne(r => r.idgame)
                 .WithOne(m => m.result)
                 .HasForeignKey<Result>(r => r.idResults)
                 // La siguiente linea impide que se borre un partido si tiene un resultado asignado
