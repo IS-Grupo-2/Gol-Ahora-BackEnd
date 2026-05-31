@@ -126,6 +126,53 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "GolAhora.Controllers.ResultController",
+    "Method": "GetAllResults",
+    "RelativePath": "api/Result",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.ResultController",
+    "Method": "UpdateResult",
+    "RelativePath": "api/Result/{matchId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "matchId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "resultDto",
+        "Type": "GolAhora.DTOs.ResultDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.ResultController",
+    "Method": "GetResultById",
+    "RelativePath": "api/Result/{resultId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "resultId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "GolAhora.Controllers.TeamController",
     "Method": "CreateTeam",
     "RelativePath": "api/Team",

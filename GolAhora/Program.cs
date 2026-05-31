@@ -23,7 +23,8 @@ builder.Services.AddScoped<GolAhora.Services.TournamentService>();
 builder.Services.AddScoped<GolAhora.Services.TeamService>();
 //partidos
 builder.Services.AddScoped<GolAhora.Services.MatchService>();
-
+//resultados
+builder.Services.AddScoped<GolAhora.Services.ResultService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

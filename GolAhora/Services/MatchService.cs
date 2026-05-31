@@ -32,13 +32,13 @@ namespace GolAhora.Services
             if (teamA == null)
                 return "El equipo A no existe.";
             //if (competence.teams.Contains(teamA))
-            //    return "El equipo local no esta inscripto en el torneo elegido";
+            //    return "El equipo local no esta inscripto en el torneo elegido"; VER ESTO CON CRIS
 
             var teamB = await _context.Teams.FindAsync(matchDto.idTeamB);
             if (teamB == null)
                 return "El equipo B no existe.";
             //if (competence.teams.Contains(teamB))
-            //    return "El equipo local no esta inscripto en el torneo elegido";
+            //    return "El equipo local no esta inscripto en el torneo elegido"; VER ESTO CON CRIS
 
             var court = await _context.Courts.FindAsync(matchDto.idCourt);
             if (court == null)
@@ -61,20 +61,7 @@ namespace GolAhora.Services
                 scoreTeamLocal = 0,
                 scoreTeamVisitor = 0
 
-                //        public int idResults { get; set; }
-                //public int idMatch { get; set; }
-                //public int scoreTeamLocal { get; set; }
-                //public int scoreTeamVisitor { get; set; }
-
-                //         public int idResults { get; set; }
-                //public Match game { get; set; } = null!;
-                //public int scoreTeamLocal { get; set; }
-                //public int scoreTeamVisitor { get; set; }
-                //public int penaltiesTeamLocal { get; set; } //NO ME INTERESA QUE ESTEN
-                //public int penaltiesTeamVisitor { get; set; } //NO ME INTERESA QUE ESTEN
-                //public int foulsTeamLocal { get; set; } //NO ME INTERESA QUE ESTEN
-                //public int foulsTeamVisitor { get; set; } //NO ME INTERESA QUE ESTEN
-                //public string observations { get; set; } = null!; //NO ME INTERESA QUE ESTEN
+           
             };
             await _context.Results.AddAsync(resultado);
             await _context.SaveChangesAsync();
@@ -82,34 +69,15 @@ namespace GolAhora.Services
 
             var match = new Match
             {
-                //public int idMatch { get; set; }
-                //public int idCompetence { get; set; }
-                //public Competence competence { get; set; } = null!; //ESTARIA DE MAS, SI YA TENGO EL ID
-                //public int round { get; set; }
-                //public int idTeamA { get; set; }
-                //public Team teamA { get; set; } = null!; //ESTARIA DE MAS, SI YA TENGO EL ID
-                //public int idTeamB { get; set; }
-                //public Team teamB { get; set; } = null!;//ESTARIA DE MAS, SI YA TENGO EL ID
-                //public int idCourt { get; set; }
-                //public Court court { get; set; } = null!;//ESTARIA DE MAS, SI YA TENGO EL ID
-                //public DateTime date { get; set; }
-                //public bool isPlayed { get; set; }
-                //public int idResults { get; set; }
-                //public Result result { get; set; } = null!;//ESTARIA DE MAS, SI YA TENGO EL ID
                 idMatch = contador,
-                idCompetence = matchDto.idCompetence,
                 competence = competence,
                 round = matchDto.round,
                 idTeamA = matchDto.idTeamA,
-                teamA = teamA,
                 idTeamB = matchDto.idTeamB,
-                teamB = teamB,
                 idCourt = matchDto.idCourt,
-                court = court,
                 date = matchDto.date,
                 isPlayed = false,
                 idResults = contadorResultados,
-                result = resultado
             };
 
             teamA.localMatches.Add(match);

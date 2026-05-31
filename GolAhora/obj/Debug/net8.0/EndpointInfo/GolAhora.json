@@ -201,6 +201,83 @@
         }
       }
     },
+    "/api/Result/{matchId}": {
+      "put": {
+        "tags": [
+          "Result"
+        ],
+        "parameters": [
+          {
+            "name": "matchId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResultDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResultDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResultDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Result": {
+      "get": {
+        "tags": [
+          "Result"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Result/{resultId}": {
+      "get": {
+        "tags": [
+          "Result"
+        ],
+        "parameters": [
+          {
+            "name": "resultId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Team": {
       "post": {
         "tags": [
@@ -1404,6 +1481,28 @@
           },
           "match": {
             "$ref": "#/components/schemas/Match"
+          },
+          "scoreTeamLocal": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "scoreTeamVisitor": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResultDTO": {
+        "type": "object",
+        "properties": {
+          "idResults": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idMatch": {
+            "type": "integer",
+            "format": "int32"
           },
           "scoreTeamLocal": {
             "type": "integer",
