@@ -21,7 +21,8 @@ builder.Services.AddScoped<GolAhora.Services.LeagueService>();
 builder.Services.AddScoped<GolAhora.Services.TournamentService>();
 //equipos
 builder.Services.AddScoped<GolAhora.Services.TeamService>();
-
+//partidos
+builder.Services.AddScoped<GolAhora.Services.MatchService>();
 
 var app = builder.Build();
 

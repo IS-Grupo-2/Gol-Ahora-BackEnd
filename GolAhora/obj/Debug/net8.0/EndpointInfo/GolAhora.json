@@ -130,6 +130,77 @@
         }
       }
     },
+    "/api/Match": {
+      "post": {
+        "tags": [
+          "Match"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MatchDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MatchDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MatchDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Match"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Match/{id}": {
+      "get": {
+        "tags": [
+          "Match"
+        ],
+        "parameters": [
+          {
+            "name": "idMatch",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Team": {
       "post": {
         "tags": [
@@ -1071,6 +1142,47 @@
         },
         "additionalProperties": false
       },
+      "MatchDTO": {
+        "type": "object",
+        "properties": {
+          "idMatch": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idCompetence": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "round": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idTeamA": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idTeamB": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idCourt": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isPlayed": {
+            "type": "boolean"
+          },
+          "idResults": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "Payments": {
         "type": "object",
         "properties": {
@@ -1286,7 +1398,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "game": {
+          "idMatch": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "match": {
             "$ref": "#/components/schemas/Match"
           },
           "scoreTeamLocal": {
@@ -1296,26 +1412,6 @@
           "scoreTeamVisitor": {
             "type": "integer",
             "format": "int32"
-          },
-          "penaltiesTeamLocal": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "penaltiesTeamVisitor": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "foulsTeamLocal": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "foulsTeamVisitor": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "observations": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false
