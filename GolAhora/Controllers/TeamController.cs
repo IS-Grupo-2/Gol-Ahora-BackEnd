@@ -49,7 +49,7 @@ namespace GolAhora.Controllers
             return Ok(team);
         }
 
-        [HttpPut("{idTeam}")]
+        [HttpDelete("{idTeam}")]
         public async Task<IActionResult> DeleteTeam(int idTeam)
         {
             var mensaje = await _teamService.DeleteTeam(idTeam);

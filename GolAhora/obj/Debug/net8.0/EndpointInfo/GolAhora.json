@@ -35,35 +35,6 @@
           }
         }
       },
-      "put": {
-        "tags": [
-          "League"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LeagueDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LeagueDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/LeagueDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
       "get": {
         "tags": [
           "League"
@@ -91,6 +62,46 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LeagueDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LeagueDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LeagueDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "League"
+        ],
+        "parameters": [
+          {
+            "name": "idLeague",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -104,6 +115,195 @@
         "parameters": [
           {
             "name": "idLeague",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Team": {
+      "post": {
+        "tags": [
+          "Team"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeamDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeamDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeamDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Team"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Team/{idTeam}": {
+      "put": {
+        "tags": [
+          "Team"
+        ],
+        "parameters": [
+          {
+            "name": "idTeam",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeamDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeamDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeamDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Team"
+        ],
+        "parameters": [
+          {
+            "name": "idTeam",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Team"
+        ],
+        "parameters": [
+          {
+            "name": "idTeam",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Team/{idTeam}/addMember/{idPlayer}": {
+      "put": {
+        "tags": [
+          "Team"
+        ],
+        "parameters": [
+          {
+            "name": "idTeam",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "idPlayer",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Team/{idTeam}/delegateCaptain/{idPlayer}": {
+      "put": {
+        "tags": [
+          "Team"
+        ],
+        "parameters": [
+          {
+            "name": "idTeam",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "idPlayer",
             "in": "path",
             "required": true,
             "schema": {
@@ -149,9 +349,32 @@
           }
         }
       },
+      "get": {
+        "tags": [
+          "Tournament"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Tournament/{idTournament}": {
       "put": {
         "tags": [
           "Tournament"
+        ],
+        "parameters": [
+          {
+            "name": "idTournament",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -178,19 +401,7 @@
           }
         }
       },
-      "get": {
-        "tags": [
-          "Tournament"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Tournament/{idTournament}": {
-      "put": {
+      "delete": {
         "tags": [
           "Tournament"
         ],
@@ -275,6 +486,494 @@
   },
   "components": {
     "schemas": {
+      "Assistance": {
+        "type": "object",
+        "properties": {
+          "idAssistance": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "clientId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "client": {
+            "$ref": "#/components/schemas/Client"
+          },
+          "classId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "clas": {
+            "$ref": "#/components/schemas/Class"
+          },
+          "isAssisted": {
+            "type": "boolean"
+          },
+          "observations": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Certification": {
+        "type": "object",
+        "properties": {
+          "idCertification": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "professorId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "professor": {
+            "$ref": "#/components/schemas/Professor"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "institution": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateObtained": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numberCertificate": {
+            "type": "string",
+            "nullable": true
+          },
+          "verified": {
+            "type": "boolean"
+          },
+          "verifiedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Class": {
+        "type": "object",
+        "properties": {
+          "idClass": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "classType": {
+            "type": "string",
+            "nullable": true
+          },
+          "profesorId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "profesor": {
+            "$ref": "#/components/schemas/Professor"
+          },
+          "courtId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "court": {
+            "$ref": "#/components/schemas/Court"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "capacityMax": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "clients": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Client"
+            },
+            "nullable": true
+          },
+          "assistances": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Assistance"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Client": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "dni": {
+            "type": "string",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "registerDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numberPartner": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idTeam": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "team": {
+            "$ref": "#/components/schemas/Team"
+          },
+          "reservations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Reservation"
+            },
+            "nullable": true
+          },
+          "assistances": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Assistance"
+            },
+            "nullable": true
+          },
+          "teamsCaptain": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Team"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Competence": {
+        "type": "object",
+        "properties": {
+          "idCompetence": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "regulations": {
+            "type": "string",
+            "nullable": true
+          },
+          "capacityTeams": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "teams": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompetenceTeam"
+            },
+            "nullable": true
+          },
+          "games": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Match"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CompetenceTeam": {
+        "type": "object",
+        "properties": {
+          "idCompetence": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "competence": {
+            "$ref": "#/components/schemas/Competence"
+          },
+          "idTeam": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "team": {
+            "$ref": "#/components/schemas/Team"
+          },
+          "inscription": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "idPayment": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "payments": {
+            "$ref": "#/components/schemas/Payments"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Court": {
+        "type": "object",
+        "properties": {
+          "idCourt": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "isAvailable": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "courtTypeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "courtType": {
+            "$ref": "#/components/schemas/CourtType"
+          },
+          "disponibilities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Disponibility"
+            },
+            "nullable": true
+          },
+          "matches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Match"
+            },
+            "nullable": true
+          },
+          "reservations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Reservation"
+            },
+            "nullable": true
+          },
+          "classes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Class"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CourtType": {
+        "type": "object",
+        "properties": {
+          "idTypeCourt": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "superficie": {
+            "type": "number",
+            "format": "double"
+          },
+          "capacity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pricePerHour": {
+            "type": "number",
+            "format": "double"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "courts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Court"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DayOfWeek": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "Discounts": {
+        "type": "object",
+        "properties": {
+          "idDiscount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "discountType": {
+            "type": "string",
+            "nullable": true
+          },
+          "discountValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "conditions": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "receipt": {
+            "$ref": "#/components/schemas/Receipts"
+          },
+          "payments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Payments"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Disponibility": {
+        "type": "object",
+        "properties": {
+          "idDisponibility": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "day": {
+            "$ref": "#/components/schemas/DayOfWeek"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-span"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-span"
+          },
+          "isAvailable": {
+            "type": "boolean"
+          },
+          "courtId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "court": {
+            "$ref": "#/components/schemas/Court"
+          }
+        },
+        "additionalProperties": false
+      },
       "LeagueDto": {
         "type": "object",
         "properties": {
@@ -312,6 +1011,411 @@
           "idLeague": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Match": {
+        "type": "object",
+        "properties": {
+          "idMatch": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idCompetence": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "competence": {
+            "$ref": "#/components/schemas/Competence"
+          },
+          "round": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idTeamA": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "teamA": {
+            "$ref": "#/components/schemas/Team"
+          },
+          "idTeamB": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "teamB": {
+            "$ref": "#/components/schemas/Team"
+          },
+          "idCourt": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "court": {
+            "$ref": "#/components/schemas/Court"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isPlayed": {
+            "type": "boolean"
+          },
+          "idResults": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "result": {
+            "$ref": "#/components/schemas/Result"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Payments": {
+        "type": "object",
+        "properties": {
+          "idPayment": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idClient": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "client": {
+            "$ref": "#/components/schemas/Client"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "paymentDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "paymentMethod": {
+            "type": "string",
+            "nullable": true
+          },
+          "isSuccessful": {
+            "type": "boolean"
+          },
+          "idDiscount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "discount": {
+            "$ref": "#/components/schemas/Discounts"
+          },
+          "reservation": {
+            "$ref": "#/components/schemas/Reservation"
+          },
+          "competenceTeams": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompetenceTeam"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Professor": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "dni": {
+            "type": "string",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "registerDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "legajo": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "turno": {
+            "type": "string",
+            "nullable": true
+          },
+          "specialty": {
+            "type": "string",
+            "nullable": true
+          },
+          "certifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Certification"
+            },
+            "nullable": true
+          },
+          "classes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Class"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Receipts": {
+        "type": "object",
+        "properties": {
+          "idReceipt": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idPayment": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "payment": {
+            "$ref": "#/components/schemas/Payments"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "receiptNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "details": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Reservation": {
+        "type": "object",
+        "properties": {
+          "idReservation": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idClient": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "client": {
+            "$ref": "#/components/schemas/Client"
+          },
+          "idCourt": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "court": {
+            "$ref": "#/components/schemas/Court"
+          },
+          "reservationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-span"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-span"
+          },
+          "isPaid": {
+            "type": "boolean"
+          },
+          "totalPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "idPayment": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "payment": {
+            "$ref": "#/components/schemas/Payments"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Result": {
+        "type": "object",
+        "properties": {
+          "idResults": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "game": {
+            "$ref": "#/components/schemas/Match"
+          },
+          "scoreTeamLocal": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "scoreTeamVisitor": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "penaltiesTeamLocal": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "penaltiesTeamVisitor": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "foulsTeamLocal": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "foulsTeamVisitor": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "observations": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Team": {
+        "type": "object",
+        "properties": {
+          "idTeam": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "captain": {
+            "$ref": "#/components/schemas/Client"
+          },
+          "players": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Client"
+            },
+            "nullable": true
+          },
+          "competences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompetenceTeam"
+            },
+            "nullable": true
+          },
+          "localMatches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Match"
+            },
+            "nullable": true
+          },
+          "visitorMatches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Match"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TeamDTO": {
+        "type": "object",
+        "properties": {
+          "idTeam": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "captain": {
+            "$ref": "#/components/schemas/Client"
+          },
+          "players": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Client"
+            },
+            "nullable": true
+          },
+          "competences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompetenceTeam"
+            },
+            "nullable": true
+          },
+          "localMatches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Match"
+            },
+            "nullable": true
+          },
+          "visitorMatches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Match"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false

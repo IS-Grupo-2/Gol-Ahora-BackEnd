@@ -37,7 +37,7 @@ namespace GolAhora.Controllers
             return Ok(new { message = "liga actualizada exitosamente" });
         }
 
-        [HttpPut("{idLeague}")]
+        [HttpDelete("{idLeague}")]
         public async Task<IActionResult> DeleteLeague(int idLeague)
         {
             var mensaje = await _ligasService.DeleteLeague(idLeague);

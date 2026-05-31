@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GolAhora")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+664bfd9dbbed421c953c39a62e160348b58782ae")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a75b597ac77330c865ab3a47e43a8673030bb990")]
 [assembly: System.Reflection.AssemblyProductAttribute("GolAhora")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GolAhora")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

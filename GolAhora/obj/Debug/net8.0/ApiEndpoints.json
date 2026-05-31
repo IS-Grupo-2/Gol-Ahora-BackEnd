@@ -17,22 +17,6 @@
   },
   {
     "ContainingType": "GolAhora.Controllers.LeagueController",
-    "Method": "UpdateLeague",
-    "RelativePath": "api/League",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "leagueDto",
-        "Type": "GolAhora.DTOs.LeagueDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "GolAhora.Controllers.LeagueController",
     "Method": "GetAllLeagues",
     "RelativePath": "api/League",
     "HttpMethod": "GET",
@@ -43,9 +27,30 @@
   },
   {
     "ContainingType": "GolAhora.Controllers.LeagueController",
-    "Method": "DeleteLeague",
+    "Method": "UpdateLeague",
     "RelativePath": "api/League/{idLeague}",
     "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idLeague",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "leagueDto",
+        "Type": "GolAhora.DTOs.LeagueDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.LeagueController",
+    "Method": "DeleteLeague",
+    "RelativePath": "api/League/{idLeague}",
+    "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -74,16 +79,121 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "GolAhora.Controllers.TournamentController",
-    "Method": "CreateTournament",
-    "RelativePath": "api/Tournament",
+    "ContainingType": "GolAhora.Controllers.TeamController",
+    "Method": "CreateTeam",
+    "RelativePath": "api/Team",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "tournamentDto",
-        "Type": "GolAhora.DTOs.TournamentDto",
+        "Name": "teamDto",
+        "Type": "GolAhora.DTOs.TeamDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.TeamController",
+    "Method": "GetAllTeams",
+    "RelativePath": "api/Team",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.TeamController",
+    "Method": "UpdateTeam",
+    "RelativePath": "api/Team/{idTeam}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idTeam",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "teamDto",
+        "Type": "GolAhora.DTOs.TeamDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.TeamController",
+    "Method": "GetTeamById",
+    "RelativePath": "api/Team/{idTeam}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idTeam",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.TeamController",
+    "Method": "DeleteTeam",
+    "RelativePath": "api/Team/{idTeam}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idTeam",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.TeamController",
+    "Method": "AddMember",
+    "RelativePath": "api/Team/{idTeam}/addMember/{idPlayer}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idTeam",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "idPlayer",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.TeamController",
+    "Method": "DelegateACaptain",
+    "RelativePath": "api/Team/{idTeam}/delegateCaptain/{idPlayer}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idTeam",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "idPlayer",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
@@ -91,9 +201,9 @@
   },
   {
     "ContainingType": "GolAhora.Controllers.TournamentController",
-    "Method": "UpdateTournament",
+    "Method": "CreateTournament",
     "RelativePath": "api/Tournament",
-    "HttpMethod": "PUT",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -117,9 +227,30 @@
   },
   {
     "ContainingType": "GolAhora.Controllers.TournamentController",
-    "Method": "DeleteTournament",
+    "Method": "UpdateTournament",
     "RelativePath": "api/Tournament/{idTournament}",
     "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idTournament",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "tournamentDto",
+        "Type": "GolAhora.DTOs.TournamentDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GolAhora.Controllers.TournamentController",
+    "Method": "DeleteTournament",
+    "RelativePath": "api/Tournament/{idTournament}",
+    "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [

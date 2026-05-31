@@ -125,7 +125,7 @@ namespace GolAhora.Services
             if (player == null) {
                 return "Jugador no encontrado.";
             }
-            if (player.idTeam != null) // SE DEBERIA PONER COMO OPCIONAL ESTE ATRIBUTO EN USUARIOS
+            if (player.idTeam != null) 
             {
                 return "El jugador ya pertenece a un equipo";
             }

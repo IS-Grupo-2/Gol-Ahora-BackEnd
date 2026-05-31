@@ -148,7 +148,7 @@ namespace GolAhora.Services
             }).ToList(), "ligas encontradas exitosamente");
         }
         //RF 32 - INCRIBIR EQUIPO A LIGA
-        //public async Task<string> incribirEquipo(EquipoDto equipoDto, int idLeague)
+        //public async Task<string> incribirEquipo(TeamDTO equipoDto, int idLeague)
         //{
         //    var liga = await _context.Leagues.FindAsync(idLeague);
         //    if (liga == null)
@@ -158,10 +158,7 @@ namespace GolAhora.Services
         //    liga.teams.Add(equipoDto);
         //    _context.Leagues.Update(liga);
         //    await _context.SaveChangesAsync();
-
-
         //    return "Equipo inscripto exitosamente";
-
         //}
     }
 }

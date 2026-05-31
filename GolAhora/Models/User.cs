@@ -17,7 +17,7 @@
     public class Client: User
     {
         public int numberPartner { get; set; }
-        public int idTeam { get; set; }
+        public int? idTeam { get; set; }
         public Team? team { get; set; }
 
         /**

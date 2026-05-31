@@ -37,7 +37,7 @@ namespace GolAhora.Controllers
             return Ok(new { message = "torneo actualizado exitosamente" });
         }
 
-        [HttpPut("{idTournament}")]
+        [HttpDelete("{idTournament}")]
         public async Task<IActionResult> DeleteTournament(int idTournament)
         {
             var mensaje = await _torneoService.DeleteTournament(idTournament);
