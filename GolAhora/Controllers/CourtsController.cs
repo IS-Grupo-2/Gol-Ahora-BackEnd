@@ -56,6 +56,20 @@ namespace GolAhora.Controllers
                 return NotFound(new { mensaje = message });
             return Ok(new { mensaje = message });
         }
+        
+        // DELETE api/courts/{id}/fisica
+        [HttpDelete("{id}/fisica")]
+        public async Task<IActionResult> EliminarCourtFisico(int id)
+                {
+                    var (success, message) = await _courtService.EliminarCourtFisico(id);
+
+                    if (!success)
+                        return NotFound(new { mensaje = message });
+
+                    return Ok(new { mensaje = message });
+                }
+
+
 
         // RF15 – GET api/courts/{id}
         [HttpGet("{id}")]

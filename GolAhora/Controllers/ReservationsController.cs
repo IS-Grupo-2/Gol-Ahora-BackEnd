@@ -1,6 +1,7 @@
 ﻿using GolAhora.DTOs;
 using GolAhora.Services;
 using Microsoft.AspNetCore.Mvc;
+
 namespace GolAhora.Controllers
 {
     [ApiController]
@@ -8,32 +9,42 @@ namespace GolAhora.Controllers
     public class ReservationsController : ControllerBase
     {
         private readonly ReservationService _reservationService;
+
         public ReservationsController(ReservationService reservationService)
         {
             _reservationService = reservationService;
         }
+
         // RF19 + RF24 – POST api/reservations
         [HttpPost]
         public async Task<IActionResult> AgregarReservation([FromBody] ReservationDTO dto)
         {
             if (dto == null)
                 return BadRequest("Los datos de la reserva son inválidos.");
+
             var (success, message) = await _reservationService.AgregarReservation(dto);
+
             if (!success)
                 return BadRequest(new { mensaje = message });
+
             return Ok(new { mensaje = message });
         }
+
         // RF20 – PUT api/reservations/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> ModificarReservation(int id, [FromBody] ReservationDTO dto)
         {
             if (dto == null)
                 return BadRequest("Los datos de la reserva son inválidos.");
-            var resultado = await _reservationService.ModificarReservation(id, dto);
-            if (!resultado)
-                return NotFound($"No se encontró la reserva con ID {id}.");
-            return Ok(new { mensaje = "Reserva modificada exitosamente." });
+
+            var (success, message) = await _reservationService.ModificarReservation(id, dto);
+
+            if (!success)
+                return BadRequest(new { mensaje = message });
+
+            return Ok(new { mensaje = message });
         }
+
         // RF21 – GET api/reservations
         [HttpGet]
         public async Task<IActionResult> ListarReservations()
@@ -41,22 +52,28 @@ namespace GolAhora.Controllers
             var reservations = await _reservationService.ListarReservations();
             return Ok(reservations);
         }
+
         // RF22 + RF25 + RF26 – DELETE api/reservations/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> EliminarReservation(int id)
         {
             var (success, message, montoFinal) = await _reservationService.EliminarReservation(id);
+
             if (!success)
                 return NotFound(new { mensaje = message });
+
             return Ok(new { mensaje = message, montoFinal = montoFinal });
         }
+
         // RF23 – GET api/reservations/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> ConsultarReservation(int id)
         {
             var reservation = await _reservationService.ConsultarReservation(id);
+
             if (reservation == null)
                 return NotFound($"No se encontró la reserva con ID {id}.");
+
             return Ok(reservation);
         }
     }
