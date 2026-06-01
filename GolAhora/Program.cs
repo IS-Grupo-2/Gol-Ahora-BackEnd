@@ -23,6 +23,8 @@ builder.Services.AddScoped<CourtTypeService>();
 builder.Services.AddScoped<CourtService>();
 builder.Services.AddScoped<DisponibilityService>();
 builder.Services.AddScoped<ReservationService>();
+builder.Services.AddScoped<AssistanceService>();
+builder.Services.AddScoped<PaymentService>();
 
 var app = builder.Build();
 
