@@ -99,6 +99,10 @@ builder.Services.AddScoped<PaymentsService>();
 builder.Services.AddScoped<DiscountsService>();
 builder.Services.AddScoped<ReceiptsService>();
 
+// Asistencias
+builder.Services.AddScoped<AssistanceService>();
+//Clases y entrenamientos
+builder.Services.AddScoped<ClassService>();
 //ligas
 builder.Services.AddScoped<GolAhora.Services.LeagueService>();
 //torneos 
