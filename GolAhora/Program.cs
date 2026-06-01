@@ -96,7 +96,20 @@ builder.Services.AddScoped<CourtService>();
 builder.Services.AddScoped<DisponibilityService>();
 builder.Services.AddScoped<ReservationService>();
 builder.Services.AddScoped<ReporteService>();
+builder.Services.AddScoped<PaymentsService>();
+builder.Services.AddScoped<DiscountsService>();
+builder.Services.AddScoped<ReceiptsService>();
 
+//ligas
+builder.Services.AddScoped<GolAhora.Services.LeagueService>();
+//torneos 
+builder.Services.AddScoped<GolAhora.Services.TournamentService>();
+//equipos
+builder.Services.AddScoped<GolAhora.Services.TeamService>();
+//partidos
+builder.Services.AddScoped<GolAhora.Services.MatchService>();
+//resultados
+builder.Services.AddScoped<GolAhora.Services.ResultService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
