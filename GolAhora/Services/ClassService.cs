@@ -219,7 +219,7 @@ namespace GolAhora.Services
             return (true, string.Empty);
         }
 
-        // Extra: Listar clases mapeadas al DTO (Igual al RF21 de tus reservas)
+        // Extra: Listar clases
         public async Task<List<ClassResponseDTO>> ListarClases()
         {
             var clases = await _context.Classes

@@ -61,5 +61,18 @@ namespace GolAhora.Services
             await _context.SaveChangesAsync();
             return (true, "Asistencia modificada con éxito.");
         }
+        // + consultar(): Asistencia
+        public async Task<Assistance?> ConsultarAsistencia(int idAssistance)
+        {
+            // Devuelve el registro de asistencia solicitado (o null si no existe)
+            return await _context.Set<Assistance>().FindAsync(idAssistance);
+        }
+
+        // + listar(): List<Asistencia>
+        public async Task<List<Assistance>> ListarAsistencias()
+        {
+            // Devuelve todas las asistencias registradas
+            return await _context.Set<Assistance>().ToListAsync();
+        }
     }
 }

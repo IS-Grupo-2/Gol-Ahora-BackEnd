@@ -17,7 +17,7 @@ namespace GolAhora.Controllers
             _assistanceService = assistanceService;
         }
 
-        // POST: api/assistance/clase/5
+        // POST: api/assistance/clase
         [HttpPost("clase/{idClass}")]
         public async Task<IActionResult> RegistrarAsistencia(int idClass, [FromBody] List<AssistanceDTO> dtos)
         {
@@ -42,6 +42,28 @@ namespace GolAhora.Controllers
                 return BadRequest(new { mensaje = message });
 
             return Ok(new { mensaje = message });
+        }
+        // GET api/assistance
+        [HttpGet]
+        public async Task<IActionResult> ListarAsistencias()
+        {
+            var list = await _assistanceService.ListarAsistencias();
+            return Ok(list);
+        }
+
+        // GET api/assistance/{id}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ConsultarAsistencia(int id)
+        {
+            var asistencia = await _assistanceService.ConsultarAsistencia(id);
+            if (asistencia == null) return NotFound($"No se encontró la asistencia con ID {id}.");
+            return Ok(asistencia);
+        }
+
+        public class AssistanceModifyDTO
+        {
+            public bool isAssisted { get; set; }
+            public string? observations { get; set; }
         }
     }
 }
