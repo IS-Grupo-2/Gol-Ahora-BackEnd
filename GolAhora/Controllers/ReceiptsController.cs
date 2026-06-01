@@ -65,5 +65,25 @@ namespace GolAhora.Controllers
 
             return Ok(new { message = result.message });
         }
+
+        // GET: api/Receipts/{id} --> RF55 Consultar recibo
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetReceiptById(int id)
+        {
+            var receipt = await _receiptsService.GetReceiptByIdAsync(id);
+            if (receipt == null)
+                return NotFound(new { message = $"Recibo con ID {id} no encontrado." });
+            return Ok(receipt);
+        }
+
+        // GET: api/Receipts/{id}/imprimir --> RF56 Imprimir recibo
+        [HttpGet("{id}/imprimir")]
+        public async Task<IActionResult> ImprimirReceipt(int id)
+        {
+            var receipt = await _receiptsService.ImprimirReceiptAsync(id);
+            if (receipt == null)
+                return NotFound(new { message = $"Recibo con ID {id} no encontrado." });
+            return Ok(receipt);
+        }
     }
 }

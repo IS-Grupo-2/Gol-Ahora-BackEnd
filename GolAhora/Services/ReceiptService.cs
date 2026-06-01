@@ -91,5 +91,28 @@ namespace GolAhora.Services
             await _context.SaveChangesAsync();
             return (true, "Recibo dado de baja exitosamente.");
         }
+
+        // RF55 --> Consultar recibo de pago
+        public async Task<ReceiptDetailDTO?> GetReceiptByIdAsync(int id)
+        {
+            return await _context.Receipts
+                .Where(r => r.idReceipt == id)
+                .Select(r => new ReceiptDetailDTO
+                {
+                    IdReceipt = r.idReceipt,
+                    IdPayment = r.idPayment,
+                    ReceiptNumber = r.receiptNumber,
+                    TotalAmount = r.totalAmount,
+                    Details = r.details,
+                    Date = r.date
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        // RF56 --> Imprimir recibo de pago
+        public async Task<ReceiptDetailDTO?> ImprimirReceiptAsync(int id)
+        {
+            return await GetReceiptByIdAsync(id);
+        }
     }
 }
