@@ -23,36 +23,51 @@ namespace GolAhora.Controllers
                 return BadRequest("Los datos de la reserva son inválidos.");
 
             var (success, message) = await _reservationService.AgregarReservation(dto);
+
             if (!success)
+            {
+                if (message.Contains("no existe") || message.Contains("no encontrada"))
+                    return NotFound(new { mensaje = message });
                 return BadRequest(new { mensaje = message });
+            }
 
             return Ok(new { mensaje = message });
         }
 
         // RF20a – PUT api/reservations/{id}/horario
         [HttpPut("{id}/horario")]
-        public async Task<IActionResult> ModificarReservacionHorario(int id, [FromBody] ReservationDTO dto)
+        public async Task<IActionResult> ModificarHorario(int id, [FromBody] CambiarHorarioDTO dto)
         {
             if (dto == null)
-                return BadRequest("Los datos de la reserva son inválidos.");
+                return BadRequest("Los datos del horario son inválidos.");
 
-            var (success, message) = await _reservationService.ModificarReservacionHorario(id, dto);
+            var (success, message) = await _reservationService.ModificarHorario(id, dto);
+
             if (!success)
+            {
+                if (message.Contains("no encontrada"))
+                    return NotFound(new { mensaje = message });
                 return BadRequest(new { mensaje = message });
+            }
 
             return Ok(new { mensaje = message });
         }
 
         // RF20b – PUT api/reservations/{id}/fecha
         [HttpPut("{id}/fecha")]
-        public async Task<IActionResult> ModificarReservacionDia(int id, [FromBody] ReservationDTO dto)
+        public async Task<IActionResult> ModificarFecha(int id, [FromBody] CambiarFechaDTO dto)
         {
             if (dto == null)
-                return BadRequest("Los datos de la reserva son inválidos.");
+                return BadRequest("Los datos de la fecha son inválidos.");
 
-            var (success, message) = await _reservationService.ModificarReservacionDia(id, dto);
+            var (success, message) = await _reservationService.ModificarFecha(id, dto);
+
             if (!success)
+            {
+                if (message.Contains("no encontrada"))
+                    return NotFound(new { mensaje = message });
                 return BadRequest(new { mensaje = message });
+            }
 
             return Ok(new { mensaje = message });
         }
@@ -70,6 +85,7 @@ namespace GolAhora.Controllers
         public async Task<IActionResult> EliminarReservation(int id)
         {
             var (success, message, montoFinal) = await _reservationService.EliminarReservation(id);
+
             if (!success)
                 return NotFound(new { mensaje = message });
 
@@ -81,6 +97,7 @@ namespace GolAhora.Controllers
         public async Task<IActionResult> ConsultarReservation(int id)
         {
             var reservation = await _reservationService.ConsultarReservation(id);
+
             if (reservation == null)
                 return NotFound($"No se encontró la reserva con ID {id}.");
 

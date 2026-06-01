@@ -119,7 +119,7 @@ namespace GolAhora.Services
         }
 
         // RF20a – Modificar SOLO horario de una reserva pagada
-        public async Task<(bool success, string message)> ModificarReservacionHorario(int id, ReservationDTO dto)
+        public async Task<(bool success, string message)> ModificarHorario(int id, CambiarHorarioDTO dto)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
@@ -135,13 +135,6 @@ namespace GolAhora.Services
 
                     if (!reservation.isPaid)
                         return (false, "Solo se pueden modificar reservas pagadas.");
-
-                    if (dto.idClient != reservation.idClient ||
-                        dto.idCourt != reservation.idCourt ||
-                        dto.reservationDate != reservation.reservationDate)
-                    {
-                        return (false, "Solo se permite modificar el horario.");
-                    }
 
                     var duracion = (dto.endTime - dto.startTime).TotalHours;
                     var nombre = reservation.court.courtType.name.ToLower();
@@ -193,7 +186,7 @@ namespace GolAhora.Services
         }
 
         // RF20b – Modificar SOLO fecha de una reserva pagada
-        public async Task<(bool success, string message)> ModificarReservacionDia(int id, ReservationDTO dto)
+        public async Task<(bool success, string message)> ModificarFecha(int id, CambiarFechaDTO dto)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
@@ -210,33 +203,14 @@ namespace GolAhora.Services
                     if (!reservation.isPaid)
                         return (false, "Solo se pueden modificar reservas pagadas.");
 
-                    if (dto.idClient != reservation.idClient ||
-                        dto.idCourt != reservation.idCourt ||
-                        dto.startTime != reservation.startTime ||
-                        dto.endTime != reservation.endTime)
-                    {
-                        return (false, "Solo se permite modificar la fecha.");
-                    }
-
                     if ((dto.reservationDate - DateTime.Now).TotalDays > 30)
                         return (false, "No se pueden modificar a más de 30 días de antelación.");
-
-                    var duracion = (dto.endTime - dto.startTime).TotalHours;
-                    var nombre = reservation.court.courtType.name.ToLower();
-
-                    var maxHoras = nombre.Contains("5") ? 1.0
-                                 : nombre.Contains("7") ? 1.5
-                                 : nombre.Contains("11") ? 2.0
-                                 : 2.0;
-
-                    if (duracion > maxHoras)
-                        return (false, $"La duración máxima para este tipo de cancha es {maxHoras} horas.");
 
                     var disponible = await _context.Disponibilities.AnyAsync(d =>
                         d.courtId == reservation.idCourt &&
                         d.day == dto.reservationDate.DayOfWeek &&
-                        d.startTime <= dto.startTime &&
-                        d.endTime >= dto.endTime &&
+                        d.startTime <= reservation.startTime &&
+                        d.endTime >= reservation.endTime &&
                         d.isAvailable
                     );
 
@@ -247,8 +221,8 @@ namespace GolAhora.Services
                         r.idReservation != id &&
                         r.idCourt == reservation.idCourt &&
                         r.reservationDate.Date == dto.reservationDate.Date &&
-                        r.startTime < dto.endTime &&
-                        r.endTime > dto.startTime
+                        r.startTime < reservation.endTime &&
+                        r.endTime > reservation.startTime
                     );
 
                     if (superpuesta)
@@ -304,7 +278,7 @@ namespace GolAhora.Services
             if (reservation == null)
                 return (false, "Reserva no encontrada.", 0);
 
-            var antelacion = reservation.reservationDate - DateTime.Now;
+            var antelacion = reservation.reservationDate.Date + reservation.startTime - DateTime.Now;
 
             await _context.Database.ExecuteSqlRawAsync(
                 "DELETE FROM Reservations WHERE idReservation = {0}", id);
