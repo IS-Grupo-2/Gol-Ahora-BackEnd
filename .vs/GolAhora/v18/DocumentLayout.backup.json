@@ -1,0 +1,366 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Proyectos\\Gol-Ahora-BackEnd\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\services\\matchservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\services\\matchservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\data\\appcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\data\\appcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\dtos\\teamdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\dtos\\teamdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\dtos\\resultdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\dtos\\resultdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\dtos\\matchdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\dtos\\matchdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\dtos\\competencedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\dtos\\competencedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\controllers\\resultcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\controllers\\resultcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\services\\resultservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\services\\resultservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\services\\leagueservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\services\\leagueservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\models\\competence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\models\\competence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\controllers\\matchcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\controllers\\matchcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\controllers\\teamcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\controllers\\teamcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\models\\court.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\models\\court.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\controllers\\tournamentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\controllers\\tournamentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\controllers\\leaguecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\controllers\\leaguecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\services\\teamservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\services\\teamservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\services\\tournamentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\services\\tournamentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|c:\\proyectos\\gol-ahora-backend\\golahora\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{3F8E9553-97D8-403E-8958-59661EF56F0B}|GolAhora\\GolAhora.csproj|solutionrelative:golahora\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 297,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ResultDTO.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\DTOs\\ResultDTO.cs",
+              "RelativeDocumentMoniker": "GolAhora\\DTOs\\ResultDTO.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\DTOs\\ResultDTO.cs",
+              "RelativeToolTip": "GolAhora\\DTOs\\ResultDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-31T16:57:27.406Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MatchService.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Services\\MatchService.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Services\\MatchService.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Services\\MatchService.cs",
+              "RelativeToolTip": "GolAhora\\Services\\MatchService.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAYwE8AAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-30T22:40:32.899Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TeamDTO.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\DTOs\\TeamDTO.cs",
+              "RelativeDocumentMoniker": "GolAhora\\DTOs\\TeamDTO.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\DTOs\\TeamDTO.cs",
+              "RelativeToolTip": "GolAhora\\DTOs\\TeamDTO.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAYAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-30T18:03:56.692Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "TeamController.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\TeamController.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Controllers\\TeamController.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\TeamController.cs",
+              "RelativeToolTip": "GolAhora\\Controllers\\TeamController.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAwwDMAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-30T20:44:20.474Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MatchDTO.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\DTOs\\MatchDTO.cs",
+              "RelativeDocumentMoniker": "GolAhora\\DTOs\\MatchDTO.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\DTOs\\MatchDTO.cs",
+              "RelativeToolTip": "GolAhora\\DTOs\\MatchDTO.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAwBMAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-30T21:47:29.815Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Court.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Models\\Court.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Models\\Court.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Models\\Court.cs",
+              "RelativeToolTip": "GolAhora\\Models\\Court.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T19:02:05.516Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "LeagueService.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Services\\LeagueService.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Services\\LeagueService.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Services\\LeagueService.cs",
+              "RelativeToolTip": "GolAhora\\Services\\LeagueService.cs",
+              "ViewState": "AgIAADkAAAAAAAAAAAAtwKAAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T19:37:03Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Program.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Program.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Program.cs",
+              "RelativeToolTip": "GolAhora\\Program.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABoAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T19:02:05.323Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CompetenceDTO.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\DTOs\\CompetenceDTO.cs",
+              "RelativeDocumentMoniker": "GolAhora\\DTOs\\CompetenceDTO.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\DTOs\\CompetenceDTO.cs",
+              "RelativeToolTip": "GolAhora\\DTOs\\CompetenceDTO.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAgwA8AAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T19:39:46.168Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AppContext.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Data\\AppContext.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Data\\AppContext.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Data\\AppContext.cs",
+              "RelativeToolTip": "GolAhora\\Data\\AppContext.cs",
+              "ViewState": "AgIAAIAAAAAAAAAAAAAgwI0AAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T19:02:05.518Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ResultService.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Services\\ResultService.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Services\\ResultService.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Services\\ResultService.cs",
+              "RelativeToolTip": "GolAhora\\Services\\ResultService.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAmwBEAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-31T19:13:37.158Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ResultController.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\ResultController.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Controllers\\ResultController.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\ResultController.cs",
+              "RelativeToolTip": "GolAhora\\Controllers\\ResultController.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAADEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-31T20:00:55.757Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Competence.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Models\\Competence.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Models\\Competence.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Models\\Competence.cs",
+              "RelativeToolTip": "GolAhora\\Models\\Competence.cs",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAAAEYAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T19:02:05.515Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "MatchController.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\MatchController.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Controllers\\MatchController.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\MatchController.cs",
+              "RelativeToolTip": "GolAhora\\Controllers\\MatchController.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAUwDIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-31T16:59:22.365Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "LeagueController.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\LeagueController.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Controllers\\LeagueController.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\LeagueController.cs",
+              "RelativeToolTip": "GolAhora\\Controllers\\LeagueController.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAYwCcAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T19:35:05.666Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "TeamService.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Services\\TeamService.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Services\\TeamService.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Services\\TeamService.cs",
+              "RelativeToolTip": "GolAhora\\Services\\TeamService.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAH8AAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-30T18:04:34.736Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Models\\User.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Models\\User.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Models\\User.cs",
+              "RelativeToolTip": "GolAhora\\Models\\User.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAA4wBsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-30T22:10:46.83Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "TournamentService.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Services\\TournamentService.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Services\\TournamentService.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Services\\TournamentService.cs",
+              "RelativeToolTip": "GolAhora\\Services\\TournamentService.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAYwD0AAABiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-18T00:07:05.627Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "TournamentController.cs",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\TournamentController.cs",
+              "RelativeDocumentMoniker": "GolAhora\\Controllers\\TournamentController.cs",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\Controllers\\TournamentController.cs",
+              "RelativeToolTip": "GolAhora\\Controllers\\TournamentController.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAYwCcAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-20T22:13:05.794Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\appsettings.json",
+              "RelativeDocumentMoniker": "GolAhora\\appsettings.json",
+              "ToolTip": "C:\\Proyectos\\Gol-Ahora-BackEnd\\GolAhora\\appsettings.json",
+              "RelativeToolTip": "GolAhora\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-17T19:02:05.509Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

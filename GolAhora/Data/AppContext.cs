@@ -175,7 +175,7 @@ namespace GolAhora.Data
 
             // partido 1 - 1 resultado
             modelBuilder.Entity<Result>()
-                .HasOne(r => r.game)
+                .HasOne(r => r.match) //LINEA MODIFICADA POR NAHUEL, ANTES ESTABA ASI: .HasOne(r => r.idgame)
                 .WithOne(m => m.result)
                 .HasForeignKey<Result>(r => r.idResults)
                 // La siguiente linea impide que se borre un partido si tiene un resultado asignado
@@ -280,6 +280,44 @@ namespace GolAhora.Data
                 .HasForeignKey(r => r.idAdmin)
                 // La siguiente linea impide que se borre un admin si tiene reportes asignados
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<IdentityRole<int>>().HasData(
+                new IdentityRole<int>
+                {
+                    Id = 1,
+                    Name = "Client",
+                    NormalizedName = "CLIENT",
+                    ConcurrencyStamp = "client-role"
+                },
+                new IdentityRole<int>
+                {
+                    Id= 2,
+                    Name = "PersonalClubProfile",
+                    NormalizedName = "PERSONALCLUBPROFILE",
+                    ConcurrencyStamp = "personal-club-role"
+                },
+                new IdentityRole<int>
+                {
+                    Id= 3,
+                    Name = "Admin",
+                    NormalizedName = "ADMIN",
+                    ConcurrencyStamp = "admin-role"
+                },
+                new IdentityRole<int>
+                {
+                    Id = 4,
+                    Name = "Employee",
+                    NormalizedName = "EMPLOYEE",
+                    ConcurrencyStamp = "employee-role"
+                },
+                new IdentityRole<int>
+                {
+                    Id = 5,
+                    Name = "Professor",
+                    NormalizedName = "PROFESSOR",
+                    ConcurrencyStamp = "professor-role"
+                }
+            );
         }
     }
 }

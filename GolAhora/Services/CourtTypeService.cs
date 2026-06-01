@@ -16,6 +16,31 @@ namespace GolAhora.Services
         // RF11 – Registrar tipo de cancha
         public async Task<(bool success, string message)> AgregarCourtType(CourtTypeDTO dto)
         {
+            // Validar nombre
+            if (string.IsNullOrWhiteSpace(dto.name))
+                return (false, "El nombre del tipo de cancha es obligatorio.");
+
+            // Validar superficie
+            if (dto.superficie <= 0)
+                return (false, "La superficie debe ser mayor a 0.");
+
+            // Validar capacidad
+            if (dto.capacity <= 0)
+                return (false, "La capacidad debe ser mayor a 0.");
+
+            // Validar precio
+            if (dto.pricePerHour <= 0)
+                return (false, "El precio por hora debe ser mayor a 0.");
+
+            // Validar tipo duplicado por nombre o por superficie o capacidad
+            var existe = await _context.CourtTypes.AnyAsync(ct =>
+                ct.name.ToLower() == dto.name.ToLower() ||
+                (ct.superficie == dto.superficie && ct.capacity == dto.capacity)
+            );
+
+            if (existe)
+                return (false, "Ya existe un tipo de cancha con ese nombre o con la misma superficie y capacidad.");
+
             var courtType = new CourtType
             {
                 name = dto.name,
@@ -26,7 +51,9 @@ namespace GolAhora.Services
             };
 
             _context.CourtTypes.Add(courtType);
+
             await _context.SaveChangesAsync();
+
             return (true, "Tipo de cancha registrado exitosamente.");
         }
 
@@ -34,8 +61,35 @@ namespace GolAhora.Services
         public async Task<(bool success, string message)> ModificarCourtType(int id, CourtTypeDTO dto)
         {
             var courtType = await _context.CourtTypes.FindAsync(id);
+
             if (courtType == null)
                 return (false, "Tipo de cancha no encontrado.");
+
+            // Validar nombre
+            if (string.IsNullOrWhiteSpace(dto.name))
+                return (false, "El nombre del tipo de cancha es obligatorio.");
+
+            // Validar superficie
+            if (dto.superficie <= 0)
+                return (false, "La superficie debe ser mayor a 0.");
+
+            // Validar capacidad
+            if (dto.capacity <= 0)
+                return (false, "La capacidad debe ser mayor a 0.");
+
+            // Validar precio
+            if (dto.pricePerHour <= 0)
+                return (false, "El precio por hora debe ser mayor a 0.");
+
+            // Validar tipo duplicado por nombre o por superficie+capacidad, excluyendo el propio registro
+            var existe = await _context.CourtTypes.AnyAsync(ct =>
+                ct.idTypeCourt != id &&
+                (ct.name.ToLower() == dto.name.ToLower() ||
+                (ct.superficie == dto.superficie && ct.capacity == dto.capacity))
+            );
+
+            if (existe)
+                return (false, "Ya existe un tipo de cancha con ese nombre o con la misma superficie y capacidad.");
 
             courtType.name = dto.name;
             courtType.superficie = dto.superficie;
@@ -44,6 +98,7 @@ namespace GolAhora.Services
             courtType.description = dto.description;
 
             await _context.SaveChangesAsync();
+
             return (true, "Tipo de cancha modificado exitosamente.");
         }
 
@@ -101,11 +156,13 @@ namespace GolAhora.Services
             foreach (var court in courtType.courts)
             {
                 court.isAvailable = false;
+
                 foreach (var disp in court.disponibilities)
                     disp.isAvailable = false;
             }
 
             await _context.SaveChangesAsync();
+
             return (true, "Tipo de cancha dado de baja exitosamente.");
         }
 

@@ -27,13 +27,13 @@ namespace GolAhora.Services
             if (cancha == null)
                 return (false, "La cancha no existe.");
 
-            // Validar que la cancha esté activa
             if (!cancha.isAvailable)
                 return (false, "La cancha no está disponible.");
 
             var duracion = (dto.endTime - dto.startTime).TotalHours;
 
             var nombre = cancha.courtType.name.ToLower();
+
             var maxHoras = nombre.Contains("5") ? 1.0
                          : nombre.Contains("7") ? 1.5
                          : nombre.Contains("11") ? 2.0
@@ -42,7 +42,6 @@ namespace GolAhora.Services
             if (duracion > maxHoras)
                 return (false, $"La duración máxima para este tipo de cancha es {maxHoras} horas.");
 
-            // RS02 + RF17 – verificar disponibilidad y que no esté bloqueada
             var disponible = await _context.Disponibilities.AnyAsync(d =>
                 d.courtId == dto.idCourt &&
                 d.day == dto.reservationDate.DayOfWeek &&
@@ -52,7 +51,42 @@ namespace GolAhora.Services
             );
 
             if (!disponible)
-                return (false, "La cancha no está disponible en ese horario.");
+                return (false, "Ese horario está fuera del horario habilitado de la cancha.");
+
+            var superpuesta = await _context.Reservations.AnyAsync(r =>
+                r.idCourt == dto.idCourt &&
+                r.reservationDate.Date == dto.reservationDate.Date &&
+                r.startTime < dto.endTime &&
+                r.endTime > dto.startTime
+            );
+
+            if (superpuesta)
+                return (false, "Ya existe una reserva en ese horario para esa cancha.");
+
+            var totalPrice = duracion * cancha.courtType.pricePerHour;
+
+            // VALIDACIÓN DEL PAGO
+            if (dto.idPayment == null || dto.idPayment == 0)
+                return (false, "Debe proporcionar un pago válido.");
+
+            var pago = await _context.Payments.FindAsync(dto.idPayment);
+
+            if (pago == null)
+                return (false, "El pago no existe.");
+
+            if (!pago.isSuccessful)
+                return (false, "El pago no fue aprobado.");
+
+            if (pago.amount < totalPrice)
+                return (false, "El monto del pago es insuficiente.");
+
+            // Validar que el pago no esté siendo usado por otra reserva
+            var pagoEnUso = await _context.Reservations.AnyAsync(r =>
+                r.idPayment == dto.idPayment
+            );
+
+            if (pagoEnUso)
+                return (false, "Este pago ya está siendo utilizado por otra reserva.");
 
             var nuevaReservation = new Reservation
             {
@@ -61,41 +95,45 @@ namespace GolAhora.Services
                 reservationDate = dto.reservationDate,
                 startTime = dto.startTime,
                 endTime = dto.endTime,
-                totalPrice = dto.totalPrice,
-                idPayment = dto.idPayment ?? 0,
-                isPaid = false
+                totalPrice = totalPrice,
+                idPayment = dto.idPayment.Value,
+                isPaid = true
             };
-
-            // RF24 – confirmar si el pago ya está registrado y validado
-            if (dto.idPayment != null && dto.idPayment != 0)
-            {
-                var pago = await _context.Payments.FindAsync(dto.idPayment);
-                if (pago != null && pago.isSuccessful && pago.amount >= dto.totalPrice)
-                    nuevaReservation.isPaid = true;
-            }
 
             _context.Reservations.Add(nuevaReservation);
             await _context.SaveChangesAsync();
-            return (true, "Reserva registrada exitosamente.");
+
+            return (true, $"Reserva registrada exitosamente. Total: {totalPrice:C}");
         }
 
         // RF20 – Modificar una reserva existente
-        public async Task<bool> ModificarReservation(int id, ReservationDTO dto)
+        public async Task<(bool success, string message)> ModificarReservation(int id, ReservationDTO dto)
         {
-            var reservation = await _context.Reservations.FindAsync(id);
+            var reservation = await _context.Reservations
+                .Include(r => r.court)
+                .ThenInclude(c => c.courtType)
+                .FirstOrDefaultAsync(r => r.idReservation == id);
+
             if (reservation == null)
-                return false;
+                return (false, "Reserva no encontrada.");
+
+            if (reservation.isPaid)
+                return (false, "No se puede modificar una reserva ya pagada. Debe cancelarla y hacer una nueva.");
+
+            var duracion = (dto.endTime - dto.startTime).TotalHours;
+            var totalPrice = duracion * reservation.court.courtType.pricePerHour;
 
             reservation.idClient = dto.idClient;
             reservation.idCourt = dto.idCourt;
             reservation.reservationDate = dto.reservationDate;
             reservation.startTime = dto.startTime;
             reservation.endTime = dto.endTime;
-            reservation.totalPrice = dto.totalPrice;
+            reservation.totalPrice = totalPrice;
             reservation.idPayment = dto.idPayment ?? 0;
 
             await _context.SaveChangesAsync();
-            return true;
+
+            return (true, "Reserva modificada exitosamente.");
         }
 
         // RF21 – Listar todas las reservas
@@ -103,6 +141,7 @@ namespace GolAhora.Services
         {
             var reservations = await _context.Reservations
                 .Include(r => r.client)
+                    .ThenInclude(c => c.user)
                 .Include(r => r.court)
                 .ToListAsync();
 
@@ -111,7 +150,7 @@ namespace GolAhora.Services
                 idReservation = r.idReservation,
                 idClient = r.idClient,
                 clienteNombre = r.client.user.name,
-                clienteApellido = r.client.user.name,
+                clienteApellido = r.client.user.lastName,
                 idCourt = r.idCourt,
                 canchaNombre = r.court.name,
                 reservationDate = r.reservationDate,
@@ -123,27 +162,37 @@ namespace GolAhora.Services
             }).ToList();
         }
 
-        // RF22 + RF25 + RF26 – Cancelar reserva con validación de antelación y reembolso
-        public async Task<(bool success, string message)> EliminarReservation(int id)
+        // RF22 + RF25 + RF26 – Cancelar reserva con validación de antelación y cargo por penalidad
+        public async Task<(bool success, string message, double montoFinal)> EliminarReservation(int id)
         {
             var reservation = await _context.Reservations
                 .FirstOrDefaultAsync(r => r.idReservation == id);
 
             if (reservation == null)
-                return (false, "Reserva no encontrada.");
+                return (false, "Reserva no encontrada.", 0);
 
             var antelacion = reservation.reservationDate - DateTime.Now;
 
-            if (antelacion.TotalHours < 48)
+            await _context.Database.ExecuteSqlRawAsync(
+                "DELETE FROM Reservations WHERE idReservation = {0}", id);
+
+            if (antelacion.TotalHours < 6)
             {
-                _context.Reservations.Remove(reservation);
-                await _context.SaveChangesAsync();
-                return (true, "Reserva cancelada. Por cancelar fuera del plazo de 48 horas se aplica un cargo y no corresponde reembolso.");
+                var cargo = reservation.totalPrice * 0.5;
+                var montoFinal = reservation.totalPrice - cargo;
+
+                return (
+                    true,
+                    $"Reserva cancelada. Se aplicó un cargo del 50% (total: {reservation.totalPrice:C}) por cancelar con menos de 6 horas de anticipación.",
+                    montoFinal
+                );
             }
 
-            _context.Reservations.Remove(reservation);
-            await _context.SaveChangesAsync();
-            return (true, "Reserva cancelada. Se procesará un reembolso total del pago.");
+            return (
+                true,
+                $"Reserva cancelada. Se procesará un reembolso total del pago.",
+                reservation.totalPrice
+            );
         }
 
         // RF23 – Consultar una reserva por ID
@@ -151,17 +200,19 @@ namespace GolAhora.Services
         {
             var r = await _context.Reservations
                 .Include(r => r.client)
+                    .ThenInclude(c => c.user)
                 .Include(r => r.court)
                 .FirstOrDefaultAsync(r => r.idReservation == id);
 
-            if (r == null) return null;
+            if (r == null)
+                return null;
 
             return new ReservationResponseDTO
             {
                 idReservation = r.idReservation,
                 idClient = r.idClient,
                 clienteNombre = r.client.user.name,
-                clienteApellido = r.client.user.name,
+                clienteApellido = r.client.user.lastName,
                 idCourt = r.idCourt,
                 canchaNombre = r.court.name,
                 reservationDate = r.reservationDate,
@@ -174,7 +225,10 @@ namespace GolAhora.Services
         }
 
         // CalcularMonto – calcula el monto total en base a duración y precio por hora
-        public async Task<(bool success, string message, double monto)> CalcularMonto(int idCourt, TimeSpan startTime, TimeSpan endTime)
+        public async Task<(bool success, string message, double monto)> CalcularMonto(
+            int idCourt,
+            TimeSpan startTime,
+            TimeSpan endTime)
         {
             var cancha = await _context.Courts
                 .Include(c => c.courtType)
@@ -184,10 +238,12 @@ namespace GolAhora.Services
                 return (false, "La cancha no existe.", 0);
 
             var duracionHoras = (endTime - startTime).TotalHours;
+
             if (duracionHoras <= 0)
                 return (false, "El horario de fin debe ser posterior al horario de inicio.", 0);
 
             var monto = duracionHoras * cancha.courtType.pricePerHour;
+
             return (true, $"Monto calculado: {monto:C}", monto);
         }
     }

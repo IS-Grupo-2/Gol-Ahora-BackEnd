@@ -23,7 +23,7 @@ namespace GolAhora.Models
         public User user { get; set; } = null!;
 
         public int numberPartner { get; set; }
-        public int idTeam { get; set; }
+        public int? idTeam { get; set; }
         public Team? team { get; set; }
 
         /**
@@ -85,7 +85,7 @@ namespace GolAhora.Models
         public int idPersonalClub { get; set; }
         public PersonalClubProfile personalClubProfile { get; set; } = null!;
 
-        public string specialty { get; set; } = null!;
+        public string speciality { get; set; } = null!;
 
         /**
          Para la relacion 1 a muchos de profesor a certificado, 

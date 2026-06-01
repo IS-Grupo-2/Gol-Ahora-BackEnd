@@ -57,6 +57,19 @@ namespace GolAhora.Services
             if (disponibility == null)
                 return (false, "Disponibilidad no encontrada.");
 
+            // Validar superposición con otras disponibilidades (excluyendo la actual)
+            var superpuesta = await _context.Disponibilities.AnyAsync(d =>
+                d.idDisponibility != id &&
+                d.courtId == dto.courtId &&
+                d.day == dto.day &&
+                d.isAvailable &&
+                d.startTime < dto.endTime &&
+                d.endTime > dto.startTime
+            );
+
+            if (superpuesta)
+                return (false, "Ya existe una disponibilidad activa que se superpone en ese horario.");
+
             disponibility.day = dto.day;
             disponibility.startTime = dto.startTime;
             disponibility.endTime = dto.endTime;
@@ -121,6 +134,17 @@ namespace GolAhora.Services
             disponibility.isAvailable = false;
             await _context.SaveChangesAsync();
             return (true, "Disponibilidad deshabilitada exitosamente.");
+        }
+
+        public async Task<(bool success, string message)> EliminarDisponibility(int id)
+        {
+            var disponibility = await _context.Disponibilities.FindAsync(id);
+            if (disponibility == null)
+                return (false, "Disponibilidad no encontrada.");
+
+            _context.Disponibilities.Remove(disponibility);
+            await _context.SaveChangesAsync();
+            return (true, "Disponibilidad eliminada exitosamente.");
         }
 
         public async Task<(bool success, string message)> ConsultarDisponibilidadEnHorario(int courtId, DateTime fecha, TimeSpan hora)

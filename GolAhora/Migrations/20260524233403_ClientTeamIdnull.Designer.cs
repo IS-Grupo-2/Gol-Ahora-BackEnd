@@ -4,6 +4,7 @@ using GolAhora.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using AppContext = GolAhora.Data.AppContext;
 
@@ -12,9 +13,11 @@ using AppContext = GolAhora.Data.AppContext;
 namespace GolAhora.Migrations
 {
     [DbContext(typeof(AppContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20260524233403_ClientTeamIdnull")]
+    partial class ClientTeamIdnull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -545,7 +548,7 @@ namespace GolAhora.Migrations
                     b.Property<int>("idPersonalClub")
                         .HasColumnType("int");
 
-                    b.Property<string>("speciality")
+                    b.Property<string>("specialty")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -856,8 +859,8 @@ namespace GolAhora.Migrations
                         {
                             Id = 2,
                             ConcurrencyStamp = "personal-club-role",
-                            Name = "PersonalClubProfile",
-                            NormalizedName = "PERSONALCLUBPROFILE"
+                            Name = "PersonaClub",
+                            NormalizedName = "PERSONALCLUB"
                         },
                         new
                         {
