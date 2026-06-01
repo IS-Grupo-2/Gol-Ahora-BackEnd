@@ -97,7 +97,6 @@ builder.Services.AddScoped<DisponibilityService>();
 builder.Services.AddScoped<ReservationService>();
 //<<<<<<< HEAD mio
 builder.Services.AddScoped<AssistanceService>();
-builder.Services.AddScoped<PaymentService>();
 //lo que agregaron 
 builder.Services.AddScoped<PaymentsService>();
 builder.Services.AddScoped<DiscountsService>();

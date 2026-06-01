@@ -1,4 +1,5 @@
-﻿using GolAhora.Models;
+﻿using GolAhora.DTOs;
+using GolAhora.Models;
 using GolAhora.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,85 @@ namespace GolAhora.Controllers
         {
             _paymentsService = paymentsService;
         }
+         
+
+        [HttpPost]
+        public async Task<IActionResult> RegistrarCobro([FromBody] PaymentDTO dto)
+        {
+            if (dto == null)
+                return BadRequest("Los datos del cobro son inválidos.");
+
+            var (success, message) = await _paymentsService.RegistrarCobro(dto);
+            if (!success)
+                return BadRequest(new { mensaje = message });
+
+            return Ok(new { mensaje = message });
+        }
+
+        // RF45 – PUT api/payments/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> ModificarCobro(int id, [FromBody] PaymentDTO dto)
+        {
+            if (dto == null)
+                return BadRequest("Los datos del cobro son inválidos.");
+
+            var (success, message) = await _paymentsService.ModificarCobro(id, dto);
+            if (!success)
+                return NotFound(new { mensaje = message });
+
+            return Ok(new { mensaje = message });
+        }
+
+        // RF46 – GET api/payments/listar-basico
+        [HttpGet("listar-basico")]
+        public async Task<IActionResult> ListarCobros()
+        {
+            var lista = await _paymentsService.ListarCobros();
+            return Ok(lista);
+        }
+
+        // RF47 – DELETE api/payments/{id} (Baja lógica)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DarDeBajaCobro(int id)
+        {
+            var (success, message) = await _paymentsService.DarDeBajaCobro(id);
+            if (!success)
+                return NotFound(new { mensaje = message });
+
+            return Ok(new { mensaje = message });
+        }
+
+        // GET api/payments/consultar/{id} (consulta )
+        [HttpGet("consultar/{id}")]
+        public async Task<IActionResult> ConsultarCobro(int id)
+        {
+            var cobro = await _paymentsService.ConsultarCobro(id);
+            if (cobro == null)
+                return NotFound($"No se encontró el cobro con ID {id}.");
+
+            return Ok(cobro);
+        }
+
+        // GET api/payments/monto-total
+        [HttpGet("monto-total")]
+        public async Task<IActionResult> CalcularMontoTotal()
+        {
+            var total = await _paymentsService.CalcularMontoTotal();
+            return Ok(new { montoTotalRecaudado = total });
+        }
+
+        // POST api/payments/aplicar-descuento/{idPayment}
+        [HttpPost("aplicar-descuento/{idPayment}")]
+        public async Task<IActionResult> AplicarDescuento(int idPayment, [FromBody] Discounts descuento)
+        {
+            if (descuento == null)
+                return BadRequest("Los datos del descuento son inválidos.");
+
+            await _paymentsService.AplicarDescuento(idPayment, descuento);
+            return Ok(new { mensaje = "Descuento aplicado correctamente y monto actualizado." });
+        }
+
+
 
         // GET: api/payments --> RF48
         [HttpGet]
