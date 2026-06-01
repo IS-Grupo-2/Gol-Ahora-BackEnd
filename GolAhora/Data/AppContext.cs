@@ -281,6 +281,24 @@ namespace GolAhora.Data
                 // La siguiente linea impide que se borre un admin si tiene reportes asignados
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Payments>()
+                .HasOne(p => p.client)
+                .WithMany(c => c.payments)
+                .HasForeignKey(p => p.idClient)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Payments>()
+                .HasOne(p => p.discount)
+                .WithMany(d => d.payments)
+                .HasForeignKey(p => p.idDiscount)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Receipts>()
+                .HasOne(r => r.payment)
+                .WithOne(p => p.receipt)
+                .HasForeignKey<Receipts>(r => r.idPayment)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<IdentityRole<int>>().HasData(
                 new IdentityRole<int>
                 {
