@@ -121,7 +121,7 @@ namespace GolAhora.Services
             if (team == null) {
                 return "Equipo no encontrado.";
             }
-            var player = await _context.Clients.FindAsync(idPlayer);
+            var player = await _context.ClientProfiles.FindAsync(idPlayer);
             if (player == null) {
                 return "Jugador no encontrado.";
             }
@@ -137,7 +137,7 @@ namespace GolAhora.Services
 
         public async Task<string> DelegateACaptain(int idTeam, int idPlayer)// Validar con la rama main
         {
-            var player = await _context.Clients.FindAsync(idPlayer);
+            var player = await _context.ClientProfiles.FindAsync(idPlayer);
             if (player == null)
             {
                 return "Jugador no encontrado.";

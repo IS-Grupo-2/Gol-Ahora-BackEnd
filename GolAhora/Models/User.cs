@@ -87,6 +87,8 @@ namespace GolAhora.Models
 
         public string speciality { get; set; } = null!;
 
+        public string certification { get; set; } = null!;
+
         /**
          Para la relacion 1 a muchos de profesor a certificado, 
          se agrega una lista con las certificaciones.

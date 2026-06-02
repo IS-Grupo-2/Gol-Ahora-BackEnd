@@ -186,7 +186,8 @@ namespace GolAhora.Services
             var professor = new ProfessorProfile
             {
                 idPersonalClub = profile.idPersonalClub,
-                speciality = dto.specialty
+                speciality = dto.specialty,
+                certification = dto.certification
             };
 
             await _clientCommand.addProfessor(professor);

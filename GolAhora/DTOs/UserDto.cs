@@ -69,6 +69,7 @@ namespace GolAhora.DTOs
     public class RegisterProfessorDto: RegisterPersonalClubDto 
     {
         public string specialty { get; set; } = null!;
+        public string certification { get; set; } = null!;
     }
 
     public class ClientDto : UserDto
@@ -102,6 +103,7 @@ namespace GolAhora.DTOs
     {
         public int idProfessor { get; set; }
         public string speciality { get; set; } = null!;
+        public string certification { get; set; } = null!;
     }
 
     public class UpdateUserDTO 
@@ -137,5 +139,6 @@ namespace GolAhora.DTOs
     public class UpdateProfessorDTO : UpdatePersonalClubDTO
     {
         public string speciality { get; set; } = null!;
+        public string certification { get; set; } = null!;
     }
 }

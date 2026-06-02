@@ -90,6 +90,9 @@ builder.Services.AddScoped<ClientCommand>();
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped<UserQuery>();
 
+// Registro de servicios de los perfiles
+builder.Services.AddScoped<ProfileServices>();
+
 // Registro de servicios
 builder.Services.AddScoped<CourtTypeService>();
 builder.Services.AddScoped<CourtService>();
