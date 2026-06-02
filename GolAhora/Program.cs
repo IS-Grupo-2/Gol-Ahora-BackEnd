@@ -98,6 +98,7 @@ builder.Services.AddScoped<CourtTypeService>();
 builder.Services.AddScoped<CourtService>();
 builder.Services.AddScoped<DisponibilityService>();
 builder.Services.AddScoped<ReservationService>();
+builder.Services.AddScoped<ReporteService>();
 builder.Services.AddScoped<PaymentsService>();
 builder.Services.AddScoped<DiscountsService>();
 builder.Services.AddScoped<ReceiptsService>();

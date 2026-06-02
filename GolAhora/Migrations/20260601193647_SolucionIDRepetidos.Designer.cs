@@ -4,6 +4,7 @@ using GolAhora.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using AppContext = GolAhora.Data.AppContext;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -12,9 +13,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GolAhora.Migrations
 {
     [DbContext(typeof(AppContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20260601193647_SolucionIDRepetidos")]
+    partial class SolucionIDRepetidos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -536,10 +539,6 @@ namespace GolAhora.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idProfessor"));
 
-                    b.Property<string>("certification")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("idPersonalClub")
                         .HasColumnType("int");
 
@@ -573,6 +572,9 @@ namespace GolAhora.Migrations
                     b.Property<int>("idPayment")
                         .HasColumnType("int");
 
+                    b.Property<int>("paymentidPayment")
+                        .HasColumnType("int");
+
                     b.Property<string>("receiptNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -582,8 +584,7 @@ namespace GolAhora.Migrations
 
                     b.HasKey("idReceipt");
 
-                    b.HasIndex("idPayment")
-                        .IsUnique();
+                    b.HasIndex("paymentidPayment");
 
                     b.ToTable("Receipts");
                 });
@@ -1219,9 +1220,9 @@ namespace GolAhora.Migrations
             modelBuilder.Entity("GolAhora.Models.Receipts", b =>
                 {
                     b.HasOne("GolAhora.Models.Payments", "payment")
-                        .WithOne("receipt")
-                        .HasForeignKey("GolAhora.Models.Receipts", "idPayment")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .WithMany()
+                        .HasForeignKey("paymentidPayment")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("payment");
@@ -1415,9 +1416,6 @@ namespace GolAhora.Migrations
             modelBuilder.Entity("GolAhora.Models.Payments", b =>
                 {
                     b.Navigation("competenceTeams");
-
-                    b.Navigation("receipt")
-                        .IsRequired();
 
                     b.Navigation("reservation")
                         .IsRequired();
