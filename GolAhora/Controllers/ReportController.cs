@@ -15,34 +15,30 @@ namespace GolAhora.Controllers
             _reporteService = reporteService;
         }
 
-        // RF57 – GET api/reportes/ingresos
-        [HttpGet("ingresos")]
-        public async Task<IActionResult> GenerarReporteIngresos([FromQuery] ReporteRequestDTO dto)
+        [HttpGet("ingresos/print")]
+        public async Task<IActionResult> ImprimirReporteIngresos([FromQuery] int idAdmin, [FromQuery] ReporteRequestDTO dto)
         {
-            if (dto == null)
-                return BadRequest("Los datos del reporte son invalidos.");
-            var reporte = await _reporteService.GenerarReporteIngresos(dto);
-            return Ok(reporte);
+            var bytes = await _reporteService.ImprimirReporteIngresos(idAdmin, dto);
+            var stream = new MemoryStream(bytes);
+            return File(stream, "text/plain", "Reporte_Ingresos.txt");
         }
 
-        // RF58 – GET api/reportes/asistencia
-        [HttpGet("asistencia")]
-        public async Task<IActionResult> GenerarReporteAsistencia([FromQuery] ReporteRequestDTO dto)
+        [HttpGet("asistencia/print")]
+        public async Task<IActionResult> ImprimirReporteAsistencia([FromQuery] int idAdmin, [FromQuery] ReporteRequestDTO dto)
         {
-            if (dto == null)
-                return BadRequest("Los datos del reporte son invalidos.");
-            var reporte = await _reporteService.GenerarReporteAsistencia(dto);
-            return Ok(reporte);
+            // Corrección: Ahora pasamos el idAdmin al servicio
+            var bytes = await _reporteService.ImprimirReporteAsistencia(idAdmin, dto);
+            var stream = new MemoryStream(bytes);
+            return File(stream, "text/plain", "Reporte_Asistencia.txt");
         }
 
-        // RF59 – GET api/reportes/reservas
-        [HttpGet("reservas")]
-        public async Task<IActionResult> GenerarReporteReservas([FromQuery] ReporteRequestDTO dto)
+        [HttpGet("reservas/print")]
+        public async Task<IActionResult> ImprimirReporteReservas([FromQuery] int idAdmin, [FromQuery] ReporteRequestDTO dto)
         {
-            if (dto == null)
-                return BadRequest("Los datos del reporte son invalidos.");
-            var reporte = await _reporteService.GenerarReporteReservas(dto);
-            return Ok(reporte);
+            // Corrección: Ahora pasamos el idAdmin al servicio
+            var bytes = await _reporteService.ImprimirReporteReservas(idAdmin, dto);
+            var stream = new MemoryStream(bytes);
+            return File(stream, "text/plain", "Reporte_Reservas.txt");
         }
     }
 }
