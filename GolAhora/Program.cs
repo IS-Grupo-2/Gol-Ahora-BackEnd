@@ -115,6 +115,18 @@ builder.Services.AddScoped<GolAhora.Services.TeamService>();
 builder.Services.AddScoped<GolAhora.Services.MatchService>();
 //resultados
 builder.Services.AddScoped<GolAhora.Services.ResultService>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Front", policy =>
+    {
+        policy
+            .WithOrigins("https://localhost:5173", "https://localhost:7277")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -125,6 +137,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("Front");
 
 app.UseAuthentication();
 
