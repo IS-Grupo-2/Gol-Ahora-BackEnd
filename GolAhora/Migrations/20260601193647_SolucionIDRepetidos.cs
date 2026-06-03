@@ -27,33 +27,12 @@ namespace GolAhora.Migrations
                 table: "Payments");
 
             migrationBuilder.DropColumn(
-                name: "foulsTeamLocal",
-                table: "Results");
-
-            migrationBuilder.DropColumn(
-                name: "foulsTeamVisitor",
-                table: "Results");
-
-            migrationBuilder.DropColumn(
-                name: "observations",
-                table: "Results");
-
-            migrationBuilder.DropColumn(
-                name: "penaltiesTeamLocal",
-                table: "Results");
-
-            migrationBuilder.DropColumn(
                 name: "clientidClient",
                 table: "Payments");
 
             migrationBuilder.DropColumn(
                 name: "discountidDiscount",
                 table: "Payments");
-
-            migrationBuilder.RenameColumn(
-                name: "penaltiesTeamVisitor",
-                table: "Results",
-                newName: "idMatch");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_idClient",
@@ -100,39 +79,6 @@ namespace GolAhora.Migrations
             migrationBuilder.DropIndex(
                 name: "IX_Payments_idDiscount",
                 table: "Payments");
-
-            migrationBuilder.RenameColumn(
-                name: "idMatch",
-                table: "Results",
-                newName: "penaltiesTeamVisitor");
-
-            migrationBuilder.AddColumn<int>(
-                name: "foulsTeamLocal",
-                table: "Results",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
-                name: "foulsTeamVisitor",
-                table: "Results",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<string>(
-                name: "observations",
-                table: "Results",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.AddColumn<int>(
-                name: "penaltiesTeamLocal",
-                table: "Results",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
                 name: "clientidClient",

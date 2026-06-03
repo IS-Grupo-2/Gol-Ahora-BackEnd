@@ -11,7 +11,7 @@
         public int? idPayment { get; set; }
     }
 
-    // DTO para RESPONSE (lo que devolvés al frontend)
+    // DTO para RESPONSE
     public class ReservationResponseDTO
     {
         public int idReservation { get; set; }
@@ -37,6 +37,14 @@
     // DTO para MODIFICAR SOLO HORARIO
     public class CambiarHorarioDTO
     {
+        public TimeSpan startTime { get; set; }
+        public TimeSpan endTime { get; set; }
+    }
+
+    // DTO para MODIFICAR FECHA Y HORARIO
+    public class CambiarFechaYHorarioDTO
+    {
+        public DateTime reservationDate { get; set; }
         public TimeSpan startTime { get; set; }
         public TimeSpan endTime { get; set; }
     }
