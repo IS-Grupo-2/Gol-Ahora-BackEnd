@@ -1,5 +1,6 @@
 ﻿namespace GolAhora.DTOs
 {
+    // DTO para CREAR reserva
     public class ReservationDTO
     {
         public int idClient { get; set; }
@@ -9,6 +10,8 @@
         public TimeSpan endTime { get; set; }
         public int? idPayment { get; set; }
     }
+
+    // DTO para RESPONSE (lo que devolvés al frontend)
     public class ReservationResponseDTO
     {
         public int idReservation { get; set; }
@@ -23,5 +26,18 @@
         public bool isPaid { get; set; }
         public double totalPrice { get; set; }
         public int idPayment { get; set; }
+    }
+
+    // DTO para MODIFICAR SOLO FECHA
+    public class CambiarFechaDTO
+    {
+        public DateTime reservationDate { get; set; }
+    }
+
+    // DTO para MODIFICAR SOLO HORARIO
+    public class CambiarHorarioDTO
+    {
+        public TimeSpan startTime { get; set; }
+        public TimeSpan endTime { get; set; }
     }
 }
