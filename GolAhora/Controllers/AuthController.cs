@@ -20,6 +20,16 @@ namespace GolAhora.Controllers
             _authServices = authServices;
         }
 
+        [HttpPost("register/admin")]
+        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminDto dto)
+        {
+            if(dto == null)
+                return BadRequest("Los datos son invalidos.");
+
+            var result = await _authServices.RegisterAdmin(dto);
+            return new JsonResult(result) { StatusCode = 201 };
+        }
+
         [HttpPost("register/client")]
         public async Task<IActionResult> RegisterClient([FromBody]RegisterClientDto dto)
         {
