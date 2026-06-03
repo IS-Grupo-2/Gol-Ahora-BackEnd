@@ -14,6 +14,12 @@ namespace GolAhora.Command
             _appContext = appContext;
         }
 
+        public async Task AddAdmin(AdminProfile admin)
+        {
+            _appContext.AdminProfiles.Add(admin);
+            await _appContext.SaveChangesAsync();
+        }
+
         public async Task AddClient(ClientProfile client)
         {
             _appContext.ClientProfiles.Add(client);
