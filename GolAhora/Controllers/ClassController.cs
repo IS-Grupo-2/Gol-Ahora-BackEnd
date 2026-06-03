@@ -66,10 +66,9 @@ namespace GolAhora.Controllers
             return Ok(dto);
         }
 
-        // Agregar alumno - POST api/classes/{id}/agregar-alumno
-        // NOTE: El body debe ser un número entero crudo (ej: 5) o puedes enviar { "clientId": 5 } si cambias el binding.
-        [HttpPost("{id}/agregar-alumno")]
-        public async Task<IActionResult> AgregarAlumno(int id, [FromBody] int clientId)
+        // Agregar alumno
+        [HttpPost("{id}/agregar-alumno/{clientId}")]
+        public async Task<IActionResult> AgregarAlumno(int id, int clientId)
         {
             if (id <= 0) return BadRequest(new { mensaje = "Id de clase inválido." });
             if (clientId <= 0) return BadRequest(new { mensaje = "Id de cliente inválido." });
@@ -84,7 +83,7 @@ namespace GolAhora.Controllers
             if (dtos == null || dtos.Count == 0)
                 return BadRequest("La lista de asistencia no contiene datos válidos.");
 
-            // Llama a ClassService, que a su vez usa AssistanceService por detrás
+
             var (success, message) = await _classService.RegistrarAsistencia(idClass, dtos);
 
             if (!success)

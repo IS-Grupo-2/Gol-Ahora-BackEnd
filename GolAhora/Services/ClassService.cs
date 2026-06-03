@@ -112,33 +112,30 @@ namespace GolAhora.Services
         // Consultar una clase por id (mapea a DTO)
         public async Task<ClassResponseDTO?> ConsultarClase(int idClass)
         {
-            var c = await _context.Classes
-                .Include(x => x.profesor)
-                    .ThenInclude(p => p.personalClubProfile)
-                        .ThenInclude(pc => pc.user)
-                .Include(x => x.court)
-                .Include(x => x.clients)
-                .FirstOrDefaultAsync(x => x.idClass == idClass);
+            
+            return await _context.Classes
+                .Where(x => x.idClass == idClass)
+                .Select(c => new ClassResponseDTO
+                {
+                    idClass = c.idClass,
+                    name = c.name,
+                    description = c.description,
+                    classType = c.classType,
+                    profesorId = c.profesorId,
 
-            if (c == null) return null;
+                    
+                    professorFullName = (c.profesor.personalClubProfile.user.name + " " + c.profesor.personalClubProfile.user.lastName).Trim(),
 
-            return new ClassResponseDTO
-            {
-                idClass = c.idClass,
-                name = c.name,
-                description = c.description,
-                classType = c.classType,
-                profesorId = c.profesorId,
-                professorFullName = $"{c.profesor.personalClubProfile?.user?.name ?? ""} {c.profesor.personalClubProfile?.user?.lastName ?? ""}".Trim(),
-                courtId = c.courtId,
-                courtName = c.court?.name ?? "",
-                date = c.date,
-                capacityMax = c.capacityMax,
-                currentAlumnosCount = c.clients?.Count ?? 0,
-                duration = c.duration,
-                price = c.price,
-                isActive = c.isActive
-            };
+                    courtId = c.courtId,
+                    courtName = c.court.name ?? "",
+                    date = c.date,
+                    capacityMax = c.capacityMax,
+                    currentAlumnosCount = c.clients.Count,
+                    duration = c.duration,
+                    price = c.price,
+                    isActive = c.isActive
+                })
+                .FirstOrDefaultAsync(); // Si la encuentra devuelve el DTO, si no, devuelve null
         }
 
         // RF38 – Asignar o cambiar profesor a una clase
@@ -163,7 +160,6 @@ namespace GolAhora.Services
             return (true, "Profesor asignado correctamente a la clase.");
         }
 
-        // Agregar alumno a una clase (inscripción simple)
         public async Task<(bool success, string message)> AgregarAlumno(int idClass, int clientId)
         {
             var clase = await _context.Classes
@@ -199,7 +195,35 @@ namespace GolAhora.Services
 
         public async Task<(bool success, string message)> RegistrarAsistencia(int idClass, List<AssistanceDTO> dtos)
         {
-            return await _assistanceService.RegistrarAsistenciasClase(idClass, dtos);
+            var clase = await _context.Classes.FindAsync(idClass);
+            if (clase == null)
+                return (false, "La clase especificada no existe.");
+
+            if (!clase.isActive)
+                return (false, "No se puede tomar asistencia: La clase se encuentra cancelada.");
+
+            var previas = await _context.Set<Assistance>().Where(a => a.classId == idClass).ToListAsync();
+            if (previas.Any())
+            {
+                _context.Set<Assistance>().RemoveRange(previas);
+            }
+
+            foreach (var dto in dtos)
+            {
+                var nuevaAsistencia = new Assistance
+                {
+                    classId = idClass,
+                    clientId = dto.idClient,
+                    date = DateTimeOffset.Now.DateTime,
+                    isAssisted = dto.isAssisted,
+                    observations = dto.observations
+                };
+                _context.Set<Assistance>().Add(nuevaAsistencia);
+            }
+
+
+            await _context.SaveChangesAsync();
+            return (true, $"Se registraron {dtos.Count} asistencias correctamente.");
         }
         public async Task<(bool success, string message)> VerificarCapacidad(int courtId, int capacityMax)
         {
@@ -222,31 +246,27 @@ namespace GolAhora.Services
         // Extra: Listar clases
         public async Task<List<ClassResponseDTO>> ListarClases()
         {
-            var clases = await _context.Classes
-                .Include(c => c.profesor)
-                    .ThenInclude(p => p.personalClubProfile)
-                        .ThenInclude(pc => pc.user)
-                .Include(c => c.court)
-                .Include(c => c.clients)
-                .ToListAsync();
+            return await _context.Classes
+                .Select(c => new ClassResponseDTO
+                {
+                    idClass = c.idClass,
+                    name = c.name,
+                    description = c.description,
+                    classType = c.classType,
+                    profesorId = c.profesorId,
 
-            return clases.Select(c => new ClassResponseDTO
-            {
-                idClass = c.idClass,
-                name = c.name,
-                description = c.description,
-                classType = c.classType,
-                profesorId = c.profesorId,
-                professorFullName = $"{c.profesor.personalClubProfile?.user?.name ?? ""} {c.profesor.personalClubProfile?.user?.lastName ?? ""}".Trim(),
-                courtId = c.courtId,
-                courtName = c.court?.name ?? "",
-                date = c.date,
-                capacityMax = c.capacityMax,
-                currentAlumnosCount = c.clients?.Count ?? 0,
-                duration = c.duration,
-                price = c.price,
-                isActive = c.isActive
-            }).ToList();
+                    professorFullName = (c.profesor.personalClubProfile.user.name + " " + c.profesor.personalClubProfile.user.lastName).Trim(),
+
+                    courtId = c.courtId,
+                    courtName = c.court.name ?? "",
+                    date = c.date,
+                    capacityMax = c.capacityMax,
+                    currentAlumnosCount = c.clients.Count,
+                    duration = c.duration,
+                    price = c.price,
+                    isActive = c.isActive
+                })
+                .ToListAsync();
         }
     }
 }

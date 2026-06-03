@@ -2,11 +2,7 @@
 using GolAhora.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using GolAhora.DTOs;
-using Microsoft.AspNetCore.Mvc;
 
 namespace GolAhora.Controllers
 {
@@ -16,7 +12,6 @@ namespace GolAhora.Controllers
     {
         private readonly AssistanceService _assistanceService;
 
-        // recibe el servicio de asistencias en el constructor
         public AssistanceController(AssistanceService assistanceService)
         {
             _assistanceService = assistanceService;
@@ -29,12 +24,14 @@ namespace GolAhora.Controllers
             if (dtos == null || dtos.Count == 0)
                 return BadRequest("La lista de asistencia no contiene datos válidos.");
 
-            var (success, message) = await _assistanceService.RegistrarAsistenciasClase(idClass, dtos);
+            foreach (var dto in dtos)
+            {
+                var result = await _assistanceService.RegistrarAsistencia(dto);
+                if (!result.Item1)
+                    return BadRequest(new { mensaje = result.Item2 });
+            }
 
-            if (!success)
-                return BadRequest(new { mensaje = message });
-
-            return Ok(new { mensaje = message });
+            return Ok(new { mensaje = "Asistencias registradas correctamente." });
         }
 
         // PUT: api/assistance/5
@@ -43,7 +40,6 @@ namespace GolAhora.Controllers
         {
             var (success, message) = await _assistanceService.ModificarAsistencia(idAssistance, presente, observaciones);
 
-            var (success, message) = await _assistanceService.ModificarAsistencia(id, dto);
             if (!success)
                 return BadRequest(new { mensaje = message });
 

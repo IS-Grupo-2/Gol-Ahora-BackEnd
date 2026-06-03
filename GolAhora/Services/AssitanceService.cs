@@ -1,9 +1,8 @@
-﻿using GolAhora.DTOs;
-using GolAhora.Models;
+﻿using GolAhora.Models;
+using GolAhora.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GolAhora.Services
@@ -18,35 +17,23 @@ namespace GolAhora.Services
         }
 
         // + registrar(): void (RF36)
-        public async Task<(bool success, string message)> RegistrarAsistenciasClase(int idClass, List<AssistanceDTO> dtos)
+        public async Task<(bool success, string message)> RegistrarAsistencia(AssistanceDTO dto)
         {
-            var clase = await _context.Classes.FindAsync(idClass);
-            if (clase == null)
-                return (false, "La clase especificada no existe.");
-
-            // Eliminamos registros previos si el profesor re-envía la lista para evitar duplicados
-            var previas = await _context.Set<Assistance>().Where(a => a.classId == idClass).ToListAsync();
-            if (previas.Any())
+            var nuevaAsistencia = new Assistance
             {
-                _context.Set<Assistance>().RemoveRange(previas);
-            }
+                clientId = dto.idClient,
+                classId = dto.classId,
+                isAssisted = dto.isAssisted,
+                observations = dto.observations
+            };
 
-            foreach (var dto in dtos)
-            {
-                var nuevaAsistencia = new Assistance
-                {
-                    classId = idClass,
-                    clientId = dto.idClient,
-                    date = DateTime.Now,
-                    isAssisted = dto.isAssisted,
-                    observations = dto.observations
-                };
-                _context.Set<Assistance>().Add(nuevaAsistencia);
-            }
+            _context.Assistances.Add(nuevaAsistencia);
 
             await _context.SaveChangesAsync();
-            return (true, $"Se registraron {dtos.Count} asistencias correctamente.");
+
+            return (true, "Asistencia registrada exitosamente.");
         }
+
 
         // + modificar(): void
         public async Task<(bool success, string message)> ModificarAsistencia(int idAssistance, bool nuevoEstado, string nuevasObservaciones)
@@ -61,17 +48,16 @@ namespace GolAhora.Services
             await _context.SaveChangesAsync();
             return (true, "Asistencia modificada con éxito.");
         }
+
         // + consultar(): Asistencia
         public async Task<Assistance?> ConsultarAsistencia(int idAssistance)
         {
-            // Devuelve el registro de asistencia solicitado (o null si no existe)
             return await _context.Set<Assistance>().FindAsync(idAssistance);
         }
 
         // + listar(): List<Asistencia>
         public async Task<List<Assistance>> ListarAsistencias()
         {
-            // Devuelve todas las asistencias registradas
             return await _context.Set<Assistance>().ToListAsync();
         }
     }
