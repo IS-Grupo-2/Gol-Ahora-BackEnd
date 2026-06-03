@@ -2,7 +2,11 @@
 using GolAhora.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using GolAhora.DTOs;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GolAhora.Controllers
 {
@@ -12,6 +16,7 @@ namespace GolAhora.Controllers
     {
         private readonly AssistanceService _assistanceService;
 
+        // recibe el servicio de asistencias en el constructor
         public AssistanceController(AssistanceService assistanceService)
         {
             _assistanceService = assistanceService;
@@ -38,6 +43,7 @@ namespace GolAhora.Controllers
         {
             var (success, message) = await _assistanceService.ModificarAsistencia(idAssistance, presente, observaciones);
 
+            var (success, message) = await _assistanceService.ModificarAsistencia(id, dto);
             if (!success)
                 return BadRequest(new { mensaje = message });
 

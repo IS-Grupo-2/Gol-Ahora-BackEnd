@@ -25,22 +25,49 @@ namespace GolAhora.Controllers
             var (success, message) = await _reservationService.AgregarReservation(dto);
 
             if (!success)
+            {
+                if (message.Contains("no existe") || message.Contains("no encontrada"))
+                    return NotFound(new { mensaje = message });
                 return BadRequest(new { mensaje = message });
+            }
 
             return Ok(new { mensaje = message });
         }
 
-        // RF20 – PUT api/reservations/{id}
-        [HttpPut("{id}")]
-        public async Task<IActionResult> ModificarReservation(int id, [FromBody] ReservationDTO dto)
+        // RF20a – PUT api/reservations/{id}/horario
+        [HttpPut("{id}/horario")]
+        public async Task<IActionResult> ModificarHorario(int id, [FromBody] CambiarHorarioDTO dto)
         {
             if (dto == null)
-                return BadRequest("Los datos de la reserva son inválidos.");
+                return BadRequest("Los datos del horario son inválidos.");
 
-            var (success, message) = await _reservationService.ModificarReservation(id, dto);
+            var (success, message) = await _reservationService.ModificarHorario(id, dto);
 
             if (!success)
+            {
+                if (message.Contains("no encontrada"))
+                    return NotFound(new { mensaje = message });
                 return BadRequest(new { mensaje = message });
+            }
+
+            return Ok(new { mensaje = message });
+        }
+
+        // RF20b – PUT api/reservations/{id}/fecha
+        [HttpPut("{id}/fecha")]
+        public async Task<IActionResult> ModificarFecha(int id, [FromBody] CambiarFechaDTO dto)
+        {
+            if (dto == null)
+                return BadRequest("Los datos de la fecha son inválidos.");
+
+            var (success, message) = await _reservationService.ModificarFecha(id, dto);
+
+            if (!success)
+            {
+                if (message.Contains("no encontrada"))
+                    return NotFound(new { mensaje = message });
+                return BadRequest(new { mensaje = message });
+            }
 
             return Ok(new { mensaje = message });
         }

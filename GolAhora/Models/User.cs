@@ -32,6 +32,8 @@ namespace GolAhora.Models
          */
         public ICollection<Reservation> reservations { get; set; } = new List<Reservation>();
 
+        public ICollection<Payments> payments { get; set; } = new List<Payments>();
+
         /**
          Para la relacion 1 a muchos de cliente a asistencia, 
          se agrega una lista con las asistencias.
@@ -86,6 +88,8 @@ namespace GolAhora.Models
         public PersonalClubProfile personalClubProfile { get; set; } = null!;
 
         public string speciality { get; set; } = null!;
+
+        public string certification { get; set; } = null!;
 
         /**
          Para la relacion 1 a muchos de profesor a certificado, 

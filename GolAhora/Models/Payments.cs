@@ -13,7 +13,8 @@ namespace GolAhora.Models
         public bool isSuccessful { get; set; }
         public int? idDiscount { get; set; }
         public Discounts? discount { get; set; }
-        public Reservation reservation { get; set; } = null!;   
+        public Reservation reservation { get; set; } = null!;
+        public Receipts receipt { get; set; } = null!;
         public ICollection<CompetenceTeam> competenceTeams { get; set; } = new List<CompetenceTeam>();
     }
 

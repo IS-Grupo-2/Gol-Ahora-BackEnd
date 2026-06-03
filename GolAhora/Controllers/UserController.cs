@@ -10,7 +10,7 @@ namespace GolAhora.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/users")]
+    [Route("api/[controller]")]
     public class UserController : Controller
     {
         private readonly UserServices _userService;
