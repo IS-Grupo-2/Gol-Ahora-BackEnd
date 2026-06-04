@@ -5,11 +5,12 @@ using GolAhora.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-
+using AppContext = GolAhora.Data.AppContext;
 
 namespace GolAhora.Services
 {
@@ -18,12 +19,77 @@ namespace GolAhora.Services
         private readonly ClientCommand _clientCommand;
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly AppContext _appContext;
 
-        public AuthServices(ClientCommand clientCommand, UserManager<User> userManager, IConfiguration configuration)
+        public AuthServices(ClientCommand clientCommand, UserManager<User> userManager, IConfiguration configuration, AppContext appContext)
         {
             _clientCommand = clientCommand;
             _userManager = userManager;
             _configuration = configuration;
+            _appContext = appContext;
+        }
+
+        public async Task<IActionResult> RegisterAdmin(RegisterAdminDto dto)
+        {
+            var user = new User
+            {
+                name = dto.name,
+                lastName = dto.lastName,
+                DNI = dto.DNI,
+                UserName = dto.userName,
+                Email = dto.email,
+                PhoneNumber = dto.phoneNumber,
+                isActive = true,
+                registerDate = DateTime.UtcNow
+            };
+
+            var existingUser = await _userManager.FindByNameAsync(dto.userName);
+            if (existingUser != null)
+                throw new BadRequestException("El nombre de usuario ya se encuentra registrado");
+
+            var result = await _userManager.CreateAsync(user, dto.password);
+            if (!result.Succeeded)
+            {
+                var error = string.Join(",", result.Errors.Select(e => e.Description));
+                throw new BadRequestException(error);
+            }
+
+            var resultRole = await _userManager.AddToRoleAsync(user, "PersonalClub");
+
+            if (!resultRole.Succeeded)
+            {
+                var error = string.Join(",", result.Errors.Select(e => e.Description));
+                throw new BadRequestException(error);
+            }
+
+            var roleResult1 = await _userManager.AddToRoleAsync(user, "Admin");
+
+            if(!roleResult1.Succeeded)
+            {
+                var error = string.Join(",", result.Errors.Select(e => e.Description));
+                throw new BadRequestException(error);
+            }
+
+            var profile = new PersonalClubProfile
+            {
+                idUser = user.Id,
+                legajo = dto.legajo,
+                startDate = dto.startDate,
+                turno = dto.turno
+            };
+
+
+            await _clientCommand.addPersonalClub(profile);
+
+            var admin = new AdminProfile
+            {
+                idPersonalClub = profile.idPersonalClub,
+                accessLevel = dto.accessLevel
+            };
+
+            await _clientCommand.AddAdmin(admin);
+
+            return new CreatedResult("", new { user.Id, user.UserName, role = "Admin" });
         }
 
         public async Task<IActionResult> RegisterClient(RegisterClientDto dto)
@@ -59,11 +125,14 @@ namespace GolAhora.Services
                 var errors = string.Join(",", result.Errors.Select(e => e.Description));
                 throw new BadRequestException(errors);
             }
+            
+            var partnerNumber = await _appContext.ClientProfiles.ToListAsync();
+            int contador = partnerNumber.Count() + 1;
 
             var profile = new ClientProfile
             {
                 idUser = user.Id,
-                numberPartner = dto.numberPartner,
+                numberPartner = contador,
                 idTeam = dto.idTeam
             };
 

@@ -1,6 +1,8 @@
 using GolAhora.DTOs;
 using GolAhora.Models;
+using GolAhora.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace GolAhora.Services
 {
@@ -13,9 +15,24 @@ namespace GolAhora.Services
             _context = context;
         }
 
-        // RF57 – Generar reporte de ingresos totales
-        public async Task<ReporteIngresoDTO> GenerarReporteIngresos(ReporteRequestDTO dto)
+        // ==========================================
+        // RF57 – REPORTE DE INGRESOS TOTALES
+        // ==========================================
+
+        public async Task<ReporteIngresoDTO> GenerarReporteIngresos(int idAdmin, ReporteRequestDTO dto)
         {
+            var admin = await _context.AdminProfiles.FindAsync(idAdmin);
+            if (admin == null)
+            {
+                throw new NotFoundException("Admin no encontrado");
+            }
+
+            await _context.Entry(admin).Reference(a => a.personalClubProfile).LoadAsync();
+            if (admin.personalClubProfile != null)
+            {
+                await _context.Entry(admin.personalClubProfile).Reference(p => p.user).LoadAsync();
+            }
+
             var pagos = await _context.Payments
                 .Include(p => p.client)
                     .ThenInclude(c => c.user)
@@ -40,7 +57,7 @@ namespace GolAhora.Services
             {
                 titulo = "Reporte de Ingresos",
                 fechaGeneracion = DateTime.Now,
-                generadoPor = "Admin",
+                generadoPor = admin.personalClubProfile?.user?.UserName ?? "Admin",
                 periodoDesde = dto.periodoDesde,
                 periodoHasta = dto.periodoHasta,
                 totalIngresos = pagos.Sum(p => p.amount),
@@ -49,9 +66,61 @@ namespace GolAhora.Services
             };
         }
 
-        // RF58 – Generar reporte de asistencia totales
-        public async Task<ReporteAsistenciaDTO> GenerarReporteAsistencia(ReporteRequestDTO dto)
+        public async Task<byte[]> ImprimirReporteIngresos(int idAdmin, ReporteRequestDTO dto)
         {
+            var reporte = await GenerarReporteIngresos(idAdmin, dto);
+
+            var contenido =
+                "==================================================\n" +
+                "                    GOL AHORA                     \n" +
+                "            REPORTE DE INGRESOS TOTALES           \n" +
+                "==================================================\n" +
+                $"Fecha de Generación: {reporte.fechaGeneracion:dd/MM/yyyy HH:mm}\n" +
+                $"Generado por: {reporte.generadoPor}\n" +
+                $"Período: {reporte.periodoDesde:dd/MM/yyyy} - {reporte.periodoHasta:dd/MM/yyyy}\n" +
+                "--------------------------------------------------\n" +
+                $"TOTAL INGRESOS: ${reporte.totalIngresos}\n" +
+                "--------------------------------------------------\n" +
+                "INGRESOS POR CONCEPTO:\n";
+
+            foreach (var concepto in reporte.ingresosPorConcepto)
+                contenido += $"  {concepto.Key}: ${concepto.Value}\n";
+
+            contenido += "--------------------------------------------------\n" +
+                "DETALLE DE COBROS:\n";
+
+            foreach (var cobro in reporte.cobros)
+                contenido +=
+                    $"  ID: {cobro.idCobro} | Cliente: {cobro.clienteNombre} | " +
+                    $"Monto: ${cobro.monto} | Fecha: {cobro.fechaPago:dd/MM/yyyy} | " +
+                    $"Método: {cobro.metodoPago} | Estado: {(cobro.exitoso ? "Exitoso" : "Fallido")}\n";
+
+            contenido +=
+                "==================================================\n" +
+                "              GOL AHORA - Control Interno         \n" +
+                "==================================================\n";
+
+            return Encoding.UTF8.GetBytes(contenido);
+        }
+
+        // ==========================================
+        // RF58 – REPORTE DE ASISTENCIA TOTALES
+        // ==========================================
+
+        public async Task<ReporteAsistenciaDTO> GenerarReporteAsistencia(int idAdmin, ReporteRequestDTO dto)
+        {
+            var admin = await _context.AdminProfiles.FindAsync(idAdmin);
+            if (admin == null)
+            {
+                throw new NotFoundException("Admin no encontrado");
+            }
+
+            await _context.Entry(admin).Reference(a => a.personalClubProfile).LoadAsync();
+            if (admin.personalClubProfile != null)
+            {
+                await _context.Entry(admin.personalClubProfile).Reference(p => p.user).LoadAsync();
+            }
+
             var asistencias = await _context.Assistances
                 .Include(a => a.client)
                     .ThenInclude(c => c.user)
@@ -64,7 +133,7 @@ namespace GolAhora.Services
                 clienteNombre = a.client.user.name + " " + a.client.user.lastName,
                 claseNombre = a.clas.name,
                 presente = a.isAssisted,
-                observaciones = a.observations
+                observaciones = a.observations // Corrección: Volvemos a 'observaciones' en español para el DTO
             }).ToList();
 
             var asistenciasPorClase = asistencias
@@ -75,7 +144,7 @@ namespace GolAhora.Services
             {
                 titulo = "Reporte de Asistencia",
                 fechaGeneracion = DateTime.Now,
-                generadoPor = "Admin",
+                generadoPor = admin.personalClubProfile?.user?.UserName ?? "Admin",
                 periodoDesde = dto.periodoDesde,
                 periodoHasta = dto.periodoHasta,
                 totalAsistencias = asistencias.Count,
@@ -84,9 +153,62 @@ namespace GolAhora.Services
             };
         }
 
-        // RF59 – Generar reporte de reservas totales
-        public async Task<ReporteReservaDTO> GenerarReporteReservas(ReporteRequestDTO dto)
+        public async Task<byte[]> ImprimirReporteAsistencia(int idAdmin, ReporteRequestDTO dto)
         {
+            var reporte = await GenerarReporteAsistencia(idAdmin, dto);
+
+            var contenido =
+                "==================================================\n" +
+                "                    GOL AHORA                     \n" +
+                "          REPORTE DE ASISTENCIA TOTALES           \n" +
+                "==================================================\n" +
+                $"Fecha de Generación: {reporte.fechaGeneracion:dd/MM/yyyy HH:mm}\n" +
+                $"Generado por: {reporte.generadoPor}\n" +
+                $"Período: {reporte.periodoDesde:dd/MM/yyyy} - {reporte.periodoHasta:dd/MM/yyyy}\n" +
+                "--------------------------------------------------\n" +
+                $"TOTAL ASISTENCIAS: {reporte.totalAsistencias}\n" +
+                "--------------------------------------------------\n" +
+                "ASISTENCIAS POR CLASE:\n";
+
+            foreach (var clase in reporte.asistenciasPorClase)
+                contenido += $"  {clase.Key}: {clase.Value}\n";
+
+            contenido += "--------------------------------------------------\n" +
+                "DETALLE DE ASISTENCIAS:\n";
+
+            foreach (var asistencia in reporte.asistencias)
+                contenido +=
+                    $"  ID: {asistencia.id} | Cliente: {asistencia.clienteNombre} | " +
+                    $"Clase: {asistencia.claseNombre} | " +
+                    $"Presente: {(asistencia.presente ? "Sí" : "No")} | " +
+                    $"Observaciones: {asistencia.observaciones}\n"; // Corrección aquí también
+
+            contenido +=
+                "==================================================\n" +
+                "              GOL AHORA - Control Interno         \n" +
+                "==================================================\n";
+
+            return Encoding.UTF8.GetBytes(contenido);
+        }
+
+        // ==========================================
+        // RF59 – REPORTE DE RESERVAS TOTALES
+        // ==========================================
+
+        public async Task<ReporteReservaDTO> GenerarReporteReservas(int idAdmin, ReporteRequestDTO dto)
+        {
+            var admin = await _context.AdminProfiles.FindAsync(idAdmin);
+            if (admin == null)
+            {
+                throw new NotFoundException("Admin no encontrado");
+            }
+
+            await _context.Entry(admin).Reference(a => a.personalClubProfile).LoadAsync();
+            if (admin.personalClubProfile != null)
+            {
+                await _context.Entry(admin.personalClubProfile).Reference(p => p.user).LoadAsync();
+            }
+
             var reservas = await _context.Reservations
                 .Include(r => r.client)
                     .ThenInclude(c => c.user)
@@ -118,7 +240,7 @@ namespace GolAhora.Services
             {
                 titulo = "Reporte de Reservas",
                 fechaGeneracion = DateTime.Now,
-                generadoPor = "Admin",
+                generadoPor = admin.personalClubProfile?.user?.UserName ?? "Admin",
                 periodoDesde = dto.periodoDesde,
                 periodoHasta = dto.periodoHasta,
                 totalReservas = reservas.Count,
@@ -126,6 +248,49 @@ namespace GolAhora.Services
                 reservasPorEstado = reservasPorEstado,
                 reservas = reservasDTO
             };
+        }
+
+        public async Task<byte[]> ImprimirReporteReservas(int idAdmin, ReporteRequestDTO dto)
+        {
+            var reporte = await GenerarReporteReservas(idAdmin, dto);
+
+            var contenido =
+                "==================================================\n" +
+                "                    GOL AHORA                     \n" +
+                "           REPORTE DE RESERVAS TOTALES            \n" +
+                "==================================================\n" +
+                $"Fecha de Generación: {reporte.fechaGeneracion:dd/MM/yyyy HH:mm}\n" +
+                $"Generado por: {reporte.generadoPor}\n" +
+                $"Período: {reporte.periodoDesde:dd/MM/yyyy} - {reporte.periodoHasta:dd/MM/yyyy}\n" +
+                "--------------------------------------------------\n" +
+                $"TOTAL RESERVAS: {reporte.totalReservas}\n" +
+                "--------------------------------------------------\n" +
+                "RESERVAS POR CANCHA:\n";
+
+            foreach (var cancha in reporte.reservasPorCanchas)
+                contenido += $"  {cancha.Key}: {cancha.Value}\n";
+
+            contenido += "RESERVAS POR ESTADO:\n";
+
+            foreach (var estado in reporte.reservasPorEstado)
+                contenido += $"  {estado.Key}: {estado.Value}\n";
+
+            contenido += "--------------------------------------------------\n" +
+                "DETALLE DE RESERVAS:\n";
+
+            foreach (var reserva in reporte.reservas)
+                contenido +=
+                    $"  ID: {reserva.id} | Cliente: {reserva.clienteNombre} | " +
+                    $"Cancha: {reserva.canchaNombre} | Fecha: {reserva.fechaReserva:dd/MM/yyyy} | " +
+                    $"Inicio: {reserva.horaInicio} | Fin: {reserva.horaFin} | " +
+                    $"Pagado: {(reserva.pagado ? "Sí" : "No")} | Total: ${reserva.precioTotal}\n";
+
+            contenido +=
+                "==================================================\n" +
+                "              GOL AHORA - Control Interno         \n" +
+                "==================================================\n";
+
+            return Encoding.UTF8.GetBytes(contenido);
         }
     }
 }

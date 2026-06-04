@@ -202,11 +202,6 @@ namespace GolAhora.Services
             if (!clase.isActive)
                 return (false, "No se puede tomar asistencia: La clase se encuentra cancelada.");
 
-            var previas = await _context.Set<Assistance>().Where(a => a.classId == idClass).ToListAsync();
-            if (previas.Any())
-            {
-                _context.Set<Assistance>().RemoveRange(previas);
-            }
 
             foreach (var dto in dtos)
             {
