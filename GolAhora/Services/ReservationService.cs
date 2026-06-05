@@ -20,6 +20,10 @@ namespace GolAhora.Services
             {
                 try
                 {
+                    // Validar fecha no pasada
+                    if (dto.reservationDate.Date < DateTime.Now.Date)
+                        return (false, "No se puede reservar para una fecha pasada.");
+
                     // RS01 – no más de 30 días de antelación
                     if ((dto.reservationDate - DateTime.Now).TotalDays > 30)
                         return (false, "No se pueden realizar reservas con más de 30 días de antelación.");
@@ -92,6 +96,7 @@ namespace GolAhora.Services
                     if (pagoEnUso)
                         return (false, "Este pago ya está siendo utilizado por otra reserva.");
 
+                    // Usar el monto del pago (que YA tiene descuento aplicado si existe)
                     var nuevaReservation = new Reservation
                     {
                         idClient = dto.idClient,
@@ -99,7 +104,7 @@ namespace GolAhora.Services
                         reservationDate = dto.reservationDate,
                         startTime = dto.startTime,
                         endTime = dto.endTime,
-                        totalPrice = totalPrice,
+                        totalPrice = pago.amount,  // ← Usa el amount del pago (con descuento)
                         idPayment = dto.idPayment.Value,
                         isPaid = true
                     };
@@ -108,7 +113,7 @@ namespace GolAhora.Services
                     await _context.SaveChangesAsync();
                     await transaction.CommitAsync();
 
-                    return (true, $"Reserva registrada exitosamente. Total: {totalPrice:C}");
+                    return (true, $"Reserva registrada exitosamente. Total: {pago.amount:C}");
                 }
                 catch (Exception ex)
                 {
@@ -135,6 +140,11 @@ namespace GolAhora.Services
 
                     if (!reservation.isPaid)
                         return (false, "Solo se pueden modificar reservas pagadas.");
+
+                    // Validar >= 6 horas antes
+                    var antelacion = reservation.reservationDate.Date + reservation.startTime - DateTime.Now;
+                    if (antelacion.TotalHours < 6)
+                        return (false, "No se puede modificar la reserva con menos de 6 horas de anticipación.");
 
                     var duracion = (dto.endTime - dto.startTime).TotalHours;
                     var nombre = reservation.court.courtType.name.ToLower();
@@ -203,6 +213,15 @@ namespace GolAhora.Services
                     if (!reservation.isPaid)
                         return (false, "Solo se pueden modificar reservas pagadas.");
 
+                    // Validar >= 6 horas antes
+                    var antelacion = reservation.reservationDate.Date + reservation.startTime - DateTime.Now;
+                    if (antelacion.TotalHours < 6)
+                        return (false, "No se puede modificar la reserva con menos de 6 horas de anticipación.");
+
+                    // Validar fecha no pasada
+                    if (dto.reservationDate.Date < DateTime.Now.Date)
+                        return (false, "No se puede modificar a una fecha pasada.");
+
                     if ((dto.reservationDate - DateTime.Now).TotalDays > 30)
                         return (false, "No se pueden modificar a más de 30 días de antelación.");
 
@@ -239,6 +258,87 @@ namespace GolAhora.Services
                 {
                     await transaction.RollbackAsync();
                     return (false, $"Error al modificar la fecha: {ex.Message}");
+                }
+            }
+        }
+
+        // RF20c – Modificar FECHA Y HORARIO de una reserva pagada
+        public async Task<(bool success, string message)> ModificarAmbos(int id, CambiarFechaYHorarioDTO dto)
+        {
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    var reservation = await _context.Reservations
+                        .Include(r => r.court)
+                        .ThenInclude(c => c.courtType)
+                        .FirstOrDefaultAsync(r => r.idReservation == id);
+
+                    if (reservation == null)
+                        return (false, "Reserva no encontrada.");
+
+                    if (!reservation.isPaid)
+                        return (false, "Solo se pueden modificar reservas pagadas.");
+
+                    // Validar >= 6 horas antes
+                    var antelacion = reservation.reservationDate.Date + reservation.startTime - DateTime.Now;
+                    if (antelacion.TotalHours < 6)
+                        return (false, "No se puede modificar la reserva con menos de 6 horas de anticipación.");
+
+                    // Validar fecha no pasada
+                    if (dto.reservationDate.Date < DateTime.Now.Date)
+                        return (false, "No se puede modificar a una fecha pasada.");
+
+                    // Validar 30 días
+                    if ((dto.reservationDate - DateTime.Now).TotalDays > 30)
+                        return (false, "No se pueden modificar a más de 30 días de antelación.");
+
+                    var duracion = (dto.endTime - dto.startTime).TotalHours;
+                    var nombre = reservation.court.courtType.name.ToLower();
+
+                    var maxHoras = nombre.Contains("5") ? 1.0
+                                 : nombre.Contains("7") ? 1.5
+                                 : nombre.Contains("11") ? 2.0
+                                 : 2.0;
+
+                    if (duracion > maxHoras)
+                        return (false, $"La duración máxima para este tipo de cancha es {maxHoras} horas.");
+
+                    var disponible = await _context.Disponibilities.AnyAsync(d =>
+                        d.courtId == reservation.idCourt &&
+                        d.day == dto.reservationDate.DayOfWeek &&
+                        d.startTime <= dto.startTime &&
+                        d.endTime >= dto.endTime &&
+                        d.isAvailable
+                    );
+
+                    if (!disponible)
+                        return (false, "Ese horario no está disponible en la nueva fecha.");
+
+                    var superpuesta = await _context.Reservations.AnyAsync(r =>
+                        r.idReservation != id &&
+                        r.idCourt == reservation.idCourt &&
+                        r.reservationDate.Date == dto.reservationDate.Date &&
+                        r.startTime < dto.endTime &&
+                        r.endTime > dto.startTime
+                    );
+
+                    if (superpuesta)
+                        return (false, "Ya existe una reserva en ese horario para esa fecha.");
+
+                    reservation.reservationDate = dto.reservationDate;
+                    reservation.startTime = dto.startTime;
+                    reservation.endTime = dto.endTime;
+
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+
+                    return (true, "Fecha y horario modificados exitosamente.");
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    return (false, $"Error al modificar la reserva: {ex.Message}");
                 }
             }
         }

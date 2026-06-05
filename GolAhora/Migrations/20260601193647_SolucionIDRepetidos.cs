@@ -26,17 +26,6 @@ namespace GolAhora.Migrations
                 name: "IX_Payments_discountidDiscount",
                 table: "Payments");
 
-          
-
-            migrationBuilder.DropColumn(
-                name: "clientidClient",
-                table: "Payments");
-
-            migrationBuilder.DropColumn(
-                name: "discountidDiscount",
-                table: "Payments");
-
-
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_idClient",
                 table: "Payments",
@@ -82,39 +71,6 @@ namespace GolAhora.Migrations
             migrationBuilder.DropIndex(
                 name: "IX_Payments_idDiscount",
                 table: "Payments");
-
-            migrationBuilder.RenameColumn(
-                name: "idMatch",
-                table: "Results",
-                newName: "penaltiesTeamVisitor");
-
-            migrationBuilder.AddColumn<int>(
-                name: "foulsTeamLocal",
-                table: "Results",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
-                name: "foulsTeamVisitor",
-                table: "Results",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<string>(
-                name: "observations",
-                table: "Results",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.AddColumn<int>(
-                name: "penaltiesTeamLocal",
-                table: "Results",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
                 name: "clientidClient",
