@@ -13,8 +13,8 @@ using AppContext = GolAhora.Data.AppContext;
 namespace GolAhora.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20260522210740_IdentityCreate")]
-    partial class IdentityCreate
+    [Migration("20260605182240_MigracionFinal")]
+    partial class MigracionFinal
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,6 +61,9 @@ namespace GolAhora.Migrations
 
                     b.Property<int>("clientId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("date")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("isAssisted")
                         .HasColumnType("bit");
@@ -179,7 +182,7 @@ namespace GolAhora.Migrations
                     b.Property<int?>("ClassidClass")
                         .HasColumnType("int");
 
-                    b.Property<int>("idTeam")
+                    b.Property<int?>("idTeam")
                         .HasColumnType("int");
 
                     b.Property<int>("idUser")
@@ -354,15 +357,10 @@ namespace GolAhora.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("receiptidReceipt")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("startDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("idDiscount");
-
-                    b.HasIndex("receiptidReceipt");
 
                     b.ToTable("Discounts");
                 });
@@ -476,12 +474,6 @@ namespace GolAhora.Migrations
                     b.Property<double>("amount")
                         .HasColumnType("float");
 
-                    b.Property<int>("clientidClient")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("discountidDiscount")
-                        .HasColumnType("int");
-
                     b.Property<int>("idClient")
                         .HasColumnType("int");
 
@@ -500,9 +492,9 @@ namespace GolAhora.Migrations
 
                     b.HasKey("idPayment");
 
-                    b.HasIndex("clientidClient");
+                    b.HasIndex("idClient");
 
-                    b.HasIndex("discountidDiscount");
+                    b.HasIndex("idDiscount");
 
                     b.ToTable("Payments");
                 });
@@ -545,10 +537,14 @@ namespace GolAhora.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idProfessor"));
 
+                    b.Property<string>("certification")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("idPersonalClub")
                         .HasColumnType("int");
 
-                    b.Property<string>("specialty")
+                    b.Property<string>("speciality")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -578,9 +574,6 @@ namespace GolAhora.Migrations
                     b.Property<int>("idPayment")
                         .HasColumnType("int");
 
-                    b.Property<int>("paymentidPayment")
-                        .HasColumnType("int");
-
                     b.Property<string>("receiptNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -590,7 +583,8 @@ namespace GolAhora.Migrations
 
                     b.HasKey("idReceipt");
 
-                    b.HasIndex("paymentidPayment");
+                    b.HasIndex("idPayment")
+                        .IsUnique();
 
                     b.ToTable("Receipts");
                 });
@@ -683,20 +677,7 @@ namespace GolAhora.Migrations
                     b.Property<int>("idResults")
                         .HasColumnType("int");
 
-                    b.Property<int>("foulsTeamLocal")
-                        .HasColumnType("int");
-
-                    b.Property<int>("foulsTeamVisitor")
-                        .HasColumnType("int");
-
-                    b.Property<string>("observations")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("penaltiesTeamLocal")
-                        .HasColumnType("int");
-
-                    b.Property<int>("penaltiesTeamVisitor")
+                    b.Property<int>("idMatch")
                         .HasColumnType("int");
 
                     b.Property<int>("scoreTeamLocal")
@@ -846,6 +827,43 @@ namespace GolAhora.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ConcurrencyStamp = "client-role",
+                            Name = "Client",
+                            NormalizedName = "CLIENT"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ConcurrencyStamp = "personal-club-role",
+                            Name = "PersonalClubProfile",
+                            NormalizedName = "PERSONALCLUBPROFILE"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ConcurrencyStamp = "admin-role",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ConcurrencyStamp = "employee-role",
+                            Name = "Employee",
+                            NormalizedName = "EMPLOYEE"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ConcurrencyStamp = "professor-role",
+                            Name = "Professor",
+                            NormalizedName = "PROFESSOR"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -1040,8 +1058,7 @@ namespace GolAhora.Migrations
                     b.HasOne("GolAhora.Models.Team", "team")
                         .WithMany("players")
                         .HasForeignKey("idTeam")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("GolAhora.Models.User", "user")
                         .WithOne("clientProfile")
@@ -1090,17 +1107,6 @@ namespace GolAhora.Migrations
                         .IsRequired();
 
                     b.Navigation("courtType");
-                });
-
-            modelBuilder.Entity("GolAhora.Models.Discounts", b =>
-                {
-                    b.HasOne("GolAhora.Models.Receipts", "receipt")
-                        .WithMany()
-                        .HasForeignKey("receiptidReceipt")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("receipt");
                 });
 
             modelBuilder.Entity("GolAhora.Models.Disponibility", b =>
@@ -1163,14 +1169,15 @@ namespace GolAhora.Migrations
             modelBuilder.Entity("GolAhora.Models.Payments", b =>
                 {
                     b.HasOne("GolAhora.Models.ClientProfile", "client")
-                        .WithMany()
-                        .HasForeignKey("clientidClient")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("payments")
+                        .HasForeignKey("idClient")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("GolAhora.Models.Discounts", "discount")
                         .WithMany("payments")
-                        .HasForeignKey("discountidDiscount");
+                        .HasForeignKey("idDiscount")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("client");
 
@@ -1202,9 +1209,9 @@ namespace GolAhora.Migrations
             modelBuilder.Entity("GolAhora.Models.Receipts", b =>
                 {
                     b.HasOne("GolAhora.Models.Payments", "payment")
-                        .WithMany()
-                        .HasForeignKey("paymentidPayment")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne("receipt")
+                        .HasForeignKey("GolAhora.Models.Receipts", "idPayment")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("payment");
@@ -1250,13 +1257,13 @@ namespace GolAhora.Migrations
 
             modelBuilder.Entity("GolAhora.Models.Result", b =>
                 {
-                    b.HasOne("GolAhora.Models.Match", "game")
+                    b.HasOne("GolAhora.Models.Match", "match")
                         .WithOne("result")
                         .HasForeignKey("GolAhora.Models.Result", "idResults")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("game");
+                    b.Navigation("match");
                 });
 
             modelBuilder.Entity("GolAhora.Models.Team", b =>
@@ -1354,6 +1361,8 @@ namespace GolAhora.Migrations
                 {
                     b.Navigation("assistances");
 
+                    b.Navigation("payments");
+
                     b.Navigation("reservations");
 
                     b.Navigation("teamsCaptain");
@@ -1396,6 +1405,9 @@ namespace GolAhora.Migrations
             modelBuilder.Entity("GolAhora.Models.Payments", b =>
                 {
                     b.Navigation("competenceTeams");
+
+                    b.Navigation("receipt")
+                        .IsRequired();
 
                     b.Navigation("reservation")
                         .IsRequired();

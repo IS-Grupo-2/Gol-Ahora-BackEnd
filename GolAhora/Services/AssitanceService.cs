@@ -24,6 +24,7 @@ namespace GolAhora.Services
                 clientId = dto.idClient,
                 classId = dto.classId,
                 isAssisted = dto.isAssisted,
+                date = DateTime.Now,
                 observations = dto.observations
             };
 
