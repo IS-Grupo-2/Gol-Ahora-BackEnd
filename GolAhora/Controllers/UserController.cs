@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace GolAhora.Controllers
 {
-    [Authorize]
+    
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : Controller

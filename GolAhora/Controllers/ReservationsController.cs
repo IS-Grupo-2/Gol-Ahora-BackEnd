@@ -72,6 +72,25 @@ namespace GolAhora.Controllers
             return Ok(new { mensaje = message });
         }
 
+        // RF20c – PUT api/reservations/{id}/ambos
+        [HttpPut("{id}/ambos")]
+        public async Task<IActionResult> ModificarAmbos(int id, [FromBody] CambiarFechaYHorarioDTO dto)
+        {
+            if (dto == null)
+                return BadRequest("Los datos de la reserva son inválidos.");
+
+            var (success, message) = await _reservationService.ModificarAmbos(id, dto);
+
+            if (!success)
+            {
+                if (message.Contains("no encontrada"))
+                    return NotFound(new { mensaje = message });
+                return BadRequest(new { mensaje = message });
+            }
+
+            return Ok(new { mensaje = message });
+        }
+
         // RF21 – GET api/reservations
         [HttpGet]
         public async Task<IActionResult> ListarReservations()

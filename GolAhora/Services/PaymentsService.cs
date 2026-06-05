@@ -14,7 +14,8 @@ public class PaymentsService
     {
         _context = context;
     }
-    // RF44 – El sistema debe registrar los cobros de los servicios.MILENA
+
+    // RF44 – El sistema debe registrar los cobros de los servicios.
     public async Task<(bool success, string message)> RegistrarCobro(PaymentDTO dto)
     {
         var nuevoCobro = new Payments
@@ -23,7 +24,7 @@ public class PaymentsService
             amount = dto.amount,
             paymentDate = dto.paymentDate,
             paymentMethod = dto.paymentMethod,
-            isSuccessful = true, // Al registrarse arranca como exitoso
+            isSuccessful = true,
             idDiscount = dto.idDiscount
         };
 
@@ -40,7 +41,6 @@ public class PaymentsService
         if (cobro == null)
             return (false, "Cobro no encontrado.");
 
-        // Actualizamos los valores con los que vienen en el DTO
         cobro.idClient = dto.idClient;
         cobro.amount = dto.amount;
         cobro.paymentDate = dto.paymentDate;
@@ -81,7 +81,7 @@ public class PaymentsService
         return (true, "Cobro dado de baja de manera exitosa.");
     }
 
-    // CONSULTAR COBRO (Trae el detalle de un cobro específico por su ID)
+    // CONSULTAR COBRO
     public async Task<PaymentDetailDTO?> ConsultarCobro(int id)
     {
         return await _context.Payments
@@ -99,7 +99,7 @@ public class PaymentsService
             .FirstOrDefaultAsync();
     }
 
-    // CALCULAR MONTO TOTAL (Suma todos los cobros exitosos del sistema)
+    // CALCULAR MONTO TOTAL
     public async Task<double> CalcularMontoTotal()
     {
         return await _context.Payments
@@ -107,7 +107,7 @@ public class PaymentsService
             .SumAsync(p => p.amount);
     }
 
-    // APLICAR DESCUENTO (Recibe el ID del cobro y el objeto descuento)
+    // APLICAR DESCUENTO
     public async Task AplicarDescuento(int idPayment, Discounts descuento)
     {
         var cobro = await _context.Payments.FindAsync(idPayment);
@@ -120,6 +120,7 @@ public class PaymentsService
             await _context.SaveChangesAsync();
         }
     }
+
     // RF48 --> Lista completa de pagos
     public async Task<IEnumerable<Payments>> GetPaymentsAsync()
     {
@@ -144,6 +145,10 @@ public class PaymentsService
         var payment = await GetPaymentByIdAsync(id);
         if (payment == null) return null;
 
+        var descuentoAplicado = payment.discount?.discountValue ?? 0;
+        var montoOriginal = payment.amount + descuentoAplicado;
+        var montoFinal = payment.amount;
+
         var ticketContent =
             "==================================================\n" +
             "                    GOL AHORA                     \n" +
@@ -158,16 +163,17 @@ public class PaymentsService
             $"ID Cliente: {payment.idClient}\n" +
             "--------------------------------------------------\n" +
             "DETALLE DEL COBRO:\n" +
-            $"Monto Base: ${payment.amount}\n";
+            $"Monto Base: ${montoOriginal:F2}\n";
 
         if (payment.discount != null)
         {
-            ticketContent += $"Descuento Aplicado: {payment.discount.nombre} (-${payment.discount.discountValue})\n";
+            ticketContent += $"Descuento Aplicado: {payment.discount.nombre}\n";
+            ticketContent += $"Valor Descuento: -${descuentoAplicado:F2}\n";
         }
 
         ticketContent +=
             "--------------------------------------------------\n" +
-            $"TOTAL ABONADO: ${payment.amount}\n" +
+            $"TOTAL ABONADO: ${montoFinal:F2}\n" +
             "==================================================\n" +
             "       Gracias por su pago - Control Interno      \n" +
             "==================================================\n";
