@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GolAhora.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ProfileController : Controller

@@ -1,5 +1,8 @@
 ﻿using GolAhora.DTOs;
 using GolAhora.Exceptions;
+using GolAhora.Models;
+using GolAhora.Query;
+using Microsoft.AspNetCore.Identity;
 using AppContext = GolAhora.Data.AppContext;
 
 namespace GolAhora.Services
@@ -21,7 +24,7 @@ namespace GolAhora.Services
                 throw new NotFoundException("Admin no encontrado");
 
             admin.accessLevel = dto.accessLevel;
-           
+
             _appContext.AdminProfiles.Update(admin);
             await _appContext.SaveChangesAsync();
 
@@ -41,7 +44,7 @@ namespace GolAhora.Services
             await _appContext.SaveChangesAsync();
 
             return "Empleado actualizado exitosamente";
-        } 
+        }
 
         public async Task<string?> UpdateProfessor(int professorId, UpdateProfessorDTO dto)
         {

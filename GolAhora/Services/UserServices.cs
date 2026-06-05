@@ -333,5 +333,118 @@ namespace GolAhora.Services
 
              return ("El usuario se elimino correctamente");
         }
+
+        public async Task<List<ClientDto>> GetAllClients()
+        {
+            var users = await _userQuery.GetAllUser();
+
+            var clients = new List<ClientDto>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+
+                if (roles.Contains("Client") && user.clientProfile != null)
+                {
+                    clients.Add(new ClientDto
+                    {
+                        idUser = user.Id,
+                        idClient = user.clientProfile.idClient,
+                        name = user.name,
+                        lastName = user.lastName,
+                        DNI = user.DNI,
+                        userName = user.UserName!,
+                        email = user.Email!,
+                        phoneNumber = user.PhoneNumber!,
+                        isActive = user.isActive,
+                        roles = roles,
+                        numberPartner = user.clientProfile.numberPartner,
+                        idTeam = user.clientProfile.idTeam
+                    });
+                }
+            }
+
+            if (clients.Count == 0)
+                throw new NotFoundException("No se encontraron profesores");
+
+            return clients;
+        }
+
+        public async Task<List<EmployeeDto>> GetAllEmployees()
+        {
+            var users = await _userQuery.GetAllUser();
+
+            var employee = new List<EmployeeDto>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+
+                if (roles.Contains("Employee") && user.personalClubProfile?.employeeProfile != null)
+                {
+                    employee.Add(new EmployeeDto
+                    {
+                        idUser = user.Id,
+                        idPersonalClub = user.personalClubProfile.idPersonalClub,
+                        idEmployee = user.personalClubProfile.employeeProfile.idEmployee,
+                        name = user.name,
+                        lastName = user.lastName,
+                        DNI = user.DNI,
+                        userName = user.UserName!,
+                        email = user.Email!,
+                        phoneNumber = user.PhoneNumber!,
+                        isActive = user.isActive,
+                        roles = roles,
+                        legajo = user.personalClubProfile.legajo,
+                        startDate = user.personalClubProfile.startDate,
+                        turno = user.personalClubProfile.turno,
+                        sector = user.personalClubProfile.employeeProfile.sector
+                    });
+                }
+            }
+
+            if (employee.Count == 0)
+                throw new NotFoundException("No se encontraron profesores");
+
+            return employee;
+        }
+
+        public async Task<List<ProfessorDto>> GetAllProfessors()
+        {
+            var users = await _userQuery.GetAllUser();
+
+            var professors = new List<ProfessorDto>();
+
+            foreach (var user in users) { 
+                var roles = await _userManager.GetRolesAsync(user);
+
+                if(roles.Contains("Professor") && user.personalClubProfile?.professorProfile != null){
+                    professors.Add(new ProfessorDto
+                    {
+                        idUser = user.Id,
+                        idPersonalClub = user.personalClubProfile.idPersonalClub,
+                        idProfessor = user.personalClubProfile.professorProfile.idProfessor,
+                        name = user.name,
+                        lastName = user.lastName,
+                        DNI = user.DNI,
+                        userName = user.UserName!,
+                        email = user.Email!,
+                        phoneNumber = user.PhoneNumber!,
+                        isActive = user.isActive,
+                        roles = roles,
+                        legajo = user.personalClubProfile.legajo,
+                        startDate = user.personalClubProfile.startDate,
+                        turno = user.personalClubProfile.turno,
+                        speciality = user.personalClubProfile.professorProfile.speciality,
+                        certification = user.personalClubProfile.professorProfile.certification
+                    });
+                }
+            }
+
+            if (professors.Count == 0)
+                throw new NotFoundException("No se encontraron profesores");
+
+            return professors;
+        }
     }
 }

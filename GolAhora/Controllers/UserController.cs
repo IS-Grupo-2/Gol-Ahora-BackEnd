@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace GolAhora.Controllers
 {
-    
+
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : Controller
@@ -30,7 +30,7 @@ namespace GolAhora.Controllers
 
             var result = await _userService.Me(id);
 
-            if(!result.isActive)
+            if (!result.isActive)
                 return Unauthorized("Usuario inactivo");
 
             return new JsonResult(result) { StatusCode = 201 };
@@ -54,14 +54,37 @@ namespace GolAhora.Controllers
         public async Task<IActionResult> updateUser(int id, UpdateUserDTO upUser)
         {
             var result = await _userService.UpdateUser(id, upUser);
-            return new JsonResult(result) {  StatusCode = 200 };
+            return new JsonResult(result) { StatusCode = 200 };
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> deleteUser(int id)
         {
             var result = await _userService.DeleteUser(id);
-            return new JsonResult(result) { StatusCode = 201 };
+            return new JsonResult(result) { StatusCode = 200 };
+        }
+
+        [HttpGet("/Users/Clients")]
+        public async Task<IActionResult> GetAllClients()
+        {
+            var result = await _userService.GetAllClients();
+            return new JsonResult(result) { StatusCode = 200 };
+        }
+
+        [HttpGet("/Users/Employees")]
+        public async Task<IActionResult> GetAllEmployees()
+        {
+            var result = await _userService.GetAllEmployees();
+            return new JsonResult(result) { StatusCode = 200 };
+
+        }
+
+        [HttpGet("/Users/Professors")]
+        public async Task<IActionResult> GetAllProfessors()
+        {
+            var result = await _userService.GetAllProfessors();
+            return new JsonResult(result) { StatusCode = 200 };
+
         }
     }
 }
