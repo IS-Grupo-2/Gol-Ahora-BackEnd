@@ -64,19 +64,19 @@ builder.Services.AddAuthentication(options =>
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 })
     .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
         {
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = builder.Configuration["JWT:Issuer"],
-                ValidAudience = builder.Configuration["JWT:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!)
-                    )
-            };
-        }
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["JWT:Issuer"],
+            ValidAudience = builder.Configuration["JWT:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!)
+                )
+        };
+    }
     );
 
 // Registro de autenticacion
@@ -121,7 +121,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("Front", policy =>
     {
         policy
-            .WithOrigins("https://localhost:5173", "https://localhost:7277")
+            .WithOrigins("http://localhost:5173", "http://localhost:7277")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
