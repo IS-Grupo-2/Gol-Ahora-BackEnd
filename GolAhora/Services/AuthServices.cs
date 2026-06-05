@@ -228,7 +228,7 @@ namespace GolAhora.Services
                 throw new BadRequestException(errors);
             }
 
-            var roleResult = await _userManager.AddToRoleAsync(user, "PersonalClub");
+            var roleResult = await _userManager.AddToRoleAsync(user, "PersonalClubProfile");
             if (!roleResult.Succeeded)
             {
                 var errors = string.Join(",", result.Errors.Select(e => e.Description));
