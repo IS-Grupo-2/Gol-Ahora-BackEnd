@@ -27,7 +27,9 @@ namespace GolAhora.Models
         public string conditions { get; set; } = null!;
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
-        public Receipts receipt { get; set; } = null!;
+
+
+        //public Receipts receipt { get; set; } = null!;
 
         public ICollection<Payments> payments { get; set; } = new List<Payments>();
     }

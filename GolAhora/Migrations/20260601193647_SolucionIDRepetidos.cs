@@ -26,14 +26,6 @@ namespace GolAhora.Migrations
                 name: "IX_Payments_discountidDiscount",
                 table: "Payments");
 
-            migrationBuilder.DropColumn(
-                name: "clientidClient",
-                table: "Payments");
-
-            migrationBuilder.DropColumn(
-                name: "discountidDiscount",
-                table: "Payments");
-
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_idClient",
                 table: "Payments",

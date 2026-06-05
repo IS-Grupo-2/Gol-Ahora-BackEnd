@@ -299,6 +299,9 @@ namespace GolAhora.Data
                 .HasForeignKey<Receipts>(r => r.idPayment)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            
+
+
             modelBuilder.Entity<IdentityRole<int>>().HasData(
                 new IdentityRole<int>
                 {

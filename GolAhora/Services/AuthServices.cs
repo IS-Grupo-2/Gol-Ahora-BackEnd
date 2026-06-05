@@ -5,11 +5,12 @@ using GolAhora.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-
+using AppContext = GolAhora.Data.AppContext;
 
 namespace GolAhora.Services
 {
@@ -18,12 +19,14 @@ namespace GolAhora.Services
         private readonly ClientCommand _clientCommand;
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly AppContext _appContext;
 
-        public AuthServices(ClientCommand clientCommand, UserManager<User> userManager, IConfiguration configuration)
+        public AuthServices(ClientCommand clientCommand, UserManager<User> userManager, IConfiguration configuration, AppContext appContext)
         {
             _clientCommand = clientCommand;
             _userManager = userManager;
             _configuration = configuration;
+            _appContext = appContext;
         }
 
         public async Task<IActionResult> RegisterAdmin(RegisterAdminDto dto)
@@ -122,11 +125,14 @@ namespace GolAhora.Services
                 var errors = string.Join(",", result.Errors.Select(e => e.Description));
                 throw new BadRequestException(errors);
             }
+            
+            var partnerNumber = await _appContext.ClientProfiles.ToListAsync();
+            int contador = partnerNumber.Count() + 1;
 
             var profile = new ClientProfile
             {
                 idUser = user.Id,
-                numberPartner = dto.numberPartner,
+                numberPartner = contador,
                 idTeam = dto.idTeam
             };
 
