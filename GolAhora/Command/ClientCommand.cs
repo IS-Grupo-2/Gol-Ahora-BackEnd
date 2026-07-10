@@ -1,6 +1,7 @@
-﻿using GolAhora.DTOs;
+using GolAhora.DTOs;
 using GolAhora.Models;
 using GolAhora.Exceptions;
+using GolAhora.Data.UnitOfWork;
 using AppContext = GolAhora.Data.AppContext;
 
 namespace GolAhora.Command
@@ -8,40 +9,42 @@ namespace GolAhora.Command
     public class ClientCommand
     {
         private readonly AppContext _appContext;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ClientCommand(AppContext appContext)
+        public ClientCommand(IUnitOfWork unitOfWork)
         {
-            _appContext = appContext;
+            _unitOfWork = unitOfWork;
+            _appContext = unitOfWork.Context;
         }
 
         public async Task AddAdmin(AdminProfile admin)
         {
             _appContext.AdminProfiles.Add(admin);
-            await _appContext.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task AddClient(ClientProfile client)
         {
             _appContext.ClientProfiles.Add(client);
-            await _appContext.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task addPersonalClub(PersonalClubProfile per)
         {
             _appContext.PersonalClubProfiles.Add(per);
-            await _appContext.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task addEmployee(EmployeeProfile employee)
         {
             _appContext.EmployeeProfiles.Add(employee);
-            await _appContext.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task addProfessor(ProfessorProfile professor)
         {
             _appContext.ProfessorProfiles.Add(professor);
-            await _appContext.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task updateUser(int id, UpdateUserDTO upUser)
@@ -59,7 +62,8 @@ namespace GolAhora.Command
             user.PhoneNumber = upUser.phoneNumber;
 
             _appContext.Users.Update(user);
-            await _appContext.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }
+

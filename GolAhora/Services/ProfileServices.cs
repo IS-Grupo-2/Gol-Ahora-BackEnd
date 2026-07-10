@@ -1,4 +1,5 @@
-﻿using GolAhora.DTOs;
+using GolAhora.Data.UnitOfWork;
+using GolAhora.DTOs;
 using GolAhora.Exceptions;
 using GolAhora.Models;
 using GolAhora.Query;
@@ -10,10 +11,12 @@ namespace GolAhora.Services
     public class ProfileServices
     {
         private readonly AppContext _appContext;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ProfileServices(AppContext appContext)
+        public ProfileServices(IUnitOfWork unitOfWork)
         {
-            _appContext = appContext;
+            _unitOfWork = unitOfWork;
+            _appContext = unitOfWork.Context;
         }
 
         public async Task<string?> UpdateAdmin(int adminId, UpdateAdminDTO dto)
@@ -26,7 +29,7 @@ namespace GolAhora.Services
             admin.accessLevel = dto.accessLevel;
 
             _appContext.AdminProfiles.Update(admin);
-            await _appContext.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return "Admin actualizado exitosamente";
         }
@@ -41,7 +44,7 @@ namespace GolAhora.Services
             employee.sector = dto.sector;
 
             _appContext.EmployeeProfiles.Update(employee);
-            await _appContext.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return "Empleado actualizado exitosamente";
         }
@@ -57,9 +60,11 @@ namespace GolAhora.Services
             professor.certification = dto.certification;
 
             _appContext.ProfessorProfiles.Update(professor);
-            await _appContext.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return "Profesor actualizado exitosamente";
         }
     }
 }
+
+

@@ -1,4 +1,5 @@
-Ôªøusing GolAhora.DTOs;
+using GolAhora.Data.UnitOfWork;
+using GolAhora.DTOs;
 using GolAhora.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,10 +8,12 @@ namespace GolAhora.Services
     public class CourtService
     {
         private readonly GolAhora.Data.AppContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CourtService(GolAhora.Data.AppContext context)
+        public CourtService(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
+            _context = unitOfWork.Context;
         }
 
         private async Task<bool> EsDisponible(int courtId, DateTime fecha, TimeSpan hora)
@@ -42,7 +45,7 @@ namespace GolAhora.Services
 
             _context.Courts.Add(court);
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return (true, "Cancha registrada exitosamente.");
         }
@@ -58,7 +61,7 @@ namespace GolAhora.Services
             court.description = dto.description ?? "";
             court.courtTypeId = dto.courtTypeId;
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return (true, "Cancha modificada exitosamente.");
         }
@@ -78,7 +81,7 @@ namespace GolAhora.Services
                 .ToListAsync();
         }
 
-        // BAJA L√ìGICA
+        // BAJA L”GICA
         public async Task<(bool success, string message)> DarDeBajaCourt(int id)
         {
             var court = await _context.Courts
@@ -104,7 +107,7 @@ namespace GolAhora.Services
                 _context.Reservations.Remove(reserva);
             }
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return (
                 true,
@@ -113,7 +116,7 @@ namespace GolAhora.Services
             );
         }
 
-        // BAJA F√çSICA
+        // BAJA FÕSICA
         public async Task<(bool success, string message)> EliminarCourtFisico(int id)
         {
             var court = await _context.Courts
@@ -136,11 +139,11 @@ namespace GolAhora.Services
             _context.Reservations.RemoveRange(court.reservations);
             _context.Courts.Remove(court);
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return (
                 true,
-                $"Cancha eliminada f√≠sicamente. " +
+                $"Cancha eliminada fÌsicamente. " +
                 $"Total de reembolsos a procesar: {totalReembolsos:C}"
             );
         }
@@ -179,7 +182,7 @@ namespace GolAhora.Services
 
             court.isAvailable = true;
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return (true, "Cancha habilitada exitosamente.");
         }
@@ -207,7 +210,7 @@ namespace GolAhora.Services
                 _context.Reservations.Remove(reserva);
             }
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return (
                 true,
@@ -234,3 +237,6 @@ namespace GolAhora.Services
         }
     }
 }
+
+
+

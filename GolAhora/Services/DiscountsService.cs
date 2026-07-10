@@ -1,4 +1,5 @@
-﻿using GolAhora.Data;
+using GolAhora.Data.UnitOfWork;
+using GolAhora.Data;
 using GolAhora.DTOs;
 using GolAhora.Models;
 using Microsoft.EntityFrameworkCore;
@@ -8,10 +9,12 @@ namespace GolAhora.Services;
 public class DiscountsService
 {
     private readonly GolAhora.Data.AppContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-    public DiscountsService(GolAhora.Data.AppContext context)
+    public DiscountsService(IUnitOfWork unitOfWork)
     {
-        _context = context;
+        _unitOfWork = unitOfWork;
+            _context = unitOfWork.Context;
     }
 
     // RF50 --> Crear descuento
@@ -32,7 +35,7 @@ public class DiscountsService
         };
 
         _context.Discounts.Add(discount);
-        await _context.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         return (true, "Descuento configurado y registrado exitosamente.");
     }
 
@@ -50,7 +53,7 @@ public class DiscountsService
         discount.startDate = dto.StartDate;
         discount.endDate = dto.EndDate;
 
-        await _context.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         return (true, "Descuento actualizado exitosamente.");
     }
 
@@ -84,3 +87,5 @@ public class DiscountsService
             .ToListAsync();
     }
 }
+
+

@@ -1,4 +1,4 @@
-﻿using GolAhora.DTOs;
+using GolAhora.DTOs;
 using GolAhora.Exceptions;
 using GolAhora.Models;
 using GolAhora.Query;
@@ -448,3 +448,4 @@ namespace GolAhora.Services
         }
     }
 }
+

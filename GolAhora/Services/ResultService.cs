@@ -1,4 +1,5 @@
-ï»¿using GolAhora.DTOs;
+using GolAhora.Data.UnitOfWork;
+using GolAhora.DTOs;
 using GolAhora.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,9 +8,11 @@ namespace GolAhora.Services
     public class ResultService
     {
         private readonly GolAhora.Data.AppContext _context;
-        public ResultService(GolAhora.Data.AppContext context)
+        private readonly IUnitOfWork _unitOfWork;
+        public ResultService(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
+            _context = unitOfWork.Context;
         }
         //NO SE SI HACER UNA MODIFICACION DEL RESULTADO ACA O EN EL RESULT SERVICE,
         //SI LO HAGO ACA, DEBERIA RECIBIR UN MATCHDTO CON LOS DATOS DEL PARTIDO Y LOS RESULTADOS ACTUALIZADOS, SI LO HAGO EN EL RESULT SERVICE, SOLO RECIBO 
@@ -25,12 +28,12 @@ namespace GolAhora.Services
             }
             var result = await _context.Results.FirstOrDefaultAsync(r => r.idMatch == matchId);
             if (result == null) {
-                return "No se encontrÃ³ el resultado para el partido especificado";
+                return "No se encontró el resultado para el partido especificado";
             }
             result.scoreTeamLocal = resultDto.scoreTeamLocal;
             result.scoreTeamVisitor = resultDto.scoreTeamVisitor;
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return "Resultado actualizado exitosamente";
         }
@@ -56,7 +59,7 @@ namespace GolAhora.Services
             var result = await _context.Results.FirstOrDefaultAsync(r => r.idMatch == matchId);
             if (result == null)
             {
-                return (new ResultDTO(), "No se encontrÃ³ el resultado para el partido especificado");
+                return (new ResultDTO(), "No se encontró el resultado para el partido especificado");
             }
             return (new ResultDTO
             {
@@ -68,3 +71,6 @@ namespace GolAhora.Services
         }
     }
 }
+
+
+

@@ -1,4 +1,5 @@
-Ôªøusing System;
+using GolAhora.Data.UnitOfWork;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,15 +13,17 @@ namespace GolAhora.Services
     public class ClassService
     {
         private readonly GolAhora.Data.AppContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly AssistanceService _assistanceService;
 
-        public ClassService(GolAhora.Data.AppContext context, AssistanceService assistanceService)
+        public ClassService(IUnitOfWork unitOfWork, AssistanceService assistanceService)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
+            _context = unitOfWork.Context;
             _assistanceService = assistanceService;
         }
 
-        // RF35 + RF37 ‚Äì Programar clases y entrenamientos grupales configurando el m√°ximo
+        // RF35 + RF37 ñ Programar clases y entrenamientos grupales configurando el m·ximo
         public async Task<(bool success, string message, int idClass)> ProgramarClase(ClassDTO dto)
         {
             var cancha = await _context.Courts.FindAsync(dto.courtId);
@@ -28,7 +31,7 @@ namespace GolAhora.Services
                 return (false, "La cancha especificada no existe.", 0);
 
             if (!cancha.isAvailable)
-                return (false, "La cancha seleccionada no est√° disponible.", 0);
+                return (false, "La cancha seleccionada no est· disponible.", 0);
 
             if (!string.IsNullOrWhiteSpace(dto.classType)
                 && dto.classType.ToLower().Contains("particular")
@@ -50,7 +53,7 @@ namespace GolAhora.Services
             };
 
             _context.Classes.Add(nuevaClase);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return (true, "Clase programada exitosamente.", nuevaClase.idClass);
         }
@@ -70,7 +73,7 @@ namespace GolAhora.Services
             if (dto.capacityMax < alumnosActuales)
                 return (false, $"La nueva capacidad ({dto.capacityMax}) no puede ser menor que los alumnos actuales ({alumnosActuales}).");
 
-            // Validaci√≥n negocio particular
+            // ValidaciÛn negocio particular
             if (!string.IsNullOrWhiteSpace(dto.classType)
                 && dto.classType.ToLower().Contains("particular")
                 && dto.capacityMax > 2)
@@ -88,7 +91,7 @@ namespace GolAhora.Services
             clase.price = dto.price;
 
             _context.Classes.Update(clase);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return (true, "Clase modificada correctamente.");
         }
@@ -101,11 +104,11 @@ namespace GolAhora.Services
                 return (false, "La clase no existe.");
 
             if (!clase.isActive)
-                return (false, "La clase ya est√° cancelada.");
+                return (false, "La clase ya est· cancelada.");
 
             clase.isActive = false;
             _context.Classes.Update(clase);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return (true, "Clase cancelada correctamente.");
         }
@@ -139,24 +142,24 @@ namespace GolAhora.Services
                 .FirstOrDefaultAsync(); // Si la encuentra devuelve el DTO, si no, devuelve null
         }
 
-        // RF38 ‚Äì Asignar o cambiar profesor a una clase
+        // RF38 ñ Asignar o cambiar profesor a una clase
         public async Task<(bool success, string message)> AsignarProfesor(int idClass, int profesorId)
         {
             var clase = await _context.Classes.FindAsync(idClass);
             if (clase == null)
                 return (false, "La clase o entrenamiento no existe.");
 
-            // RF39: verificaci√≥n de la certificaci√≥n deportiva del profesor
+            // RF39: verificaciÛn de la certificaciÛn deportiva del profesor
             var profesor = await _context.ProfessorProfiles.FindAsync(profesorId);
             if (profesor == null)
                 return (false, "El profesor no existe.");
 
             // Verifica si el profesor tiene certificaciones
             if (profesor.certifications == null || !profesor.certifications.Any())
-                return (false, "El profesor no cuenta con la certificaci√≥n requerida.");
+                return (false, "El profesor no cuenta con la certificaciÛn requerida.");
 
             clase.profesorId = profesorId;
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return (true, "Profesor asignado correctamente a la clase.");
         }
@@ -177,19 +180,19 @@ namespace GolAhora.Services
             if (cliente == null)
                 return (false, "El cliente no existe.");
 
-            // Comprueba si ya est√° inscripto
+            // Comprueba si ya est· inscripto
             var esta = clase.clients?.Any(cp => cp.idClient == clientId) ?? false;
             if (esta)
-                return (false, "El cliente ya est√° inscripto en la clase.");
+                return (false, "El cliente ya est· inscripto en la clase.");
 
             // Comprueba capacidad
             var alumnosActuales = clase.clients?.Count ?? 0;
             if (alumnosActuales >= clase.capacityMax)
-                return (false, "La clase alcanz√≥ su capacidad m√°xima.");
+                return (false, "La clase alcanzÛ su capacidad m·xima.");
 
-            // A√±ade el cliente a la colecci√≥n
+            // AÒade el cliente a la colecciÛn
             clase.clients.Add(cliente);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return (true, "Alumno agregado correctamente a la clase.");
         }
@@ -218,7 +221,7 @@ namespace GolAhora.Services
             }
 
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return (true, $"Se registraron {dtos.Count} asistencias correctamente.");
         }
         public async Task<(bool success, string message)> VerificarCapacidad(int courtId, int capacityMax)
@@ -231,10 +234,10 @@ namespace GolAhora.Services
                 return (false, "La cancha especificada no existe.");
 
             if (capacityMax <= 0)
-                return (false, "La capacidad m√°xima debe ser mayor que cero.");
+                return (false, "La capacidad m·xima debe ser mayor que cero.");
 
             if (cancha.courtType != null && capacityMax > cancha.courtType.capacity)
-                return (false, $"La capacidad m√°xima ({capacityMax}) excede la capacidad de la cancha ({cancha.courtType.capacity}).");
+                return (false, $"La capacidad m·xima ({capacityMax}) excede la capacidad de la cancha ({cancha.courtType.capacity}).");
 
             return (true, string.Empty);
         }
@@ -266,3 +269,5 @@ namespace GolAhora.Services
         }
     }
 }
+
+

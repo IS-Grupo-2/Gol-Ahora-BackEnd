@@ -12,7 +12,7 @@ using AppContext = GolAhora.Data.AppContext;
 
 namespace GolAhora.Migrations
 {
-    [DbContext(typeof(AppContext))]
+    [DbContext(typeof(GolAhora.Data.AppContext))]
     [Migration("20260605182240_MigracionFinal")]
     partial class MigracionFinal
     {

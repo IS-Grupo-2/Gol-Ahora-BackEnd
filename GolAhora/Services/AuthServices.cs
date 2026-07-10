@@ -1,4 +1,4 @@
-﻿using GolAhora.Command;
+using GolAhora.Command;
 using GolAhora.DTOs;
 using GolAhora.Exceptions;
 using GolAhora.Models;
@@ -266,7 +266,8 @@ namespace GolAhora.Services
 
         public async Task<LoginUserResponce?> LoginUser(LoginUserDto dto)
         {
-            var user = await _userManager.FindByNameAsync(dto.userName);
+            var user = await _userManager.FindByNameAsync(dto.userName)
+                ?? await _userManager.FindByEmailAsync(dto.userName);
 
             if (user == null)
                 return null;
@@ -317,6 +318,8 @@ namespace GolAhora.Services
                     idUser = user.Id,
                     name = user.name,
                     lastName = user.lastName,
+                    DNI = user.DNI,
+                    userName = user.UserName!,
                     email = user.Email!,
                     phoneNumber = user.PhoneNumber!,
                     isActive = user.isActive,
@@ -326,3 +329,4 @@ namespace GolAhora.Services
         }
     }
 }
+

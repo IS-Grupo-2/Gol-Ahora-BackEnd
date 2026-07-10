@@ -1,4 +1,5 @@
-﻿using GolAhora.Models;
+using GolAhora.Data.UnitOfWork;
+using GolAhora.Models;
 using GolAhora.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,10 +11,12 @@ namespace GolAhora.Services
     public class AssistanceService
     {
         private readonly GolAhora.Data.AppContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AssistanceService(GolAhora.Data.AppContext context)
+        public AssistanceService(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
+            _context = unitOfWork.Context;
         }
 
         // + registrar(): void (RF36)
@@ -30,7 +33,7 @@ namespace GolAhora.Services
 
             _context.Assistances.Add(nuevaAsistencia);
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return (true, "Asistencia registrada exitosamente.");
         }
@@ -46,8 +49,8 @@ namespace GolAhora.Services
             asistencia.isAssisted = nuevoEstado;
             asistencia.observations = nuevasObservaciones;
 
-            await _context.SaveChangesAsync();
-            return (true, "Asistencia modificada con éxito.");
+            await _unitOfWork.SaveChangesAsync();
+            return (true, "Asistencia modificada con �xito.");
         }
 
         // + consultar(): Asistencia
@@ -63,3 +66,5 @@ namespace GolAhora.Services
         }
     }
 }
+
+

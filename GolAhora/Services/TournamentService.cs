@@ -1,4 +1,5 @@
-ï»¿using GolAhora.DTOs;
+using GolAhora.Data.UnitOfWork;
+using GolAhora.DTOs;
 using GolAhora.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,10 +8,12 @@ namespace GolAhora.Services
     public class TournamentService
     {
         private readonly GolAhora.Data.AppContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public TournamentService(GolAhora.Data.AppContext context)
+        public TournamentService(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
+            _context = unitOfWork.Context;
         }
         //RF 27 - CREAR TORNEO
         public async Task<string?> CreateTournament(TournamentDto tournamentDto)
@@ -26,7 +29,7 @@ namespace GolAhora.Services
             }
             if (string.IsNullOrEmpty(tournamentDto.Description))
             {
-                return "La descripciÃ³n del torneo es obligatoria.";
+                return "La descripción del torneo es obligatoria.";
             }
             if (tournamentDto.StartDate >= tournamentDto.EndDate)
             {
@@ -45,7 +48,7 @@ namespace GolAhora.Services
 
             var torneo = new Tournament
             {
-                idTournament = contador, // deberia ser generado automÃ¡ticamente por la base de datos
+                idTournament = contador, // deberia ser generado automáticamente por la base de datos
                 name = tournamentDto.Name,
                 description = tournamentDto.Description,
                 startDate = tournamentDto.StartDate,
@@ -55,7 +58,7 @@ namespace GolAhora.Services
                 capacityTeams = tournamentDto.CapacityTeams
             };
             await _context.Tournaments.AddAsync(torneo);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return "torneo creado exitosamente";
         }
         //RF 28 - ACTUALIZAR TORNEO
@@ -76,7 +79,7 @@ namespace GolAhora.Services
             }
             if (string.IsNullOrEmpty(tournamentDto.Description))
             {
-                return "La descripciÃ³n del torneo es obligatoria.";
+                return "La descripción del torneo es obligatoria.";
             }
             if (tournamentDto.StartDate >= tournamentDto.EndDate)
             {
@@ -92,7 +95,7 @@ namespace GolAhora.Services
             torneo.endDate = tournamentDto.EndDate;
             torneo.capacityTeams = tournamentDto.CapacityTeams;
             _context.Tournaments.Update(torneo);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return "torneo actualizado exitosamente";
         }
         //RF 30 - ELIMINAR TORNEO
@@ -105,7 +108,7 @@ namespace GolAhora.Services
             }
             torneo.isActive = false;
             _context.Tournaments.Update(torneo);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return "torneo eliminado exitosamente";
         }
         //RF 31 - CONSULTAR TORNEO POR ID PARA IMPRIMIRLO EN LA LANDING PAGE
@@ -161,7 +164,7 @@ namespace GolAhora.Services
         //    }
         //    liga.teams.Add(equipoDto);
         //    _context.Leagues.Update(liga);
-        //    await _context.SaveChangesAsync();
+        //    await _unitOfWork.SaveChangesAsync();
 
 
         //    return "Equipo inscripto exitosamente";
@@ -169,3 +172,6 @@ namespace GolAhora.Services
         //}
     }
 }
+
+
+

@@ -1,4 +1,5 @@
-ï»¿using GolAhora.DTOs;
+using GolAhora.Data.UnitOfWork;
+using GolAhora.DTOs;
 using GolAhora.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,10 +8,12 @@ namespace GolAhora.Services
     public class LeagueService
     {
         private readonly GolAhora.Data.AppContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public LeagueService(GolAhora.Data.AppContext context)
+        public LeagueService(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
+            _context = unitOfWork.Context;
         }
         //RF 27 - CREAR LIGA
         public async Task<string?> CreateLeague(LeagueDto leagueDto)
@@ -25,7 +28,7 @@ namespace GolAhora.Services
             }
             if (string.IsNullOrEmpty(leagueDto.Description))
             {
-                return "La descripciÃ³n de la liga es obligatoria.";
+                return "La descripción de la liga es obligatoria.";
             }
             if (leagueDto.StartDate >= leagueDto.EndDate)
             {
@@ -41,7 +44,7 @@ namespace GolAhora.Services
 
             var liga = new League
             {
-                idLeague = contador, // deberia ser generado automÃ¡ticamente por la base de datos
+                idLeague = contador, // deberia ser generado automáticamente por la base de datos
                 name = leagueDto.Name,
                 description = leagueDto.Description,
                 startDate = leagueDto.StartDate,
@@ -51,7 +54,7 @@ namespace GolAhora.Services
                 capacityTeams = leagueDto.CapacityTeams
             };
             await _context.Leagues.AddAsync(liga);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return "liga creada exitosamente";
         }
         //RF 28 - ACTUALIZAR LIGA
@@ -72,7 +75,7 @@ namespace GolAhora.Services
             }
             if (string.IsNullOrEmpty(leagueDto.Description))
             {
-                return "La descripciÃ³n de la liga es obligatoria.";
+                return "La descripción de la liga es obligatoria.";
             }
             if (leagueDto.StartDate >= leagueDto.EndDate)
             {
@@ -88,7 +91,7 @@ namespace GolAhora.Services
             liga.endDate = leagueDto.EndDate;
             liga.capacityTeams = leagueDto.CapacityTeams;
             _context.Leagues.Update(liga);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return "liga actualizada exitosamente";
         }
         //RF 30 - ELIMINAR LIGA
@@ -101,7 +104,7 @@ namespace GolAhora.Services
             }
             liga.isActive = false;
             _context.Leagues.Update(liga);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return "liga eliminada exitosamente";
         }
         //RF 31 - CONSULTAR LIGA POR ID PARA IMPRIMIRLA EN LA LANDING PAGE
@@ -157,8 +160,11 @@ namespace GolAhora.Services
         //    }
         //    liga.teams.Add(equipoDto);
         //    _context.Leagues.Update(liga);
-        //    await _context.SaveChangesAsync();
+        //    await _unitOfWork.SaveChangesAsync();
         //    return "Equipo inscripto exitosamente";
         //}
     }
 }
+
+
+

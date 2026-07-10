@@ -1,4 +1,5 @@
-ï»¿using GolAhora.DTOs;
+using GolAhora.Data.UnitOfWork;
+using GolAhora.DTOs;
 using GolAhora.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,13 +10,15 @@ namespace GolAhora.Services;
 public class PaymentsService
 {
     private readonly Data.AppContext _context;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public PaymentsService(Data.AppContext context)
+    public PaymentsService(IUnitOfWork unitOfWork)
     {
-        _context = context;
+        _unitOfWork = unitOfWork;
+            _context = unitOfWork.Context;
     }
 
-    // RF44 â€“ El sistema debe registrar los cobros de los servicios.
+    // RF44 – El sistema debe registrar los cobros de los servicios.
     public async Task<(bool success, string message)> RegistrarCobro(PaymentDTO dto)
     {
         var nuevoCobro = new Payments
@@ -29,12 +32,12 @@ public class PaymentsService
         };
 
         _context.Payments.Add(nuevoCobro);
-        await _context.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
 
         return (true, "Cobro registrado exitosamente.");
     }
 
-    // RF45 â€“ El sistema debe modificar los cobros.
+    // RF45 – El sistema debe modificar los cobros.
     public async Task<(bool success, string message)> ModificarCobro(int id, PaymentDTO dto)
     {
         var cobro = await _context.Payments.FindAsync(id);
@@ -48,11 +51,11 @@ public class PaymentsService
         cobro.isSuccessful = dto.isSuccessful;
         cobro.idDiscount = dto.idDiscount;
 
-        await _context.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         return (true, "Cobro modificado exitosamente.");
     }
 
-    // RF46 â€“ El sistema debe generar un listado de cobros bÃ¡sico.
+    // RF46 – El sistema debe generar un listado de cobros básico.
     public async Task<List<PaymentResponseDTO>> ListarCobros()
     {
         return await _context.Payments
@@ -68,7 +71,7 @@ public class PaymentsService
             .ToListAsync();
     }
 
-    // RF47 â€“ El sistema debe dar de baja a los cobros (Baja lÃ³gica).
+    // RF47 – El sistema debe dar de baja a los cobros (Baja lógica).
     public async Task<(bool success, string message)> DarDeBajaCobro(int id)
     {
         var cobro = await _context.Payments.FindAsync(id);
@@ -77,7 +80,7 @@ public class PaymentsService
 
         cobro.isSuccessful = false;
 
-        await _context.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         return (true, "Cobro dado de baja de manera exitosa.");
     }
 
@@ -117,7 +120,7 @@ public class PaymentsService
             cobro.idDiscount = descuento.idDiscount;
             cobro.amount = cobro.amount - descuento.discountValue;
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 
@@ -156,8 +159,8 @@ public class PaymentsService
             "==================================================\n" +
             $"ID Pago: {payment.idPayment}\n" +
             $"Fecha/Hora: {payment.paymentDate:dd/MM/yyyy HH:mm}\n" +
-            $"MÃ©todo de Pago: {payment.paymentMethod}\n" +
-            $"Estado de TransacciÃ³n: {(payment.isSuccessful ? "Aprobado" : "Rechazado")}\n" +
+            $"Método de Pago: {payment.paymentMethod}\n" +
+            $"Estado de Transacción: {(payment.isSuccessful ? "Aprobado" : "Rechazado")}\n" +
             "--------------------------------------------------\n" +
             "DATOS DEL CLIENTE:\n" +
             $"ID Cliente: {payment.idClient}\n" +
@@ -181,3 +184,5 @@ public class PaymentsService
         return Encoding.UTF8.GetBytes(ticketContent);
     }
 }
+
+

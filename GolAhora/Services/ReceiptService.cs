@@ -1,4 +1,5 @@
-﻿using GolAhora.Data;
+using GolAhora.Data.UnitOfWork;
+using GolAhora.Data;
 using GolAhora.DTOs;
 using GolAhora.Models;
 using Microsoft.EntityFrameworkCore;
@@ -8,10 +9,12 @@ namespace GolAhora.Services
     public class ReceiptsService
     {
         private readonly GolAhora.Data.AppContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ReceiptsService(GolAhora.Data.AppContext context)
+        public ReceiptsService(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
+            _context = unitOfWork.Context;
         }
 
         // RF51 --> Registrar recibo de pago
@@ -31,7 +34,7 @@ namespace GolAhora.Services
             };
 
             _context.Receipts.Add(receipt);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return (true, "Recibo registrado exitosamente.");
         }
 
@@ -58,7 +61,7 @@ namespace GolAhora.Services
                 existingReceipt.date = dto.Date.Value;
             }
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return (true, "Recibo modificado exitosamente");
         }
 
@@ -88,7 +91,7 @@ namespace GolAhora.Services
 
             receipt.details = "ANULADO - " + receipt.details;
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return (true, "Recibo dado de baja exitosamente.");
         }
 
@@ -116,3 +119,5 @@ namespace GolAhora.Services
         }
     }
 }
+
+

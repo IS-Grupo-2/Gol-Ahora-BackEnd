@@ -66,6 +66,12 @@ namespace GolAhora.Data
             modelBuilder.Entity<Match>().HasKey(m => m.idMatch);
             modelBuilder.Entity<Result>().HasKey(r => r.idResults);
             modelBuilder.Entity<Reservation>().HasKey(r => r.idReservation);
+            modelBuilder.Entity<Reservation>()
+                .Property(r => r.status)
+                .HasDefaultValue("pendiente");
+            modelBuilder.Entity<Reservation>()
+                .Property(r => r.createdAt)
+                .HasDefaultValueSql("GETUTCDATE()");
             modelBuilder.Entity<Payments>().HasKey(p => p.idPayment);
             modelBuilder.Entity<Receipts>().HasKey(r => r.idReceipt);
             modelBuilder.Entity<Discounts>().HasKey(d => d.idDiscount);

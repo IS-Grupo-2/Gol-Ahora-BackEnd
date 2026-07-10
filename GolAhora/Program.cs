@@ -1,4 +1,6 @@
 using GolAhora.Command;
+using GolAhora.Data;
+using GolAhora.Data.UnitOfWork;
 using GolAhora.Models;
 using GolAhora.Query;
 using GolAhora.Services;
@@ -50,9 +52,17 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddDbContext<AppContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Registro de Identity
-builder.Services.AddIdentity<User, IdentityRole<int>>()
+builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+})
     .AddEntityFrameworkStores<AppContext>()
     .AddDefaultTokenProviders();
 
@@ -131,6 +141,11 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    await DbSeeder.SeedAsync(app.Services);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

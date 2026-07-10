@@ -1,4 +1,5 @@
-Ôªøusing GolAhora.DTOs;
+using GolAhora.Data.UnitOfWork;
+using GolAhora.DTOs;
 using GolAhora.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,10 +8,12 @@ namespace GolAhora.Services
     public class DisponibilityService
     {
         private readonly GolAhora.Data.AppContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DisponibilityService(GolAhora.Data.AppContext context)
+        public DisponibilityService(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
+            _context = unitOfWork.Context;
         }
 
         private async Task<bool> Verificar(int courtId, DateTime fecha, TimeSpan hora)
@@ -26,7 +29,7 @@ namespace GolAhora.Services
 
         public async Task<(bool success, string message)> AgregarDisponibility(DisponibilityDTO dto)
         {
-            using (var transaction = await _context.Database.BeginTransactionAsync())
+            using (var transaction = await _unitOfWork.BeginTransactionAsync())
             {
                 try
                 {
@@ -51,7 +54,7 @@ namespace GolAhora.Services
                     };
 
                     _context.Disponibilities.Add(disponibility);
-                    await _context.SaveChangesAsync();
+                    await _unitOfWork.SaveChangesAsync();
                     await transaction.CommitAsync();
 
                     return (true, "Disponibilidad registrada exitosamente.");
@@ -70,7 +73,7 @@ namespace GolAhora.Services
             if (disponibility == null)
                 return (false, "Disponibilidad no encontrada.");
 
-            // Validar superposici√≥n con otras disponibilidades (excluyendo la actual)
+            // Validar superposiciÛn con otras disponibilidades (excluyendo la actual)
             var superpuesta = await _context.Disponibilities.AnyAsync(d =>
                 d.idDisponibility != id &&
                 d.courtId == dto.courtId &&
@@ -89,7 +92,7 @@ namespace GolAhora.Services
             disponibility.isAvailable = dto.isAvailable;
             disponibility.courtId = dto.courtId;
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return (true, "Disponibilidad modificada exitosamente.");
         }
 
@@ -134,7 +137,7 @@ namespace GolAhora.Services
                 return (false, "Disponibilidad no encontrada.");
 
             disponibility.isAvailable = true;
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return (true, "Disponibilidad habilitada exitosamente.");
         }
 
@@ -145,7 +148,7 @@ namespace GolAhora.Services
                 return (false, "Disponibilidad no encontrada.");
 
             disponibility.isAvailable = false;
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return (true, "Disponibilidad deshabilitada exitosamente.");
         }
 
@@ -156,7 +159,7 @@ namespace GolAhora.Services
                 return (false, "Disponibilidad no encontrada.");
 
             _context.Disponibilities.Remove(disponibility);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return (true, "Disponibilidad eliminada exitosamente.");
         }
 
@@ -164,8 +167,11 @@ namespace GolAhora.Services
         {
             var disponible = await Verificar(courtId, fecha, hora);
             return disponible
-                ? (true, "La cancha est√° disponible en ese horario.")
-                : (false, "La cancha no est√° disponible en ese horario.");
+                ? (true, "La cancha est· disponible en ese horario.")
+                : (false, "La cancha no est· disponible en ese horario.");
         }
     }
 }
+
+
+

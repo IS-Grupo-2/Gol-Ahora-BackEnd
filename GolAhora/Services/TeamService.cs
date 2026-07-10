@@ -1,4 +1,5 @@
-﻿using GolAhora.DTOs;
+using GolAhora.Data.UnitOfWork;
+using GolAhora.DTOs;
 using GolAhora.Models;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
@@ -9,10 +10,12 @@ namespace GolAhora.Services
     public class TeamService
     {
         private readonly GolAhora.Data.AppContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public TeamService(GolAhora.Data.AppContext context)
+        public TeamService(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
+            _context = unitOfWork.Context;
         }
 
         public async Task<string?> CreateTeam(TeamDTO teamDto)
@@ -32,7 +35,7 @@ namespace GolAhora.Services
                 captain = teamDto.captain
             };
             await _context.Teams.AddAsync(team);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return "Equipo creado exitosamente";
         }
 
@@ -55,7 +58,7 @@ namespace GolAhora.Services
             team.clientId = teamDto.clientId;
             team.captain = teamDto.captain;
             _context.Teams.Update(team);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return "Equipo actualizado exitosamente";
         }
         public async Task<(TeamDTO team, string message)> GetTeamById(int idTeam)
@@ -86,7 +89,7 @@ namespace GolAhora.Services
                 return "Equipo no encontrado.";
             }
             _context.Teams.Remove(team);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return "Equipo eliminado exitosamente";
         }
 
@@ -131,7 +134,7 @@ namespace GolAhora.Services
             }
             team.players.Add(player);
             _context.Teams.Update(team);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return "Miembro agregado exitosamente";
         }
 
@@ -152,8 +155,11 @@ namespace GolAhora.Services
             }
             team.captain = player;
             _context.Teams.Update(team);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return "Capitan asignado correctamente";
         }
     }
 }
+
+
+

@@ -1,4 +1,5 @@
-Ôªøusing GolAhora.DTOs;
+using GolAhora.Data.UnitOfWork;
+using GolAhora.DTOs;
 using GolAhora.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,16 +8,18 @@ namespace GolAhora.Services
     public class ReservationService
     {
         private readonly GolAhora.Data.AppContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ReservationService(GolAhora.Data.AppContext context)
+        public ReservationService(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
+            _context = unitOfWork.Context;
         }
 
         // RF19 + RF24 + RF17 + RS01 + RS02
         public async Task<(bool success, string message)> AgregarReservation(ReservationDTO dto)
         {
-            using (var transaction = await _context.Database.BeginTransactionAsync())
+            using (var transaction = await _unitOfWork.BeginTransactionAsync())
             {
                 try
                 {
@@ -24,9 +27,9 @@ namespace GolAhora.Services
                     if (dto.reservationDate.Date < DateTime.Now.Date)
                         return (false, "No se puede reservar para una fecha pasada.");
 
-                    // RS01 ‚Äì no m√°s de 30 d√≠as de antelaci√≥n
+                    // RS01 ñ no m·s de 30 dÌas de antelaciÛn
                     if ((dto.reservationDate - DateTime.Now).TotalDays > 30)
-                        return (false, "No se pueden realizar reservas con m√°s de 30 d√≠as de antelaci√≥n.");
+                        return (false, "No se pueden realizar reservas con m·s de 30 dÌas de antelaciÛn.");
 
                     var cancha = await _context.Courts
                         .Include(c => c.courtType)
@@ -36,7 +39,7 @@ namespace GolAhora.Services
                         return (false, "La cancha no existe.");
 
                     if (!cancha.isAvailable)
-                        return (false, "La cancha no est√° disponible.");
+                        return (false, "La cancha no est· disponible.");
 
                     var duracion = (dto.endTime - dto.startTime).TotalHours;
 
@@ -48,7 +51,7 @@ namespace GolAhora.Services
                                  : 2.0;
 
                     if (duracion > maxHoras)
-                        return (false, $"La duraci√≥n m√°xima para este tipo de cancha es {maxHoras} horas.");
+                        return (false, $"La duraciÛn m·xima para este tipo de cancha es {maxHoras} horas.");
 
                     var disponible = await _context.Disponibilities.AnyAsync(d =>
                         d.courtId == dto.idCourt &&
@@ -59,7 +62,7 @@ namespace GolAhora.Services
                     );
 
                     if (!disponible)
-                        return (false, "Ese horario est√° fuera del horario habilitado de la cancha.");
+                        return (false, "Ese horario est· fuera del horario habilitado de la cancha.");
 
                     var superpuesta = await _context.Reservations.AnyAsync(r =>
                         r.idCourt == dto.idCourt &&
@@ -73,9 +76,9 @@ namespace GolAhora.Services
 
                     var totalPrice = duracion * cancha.courtType.pricePerHour;
 
-                    // VALIDACI√ìN DEL PAGO
+                    // VALIDACI”N DEL PAGO
                     if (dto.idPayment == null || dto.idPayment == 0)
-                        return (false, "Debe proporcionar un pago v√°lido.");
+                        return (false, "Debe proporcionar un pago v·lido.");
 
                     var pago = await _context.Payments.FindAsync(dto.idPayment);
 
@@ -88,13 +91,13 @@ namespace GolAhora.Services
                     if (pago.amount < totalPrice)
                         return (false, "El monto del pago es insuficiente.");
 
-                    // Validar que el pago no est√© siendo usado por otra reserva
+                    // Validar que el pago no estÈ siendo usado por otra reserva
                     var pagoEnUso = await _context.Reservations.AnyAsync(r =>
                         r.idPayment == dto.idPayment
                     );
 
                     if (pagoEnUso)
-                        return (false, "Este pago ya est√° siendo utilizado por otra reserva.");
+                        return (false, "Este pago ya est· siendo utilizado por otra reserva.");
 
                     // Usar el monto del pago (que YA tiene descuento aplicado si existe)
                     var nuevaReservation = new Reservation
@@ -104,13 +107,13 @@ namespace GolAhora.Services
                         reservationDate = dto.reservationDate,
                         startTime = dto.startTime,
                         endTime = dto.endTime,
-                        totalPrice = pago.amount,  // ‚Üê Usa el amount del pago (con descuento)
+                        totalPrice = pago.amount,  // ? Usa el amount del pago (con descuento)
                         idPayment = dto.idPayment.Value,
                         isPaid = true
                     };
 
                     _context.Reservations.Add(nuevaReservation);
-                    await _context.SaveChangesAsync();
+                    await _unitOfWork.SaveChangesAsync();
                     await transaction.CommitAsync();
 
                     return (true, $"Reserva registrada exitosamente. Total: {pago.amount:C}");
@@ -123,10 +126,10 @@ namespace GolAhora.Services
             }
         }
 
-        // RF20a ‚Äì Modificar SOLO horario de una reserva pagada
+        // RF20a ñ Modificar SOLO horario de una reserva pagada
         public async Task<(bool success, string message)> ModificarHorario(int id, CambiarHorarioDTO dto)
         {
-            using (var transaction = await _context.Database.BeginTransactionAsync())
+            using (var transaction = await _unitOfWork.BeginTransactionAsync())
             {
                 try
                 {
@@ -144,7 +147,7 @@ namespace GolAhora.Services
                     // Validar >= 6 horas antes
                     var antelacion = reservation.reservationDate.Date + reservation.startTime - DateTime.Now;
                     if (antelacion.TotalHours < 6)
-                        return (false, "No se puede modificar la reserva con menos de 6 horas de anticipaci√≥n.");
+                        return (false, "No se puede modificar la reserva con menos de 6 horas de anticipaciÛn.");
 
                     var duracion = (dto.endTime - dto.startTime).TotalHours;
                     var nombre = reservation.court.courtType.name.ToLower();
@@ -155,7 +158,7 @@ namespace GolAhora.Services
                                  : 2.0;
 
                     if (duracion > maxHoras)
-                        return (false, $"La duraci√≥n m√°xima para este tipo de cancha es {maxHoras} horas.");
+                        return (false, $"La duraciÛn m·xima para este tipo de cancha es {maxHoras} horas.");
 
                     var disponible = await _context.Disponibilities.AnyAsync(d =>
                         d.courtId == reservation.idCourt &&
@@ -166,7 +169,7 @@ namespace GolAhora.Services
                     );
 
                     if (!disponible)
-                        return (false, "Ese horario no est√° disponible.");
+                        return (false, "Ese horario no est· disponible.");
 
                     var superpuesta = await _context.Reservations.AnyAsync(r =>
                         r.idReservation != id &&
@@ -182,7 +185,7 @@ namespace GolAhora.Services
                     reservation.startTime = dto.startTime;
                     reservation.endTime = dto.endTime;
 
-                    await _context.SaveChangesAsync();
+                    await _unitOfWork.SaveChangesAsync();
                     await transaction.CommitAsync();
 
                     return (true, "Horario modificado exitosamente.");
@@ -195,10 +198,10 @@ namespace GolAhora.Services
             }
         }
 
-        // RF20b ‚Äì Modificar SOLO fecha de una reserva pagada
+        // RF20b ñ Modificar SOLO fecha de una reserva pagada
         public async Task<(bool success, string message)> ModificarFecha(int id, CambiarFechaDTO dto)
         {
-            using (var transaction = await _context.Database.BeginTransactionAsync())
+            using (var transaction = await _unitOfWork.BeginTransactionAsync())
             {
                 try
                 {
@@ -216,14 +219,14 @@ namespace GolAhora.Services
                     // Validar >= 6 horas antes
                     var antelacion = reservation.reservationDate.Date + reservation.startTime - DateTime.Now;
                     if (antelacion.TotalHours < 6)
-                        return (false, "No se puede modificar la reserva con menos de 6 horas de anticipaci√≥n.");
+                        return (false, "No se puede modificar la reserva con menos de 6 horas de anticipaciÛn.");
 
                     // Validar fecha no pasada
                     if (dto.reservationDate.Date < DateTime.Now.Date)
                         return (false, "No se puede modificar a una fecha pasada.");
 
                     if ((dto.reservationDate - DateTime.Now).TotalDays > 30)
-                        return (false, "No se pueden modificar a m√°s de 30 d√≠as de antelaci√≥n.");
+                        return (false, "No se pueden modificar a m·s de 30 dÌas de antelaciÛn.");
 
                     var disponible = await _context.Disponibilities.AnyAsync(d =>
                         d.courtId == reservation.idCourt &&
@@ -234,7 +237,7 @@ namespace GolAhora.Services
                     );
 
                     if (!disponible)
-                        return (false, "Ese horario no est√° disponible en la nueva fecha.");
+                        return (false, "Ese horario no est· disponible en la nueva fecha.");
 
                     var superpuesta = await _context.Reservations.AnyAsync(r =>
                         r.idReservation != id &&
@@ -249,7 +252,7 @@ namespace GolAhora.Services
 
                     reservation.reservationDate = dto.reservationDate;
 
-                    await _context.SaveChangesAsync();
+                    await _unitOfWork.SaveChangesAsync();
                     await transaction.CommitAsync();
 
                     return (true, "Fecha modificada exitosamente.");
@@ -262,10 +265,10 @@ namespace GolAhora.Services
             }
         }
 
-        // RF20c ‚Äì Modificar FECHA Y HORARIO de una reserva pagada
+        // RF20c ñ Modificar FECHA Y HORARIO de una reserva pagada
         public async Task<(bool success, string message)> ModificarAmbos(int id, CambiarFechaYHorarioDTO dto)
         {
-            using (var transaction = await _context.Database.BeginTransactionAsync())
+            using (var transaction = await _unitOfWork.BeginTransactionAsync())
             {
                 try
                 {
@@ -283,15 +286,15 @@ namespace GolAhora.Services
                     // Validar >= 6 horas antes
                     var antelacion = reservation.reservationDate.Date + reservation.startTime - DateTime.Now;
                     if (antelacion.TotalHours < 6)
-                        return (false, "No se puede modificar la reserva con menos de 6 horas de anticipaci√≥n.");
+                        return (false, "No se puede modificar la reserva con menos de 6 horas de anticipaciÛn.");
 
                     // Validar fecha no pasada
                     if (dto.reservationDate.Date < DateTime.Now.Date)
                         return (false, "No se puede modificar a una fecha pasada.");
 
-                    // Validar 30 d√≠as
+                    // Validar 30 dÌas
                     if ((dto.reservationDate - DateTime.Now).TotalDays > 30)
-                        return (false, "No se pueden modificar a m√°s de 30 d√≠as de antelaci√≥n.");
+                        return (false, "No se pueden modificar a m·s de 30 dÌas de antelaciÛn.");
 
                     var duracion = (dto.endTime - dto.startTime).TotalHours;
                     var nombre = reservation.court.courtType.name.ToLower();
@@ -302,7 +305,7 @@ namespace GolAhora.Services
                                  : 2.0;
 
                     if (duracion > maxHoras)
-                        return (false, $"La duraci√≥n m√°xima para este tipo de cancha es {maxHoras} horas.");
+                        return (false, $"La duraciÛn m·xima para este tipo de cancha es {maxHoras} horas.");
 
                     var disponible = await _context.Disponibilities.AnyAsync(d =>
                         d.courtId == reservation.idCourt &&
@@ -313,7 +316,7 @@ namespace GolAhora.Services
                     );
 
                     if (!disponible)
-                        return (false, "Ese horario no est√° disponible en la nueva fecha.");
+                        return (false, "Ese horario no est· disponible en la nueva fecha.");
 
                     var superpuesta = await _context.Reservations.AnyAsync(r =>
                         r.idReservation != id &&
@@ -330,7 +333,7 @@ namespace GolAhora.Services
                     reservation.startTime = dto.startTime;
                     reservation.endTime = dto.endTime;
 
-                    await _context.SaveChangesAsync();
+                    await _unitOfWork.SaveChangesAsync();
                     await transaction.CommitAsync();
 
                     return (true, "Fecha y horario modificados exitosamente.");
@@ -343,7 +346,7 @@ namespace GolAhora.Services
             }
         }
 
-        // RF21 ‚Äì Listar todas las reservas
+        // RF21 ñ Listar todas las reservas
         public async Task<List<ReservationResponseDTO>> ListarReservations()
         {
             var reservations = await _context.Reservations
@@ -369,7 +372,7 @@ namespace GolAhora.Services
             }).ToList();
         }
 
-        // RF22 + RF25 + RF26 ‚Äì Cancelar reserva con validaci√≥n de antelaci√≥n y cargo por penalidad
+        // RF22 + RF25 + RF26 ñ Cancelar reserva con validaciÛn de antelaciÛn y cargo por penalidad
         public async Task<(bool success, string message, double montoFinal)> EliminarReservation(int id)
         {
             var reservation = await _context.Reservations
@@ -390,19 +393,19 @@ namespace GolAhora.Services
 
                 return (
                     true,
-                    $"Reserva cancelada. Se aplic√≥ un cargo del 50% (total: {reservation.totalPrice:C}) por cancelar con menos de 6 horas de anticipaci√≥n.",
+                    $"Reserva cancelada. Se aplicÛ un cargo del 50% (total: {reservation.totalPrice:C}) por cancelar con menos de 6 horas de anticipaciÛn.",
                     montoFinal
                 );
             }
 
             return (
                 true,
-                $"Reserva cancelada. Se procesar√° un reembolso total del pago.",
+                $"Reserva cancelada. Se procesar· un reembolso total del pago.",
                 reservation.totalPrice
             );
         }
 
-        // RF23 ‚Äì Consultar una reserva por ID
+        // RF23 ñ Consultar una reserva por ID
         public async Task<ReservationResponseDTO?> ConsultarReservation(int id)
         {
             var r = await _context.Reservations
@@ -431,7 +434,7 @@ namespace GolAhora.Services
             };
         }
 
-        // CalcularMonto ‚Äì calcula el monto total en base a duraci√≥n y precio por hora
+        // CalcularMonto ñ calcula el monto total en base a duraciÛn y precio por hora
         public async Task<(bool success, string message, double monto)> CalcularMonto(
             int idCourt,
             TimeSpan startTime,
@@ -455,3 +458,5 @@ namespace GolAhora.Services
         }
     }
 }
+
+

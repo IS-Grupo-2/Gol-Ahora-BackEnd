@@ -1,4 +1,5 @@
-ï»¿using GolAhora.DTOs;
+using GolAhora.Data.UnitOfWork;
+using GolAhora.DTOs;
 using GolAhora.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,13 +8,15 @@ namespace GolAhora.Services
     public class CourtTypeService
     {
         private readonly GolAhora.Data.AppContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CourtTypeService(GolAhora.Data.AppContext context)
+        public CourtTypeService(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
+            _context = unitOfWork.Context;
         }
 
-        // RF11 â€“ Registrar tipo de cancha
+        // RF11 – Registrar tipo de cancha
         public async Task<(bool success, string message)> AgregarCourtType(CourtTypeDTO dto)
         {
             // Validar nombre
@@ -52,12 +55,12 @@ namespace GolAhora.Services
 
             _context.CourtTypes.Add(courtType);
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return (true, "Tipo de cancha registrado exitosamente.");
         }
 
-        // RF12 â€“ Modificar tipo de cancha
+        // RF12 – Modificar tipo de cancha
         public async Task<(bool success, string message)> ModificarCourtType(int id, CourtTypeDTO dto)
         {
             var courtType = await _context.CourtTypes.FindAsync(id);
@@ -97,12 +100,12 @@ namespace GolAhora.Services
             courtType.pricePerHour = dto.pricePerHour;
             courtType.description = dto.description;
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return (true, "Tipo de cancha modificado exitosamente.");
         }
 
-        // RF13 â€“ Listar todos los tipos de cancha
+        // RF13 – Listar todos los tipos de cancha
         public async Task<List<CourtTypeResponseDTO>> ListarCourtTypes()
         {
             return await _context.CourtTypes
@@ -118,7 +121,7 @@ namespace GolAhora.Services
                 .ToListAsync();
         }
 
-        // RF15 â€“ Consultar tipo de cancha por ID
+        // RF15 – Consultar tipo de cancha por ID
         public async Task<CourtTypeDetailDTO?> ConsultarCourtType(int id)
         {
             return await _context.CourtTypes
@@ -142,7 +145,7 @@ namespace GolAhora.Services
                 .FirstOrDefaultAsync();
         }
 
-        // RF14 â€“ Baja lÃ³gica que deshabilita todas las canchas y disponibilidades del tipo de cancha
+        // RF14 – Baja lógica que deshabilita todas las canchas y disponibilidades del tipo de cancha
         public async Task<(bool success, string message)> EliminarCourtType(int id)
         {
             var courtType = await _context.CourtTypes
@@ -161,7 +164,7 @@ namespace GolAhora.Services
                     disp.isAvailable = false;
             }
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return (true, "Tipo de cancha dado de baja exitosamente.");
         }
@@ -197,3 +200,6 @@ namespace GolAhora.Services
         }
     }
 }
+
+
+

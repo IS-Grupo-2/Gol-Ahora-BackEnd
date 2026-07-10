@@ -10,6 +10,8 @@
         public DateTime reservationDate { get; set; }
         public TimeSpan startTime { get; set; }
         public TimeSpan endTime { get; set; }
+        public string status { get; set; } = "pendiente";
+        public DateTime createdAt { get; set; } = DateTime.UtcNow;
         public bool isPaid { get; set; }
         public double totalPrice { get; set; }
         public int idPayment { get; set; }

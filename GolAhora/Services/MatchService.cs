@@ -1,4 +1,5 @@
-ï»¿using GolAhora.DTOs;
+using GolAhora.Data.UnitOfWork;
+using GolAhora.DTOs;
 using GolAhora.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,9 +8,11 @@ namespace GolAhora.Services
     public class MatchService
     {
         private readonly GolAhora.Data.AppContext _context;
-        public MatchService(GolAhora.Data.AppContext context)
+        private readonly IUnitOfWork _unitOfWork;
+        public MatchService(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
+            _context = unitOfWork.Context;
         }
 
         public async Task<string?> CreateMatch(MatchDTO matchDto) //int idCompetence, int idTeamA, int idTeamB, int idCourt, DateTime date
@@ -22,11 +25,11 @@ namespace GolAhora.Services
             if (competence == null)
                 return "La competencia no existe.";
             if (competence.startDate > matchDto.date)
-                return "La competencia aÃºn no ha comenzado.";
+                return "La competencia aún no ha comenzado.";
             if (competence.endDate < matchDto.date)
                 return "La competencia ya ha terminado.";
             if (!competence.isActive)
-                return "La competencia no estÃ¡ activa.";
+                return "La competencia no está activa.";
 
             var teamA = await _context.Teams.FindAsync(matchDto.idTeamA);
             if (teamA == null)
@@ -64,7 +67,7 @@ namespace GolAhora.Services
            
             };
             await _context.Results.AddAsync(resultado);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
 
             var match = new Match
@@ -84,7 +87,7 @@ namespace GolAhora.Services
             teamB.visitorMatches.Add(match);
 
             await _context.Matches.AddAsync(match);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
             return "Partido creado exitosamente";
         }
 
@@ -131,3 +134,5 @@ namespace GolAhora.Services
         }
     }
 }
+
+
