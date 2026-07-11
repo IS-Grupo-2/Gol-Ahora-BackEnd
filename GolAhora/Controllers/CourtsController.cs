@@ -1,6 +1,7 @@
-ï»¿using GolAhora.DTOs;
+using GolAhora.DTOs;
 using GolAhora.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace GolAhora.Controllers
 {
@@ -39,7 +40,7 @@ namespace GolAhora.Controllers
             return Ok(new { mensaje = message });
         }
 
-        // RF13 â€“ GET api/courts
+        // RF13 – GET api/courts
         [HttpGet]
         public async Task<IActionResult> ListarCourts()
         {
@@ -47,7 +48,7 @@ namespace GolAhora.Controllers
             return Ok(courts);
         }
 
-        // RF14 â€“ DELETE api/courts/{id}
+        // RF14 – DELETE api/courts/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DarDeBajaCourt(int id)
         {
@@ -71,7 +72,7 @@ namespace GolAhora.Controllers
 
 
 
-        // RF15 â€“ GET api/courts/{id}
+        // RF15 – GET api/courts/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> ConsultarCourt(int id)
         {
@@ -108,5 +109,20 @@ namespace GolAhora.Controllers
             var (success, message) = await _courtService.ConsultarDisponibilidadCancha(id, fecha, hora);
             return Ok(new { disponible = success, mensaje = message });
         }
+        [HttpGet("/api/canchas")]
+        public Task<IActionResult> GetCanchasApiContract() => _courtService.GetCanchas();
+
+        [HttpPost("/api/canchas")]
+        public Task<IActionResult> CreateCanchaApiContract([FromBody] JsonElement body) => _courtService.CreateCancha(body);
+
+        [HttpPut("/api/canchas/{id}")]
+        public Task<IActionResult> UpdateCanchaApiContract(int id, [FromBody] JsonElement body) => _courtService.UpdateCancha(id, body);
+
+        [HttpDelete("/api/canchas/{id}")]
+        public Task<IActionResult> ToggleCanchaApiContract(int id) => _courtService.ToggleCancha(id);
     }
 }
+
+
+
+

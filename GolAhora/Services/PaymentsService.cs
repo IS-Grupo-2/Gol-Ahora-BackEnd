@@ -7,10 +7,13 @@ using System.Text;
 
 namespace GolAhora.Services;
 
-public class PaymentsService
+public partial class PaymentsService : ServicePayloadBase
 {
     private readonly Data.AppContext _context;
     private readonly IUnitOfWork _unitOfWork;
+
+    protected override Data.AppContext Context => _context;
+    protected override IUnitOfWork? UnitOfWork => _unitOfWork;
 
     public PaymentsService(IUnitOfWork unitOfWork)
     {
@@ -184,5 +187,6 @@ public class PaymentsService
         return Encoding.UTF8.GetBytes(ticketContent);
     }
 }
+
 
 

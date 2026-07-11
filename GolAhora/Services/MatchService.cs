@@ -1,11 +1,11 @@
-using GolAhora.Data.UnitOfWork;
+ï»¿using GolAhora.Data.UnitOfWork;
 using GolAhora.DTOs;
 using GolAhora.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace GolAhora.Services
 {
-    public class MatchService
+    public partial class MatchService
     {
         private readonly GolAhora.Data.AppContext _context;
         private readonly IUnitOfWork _unitOfWork;
@@ -25,11 +25,11 @@ namespace GolAhora.Services
             if (competence == null)
                 return "La competencia no existe.";
             if (competence.startDate > matchDto.date)
-                return "La competencia aún no ha comenzado.";
+                return "La competencia aÃºn no ha comenzado.";
             if (competence.endDate < matchDto.date)
                 return "La competencia ya ha terminado.";
             if (!competence.isActive)
-                return "La competencia no está activa.";
+                return "La competencia no estÃ¡ activa.";
 
             var teamA = await _context.Teams.FindAsync(matchDto.idTeamA);
             if (teamA == null)
@@ -134,5 +134,6 @@ namespace GolAhora.Services
         }
     }
 }
+
 
 

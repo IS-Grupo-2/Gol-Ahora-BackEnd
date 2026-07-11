@@ -1,6 +1,7 @@
-ï»¿using GolAhora.DTOs;
+using GolAhora.DTOs;
 using GolAhora.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace GolAhora.Controllers
 {
@@ -9,13 +10,15 @@ namespace GolAhora.Controllers
     public class DisponibilitiesController : ControllerBase
     {
         private readonly DisponibilityService _disponibilityService;
+        private readonly CourtService _courtService;
 
-        public DisponibilitiesController(DisponibilityService disponibilityService)
+        public DisponibilitiesController(DisponibilityService disponibilityService, CourtService courtService)
         {
             _disponibilityService = disponibilityService;
+            _courtService = courtService;
         }
 
-        // RF16 â€“ POST api/disponibilities
+        // RF16 – POST api/disponibilities
         [HttpPost]
         public async Task<IActionResult> AgregarDisponibility([FromBody] DisponibilityDTO dto)
         {
@@ -57,7 +60,7 @@ namespace GolAhora.Controllers
             return Ok(disponibility);
         }
 
-        // RF18 â€“ PATCH api/disponibilities/{id}/habilitar
+        // RF18 – PATCH api/disponibilities/{id}/habilitar
         [HttpPatch("{id}/habilitar")]
         public async Task<IActionResult> HabilitarDisponibility(int id)
         {
@@ -67,7 +70,7 @@ namespace GolAhora.Controllers
             return Ok(new { mensaje = message });
         }
 
-        // RF18 â€“ PATCH api/disponibilities/{id}/deshabilitar
+        // RF18 – PATCH api/disponibilities/{id}/deshabilitar
         [HttpPatch("{id}/deshabilitar")]
         public async Task<IActionResult> DeshabilitarDisponibility(int id)
         {
@@ -86,5 +89,18 @@ namespace GolAhora.Controllers
                 return NotFound(new { mensaje = message });
             return Ok(new { mensaje = message });
         }
-    }
+        [HttpGet("/api/disponibilidades")]
+        public Task<IActionResult> GetDisponibilidadesApiContract() => _courtService.GetDisponibilidades();
+
+        [HttpPost("/api/disponibilidades")]
+        public Task<IActionResult> CreateDisponibilidadApiContract([FromBody] JsonElement body) => _courtService.CreateDisponibilidad(body);
+
+        [HttpPut("/api/disponibilidades/{id}")]
+        public Task<IActionResult> UpdateDisponibilidadApiContract(int id, [FromBody] JsonElement body) => _courtService.UpdateDisponibilidad(id, body);
+
+        [HttpDelete("/api/disponibilidades/{id}")]
+        public Task<IActionResult> DeleteDisponibilidadApiContract(int id) => _courtService.DeleteDisponibilidad(id);    }
 }
+
+
+

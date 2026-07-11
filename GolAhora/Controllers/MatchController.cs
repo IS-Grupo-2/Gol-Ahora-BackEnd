@@ -1,4 +1,4 @@
-﻿using GolAhora.DTOs;
+using GolAhora.DTOs;
 using GolAhora.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -49,5 +49,24 @@ namespace GolAhora.Controllers
             }
             return Ok(matches);
         }
+        [HttpGet("/api/fixtures")]
+        public async Task<IActionResult> GetFixturesApiContract() => ToActionResult(await _matchService.GetFixturesApiContract());
+
+        [HttpPatch("/api/fixtures/{competenciaId}/partido/{partidoId}/resultado")]
+        public async Task<IActionResult> RegistrarResultadoApiContract(int competenciaId, int partidoId, [FromBody] ResultadoPartidoRequest body) => ToActionResult(await _matchService.RegistrarResultadoApiContract(competenciaId, partidoId, body));
+
+        private IActionResult ToActionResult(ApiResult<object> result)
+        {
+            if (result.Success) return Ok(result.Data);
+            return StatusCode(result.StatusCode, new { message = result.Message });
+        }
     }
 }
+
+
+
+
+
+
+
+

@@ -1,3 +1,4 @@
+using GolAhora.Data.UnitOfWork;
 using GolAhora.DTOs;
 using GolAhora.Models;
 using GolAhora.Exceptions;
@@ -6,9 +7,11 @@ using System.Text;
 
 namespace GolAhora.Services
 {
-    public class ReporteService
+    public partial class ReporteService : ServicePayloadBase
     {
         private readonly GolAhora.Data.AppContext _context;
+
+        protected override GolAhora.Data.AppContext Context => _context;
 
         public ReporteService(GolAhora.Data.AppContext context)
         {
@@ -294,3 +297,5 @@ namespace GolAhora.Services
         }
     }
 }
+
+

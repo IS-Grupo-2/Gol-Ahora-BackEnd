@@ -5,10 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GolAhora.Services
 {
-    public class CourtService
+    public partial class CourtService : ServicePayloadBase
     {
         private readonly GolAhora.Data.AppContext _context;
         private readonly IUnitOfWork _unitOfWork;
+
+        protected override GolAhora.Data.AppContext Context => _context;
+        protected override IUnitOfWork? UnitOfWork => _unitOfWork;
 
         public CourtService(IUnitOfWork unitOfWork)
         {
@@ -237,6 +240,7 @@ namespace GolAhora.Services
         }
     }
 }
+
 
 
 

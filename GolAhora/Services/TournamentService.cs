@@ -5,10 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GolAhora.Services
 {
-    public class TournamentService
+    public partial class TournamentService : ServicePayloadBase
     {
         private readonly GolAhora.Data.AppContext _context;
         private readonly IUnitOfWork _unitOfWork;
+
+        protected override GolAhora.Data.AppContext Context => _context;
+        protected override IUnitOfWork? UnitOfWork => _unitOfWork;
 
         public TournamentService(IUnitOfWork unitOfWork)
         {
@@ -172,6 +175,7 @@ namespace GolAhora.Services
         //}
     }
 }
+
 
 
 

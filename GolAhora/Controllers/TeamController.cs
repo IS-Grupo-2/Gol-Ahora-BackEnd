@@ -1,4 +1,4 @@
-﻿using GolAhora.DTOs;
+using GolAhora.DTOs;
 using GolAhora.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -92,6 +92,31 @@ namespace GolAhora.Controllers
             }
             return Ok(mensaje);
         }
+        [HttpGet("/api/equipos")]
+        public async Task<IActionResult> GetEquiposApiContract() => ToActionResult(await _teamService.GetEquiposApiContract());
+
+        [HttpPost("/api/equipos")]
+        public async Task<IActionResult> CreateEquipoApiContract([FromBody] EquipoApiRequest body) => ToActionResult(await _teamService.CreateEquipoApiContract(body));
+
+        [HttpPut("/api/equipos/{id}")]
+        public async Task<IActionResult> UpdateEquipoApiContract(int id, [FromBody] EquipoApiRequest body) => ToActionResult(await _teamService.UpdateEquipoApiContract(id, body));
+
+        [HttpDelete("/api/equipos/{id}")]
+        public async Task<IActionResult> DeleteEquipoApiContract(int id) => ToActionResult(await _teamService.DeleteEquipoApiContract(id));
+
+        private IActionResult ToActionResult(ApiResult<object> result)
+        {
+            if (result.Success) return Ok(result.Data);
+            return StatusCode(result.StatusCode, new { message = result.Message });
+        }
     }
     
 }
+
+
+
+
+
+
+
+

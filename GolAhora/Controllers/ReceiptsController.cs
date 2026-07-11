@@ -1,6 +1,7 @@
-﻿using GolAhora.DTOs;
+using GolAhora.DTOs;
 using GolAhora.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace GolAhora.Controllers
 {
@@ -9,10 +10,12 @@ namespace GolAhora.Controllers
     public class ReceiptsController : Controller
     {
         private readonly ReceiptsService _receiptsService;
+        private readonly PaymentsService _paymentsService;
 
-        public ReceiptsController(ReceiptsService receiptsService)
+        public ReceiptsController(ReceiptsService receiptsService, PaymentsService paymentsService)
         {
             _receiptsService = receiptsService;
+            _paymentsService = paymentsService;
         }
 
         // POST: api/Receipts --> RF51 Registrar recibo
@@ -85,5 +88,18 @@ namespace GolAhora.Controllers
                 return NotFound(new { message = $"Recibo con ID {id} no encontrado." });
             return Ok(receipt);
         }
-    }
+        [HttpGet("/api/recibos")]
+        public Task<IActionResult> GetRecibosApiContract() => _paymentsService.GetRecibos();
+
+        [HttpPost("/api/recibos")]
+        public Task<IActionResult> CreateReciboApiContract([FromBody] JsonElement body) => _paymentsService.CreateRecibo(body);
+
+        [HttpPut("/api/recibos/{id}")]
+        public Task<IActionResult> UpdateReciboApiContract(int id, [FromBody] JsonElement body) => _paymentsService.UpdateRecibo(id, body);
+
+        [HttpDelete("/api/recibos/{id}")]
+        public Task<IActionResult> DeleteReciboApiContract(int id) => _paymentsService.DeleteRecibo(id);    }
 }
+
+
+

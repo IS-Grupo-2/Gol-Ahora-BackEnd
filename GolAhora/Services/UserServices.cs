@@ -1,3 +1,4 @@
+using GolAhora.Data.UnitOfWork;
 using GolAhora.DTOs;
 using GolAhora.Exceptions;
 using GolAhora.Models;
@@ -10,14 +11,22 @@ using System.Security.Claims;
 
 namespace GolAhora.Services
 {
-    public class UserServices
+    public partial class UserServices : ServicePayloadBase
     {
         private readonly UserManager<User> _userManager;
         private readonly UserQuery _userQuery;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly GolAhora.Data.AppContext _context;
 
-        public UserServices(UserManager<User> userManager, UserQuery userQuery) { 
+        protected override GolAhora.Data.AppContext Context => _context;
+        protected override IUnitOfWork? UnitOfWork => _unitOfWork;
+        protected override UserManager<User>? IdentityUserManager => _userManager;
+
+        public UserServices(UserManager<User> userManager, UserQuery userQuery, IUnitOfWork unitOfWork) {
             _userManager = userManager;
             _userQuery = userQuery;
+            _unitOfWork = unitOfWork;
+            _context = unitOfWork.Context;
         }
 
         public async Task<UserDto> Me(int id)
@@ -448,4 +457,6 @@ namespace GolAhora.Services
         }
     }
 }
+
+
 

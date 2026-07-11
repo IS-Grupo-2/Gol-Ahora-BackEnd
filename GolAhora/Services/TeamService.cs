@@ -158,6 +158,85 @@ namespace GolAhora.Services
             await _unitOfWork.SaveChangesAsync();
             return "Capitan asignado correctamente";
         }
+
+        public async Task<ApiResult<object>> GetEquiposApiContract()
+        {
+            var teams = await _context.Teams
+                .Include(t => t.captain)!.ThenInclude(c => c!.user)
+                .Include(t => t.players).ThenInclude(p => p.user)
+                .ToListAsync();
+
+            return ApiResult<object>.Ok(teams.Select(t => new
+            {
+                idEquipo = t.idTeam,
+                nombre = t.name,
+                capitan = t.captain == null ? "" : $"{t.captain.user.name} {t.captain.user.lastName}",
+                integrantes = t.players.Select(p => $"{p.user.name} {p.user.lastName}"),
+                creadoPor = t.captain == null ? null : new { idUsuario = t.captain.idUser, nombre = t.captain.user.name, apellido = t.captain.user.lastName, email = t.captain.user.Email },
+                fechaCreacion = ""
+            }));
+        }
+
+        public async Task<ApiResult<object>> CreateEquipoApiContract(EquipoApiRequest request)
+        {
+            var validation = await ValidateEquipoApiRequest(request);
+            if (validation is not null) return ApiResult<object>.BadRequest(validation);
+
+            var team = new Team
+            {
+                name = request.Nombre ?? request.Name ?? "",
+                clientId = request.CreadoPor?.IdClient ?? request.CreadoPor?.IdCliente ?? request.ClientId
+            };
+            _context.Teams.Add(team);
+            await _unitOfWork.SaveChangesAsync();
+            return ApiResult<object>.Ok(new { idEquipo = team.idTeam });
+        }
+
+        public async Task<ApiResult<object>> UpdateEquipoApiContract(int id, EquipoApiRequest request)
+        {
+            var team = await _context.Teams.FindAsync(id);
+            if (team is null) return ApiResult<object>.NotFound("Equipo inexistente.");
+
+            var validation = await ValidateEquipoApiRequest(request, id);
+            if (validation is not null) return ApiResult<object>.BadRequest(validation);
+
+            team.name = request.Nombre ?? request.Name ?? team.name;
+            team.clientId = request.CreadoPor?.IdClient ?? request.CreadoPor?.IdCliente ?? request.ClientId ?? team.clientId;
+            await _unitOfWork.SaveChangesAsync();
+            return ApiResult<object>.Ok(new { idEquipo = id });
+        }
+
+        public async Task<ApiResult<object>> DeleteEquipoApiContract(int id)
+        {
+            var team = await _context.Teams.FindAsync(id);
+            if (team is null) return ApiResult<object>.NotFound("Equipo inexistente.");
+            if (await _context.CompetenceTeams.AnyAsync(ct => ct.idTeam == id))
+            {
+                return ApiResult<object>.BadRequest("No se puede eliminar un equipo inscripto en una competencia.");
+            }
+
+            _context.Teams.Remove(team);
+            await _unitOfWork.SaveChangesAsync();
+            return ApiResult<object>.Ok(new { idEquipo = id });
+        }
+
+        private async Task<string?> ValidateEquipoApiRequest(EquipoApiRequest request, int? existingTeamId = null)
+        {
+            var name = request.Nombre ?? request.Name;
+            if (string.IsNullOrWhiteSpace(name)) return "El nombre del equipo es obligatorio.";
+            if (await _context.Teams.AnyAsync(t => t.name == name && (!existingTeamId.HasValue || t.idTeam != existingTeamId.Value)))
+            {
+                return "Ya existe un equipo con ese nombre.";
+            }
+
+            var clientId = request.CreadoPor?.IdClient ?? request.CreadoPor?.IdCliente ?? request.ClientId;
+            if (clientId.HasValue && !await _context.ClientProfiles.AnyAsync(c => c.idClient == clientId.Value))
+            {
+                return "El cliente creador del equipo no existe.";
+            }
+
+            return null;
+        }
     }
 }
 

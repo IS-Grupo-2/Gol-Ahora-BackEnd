@@ -1,10 +1,11 @@
-Ôªøusing System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GolAhora.DTOs;
 using GolAhora.Models;
 using GolAhora.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace GolAhora.Controllers
 {
@@ -13,17 +14,19 @@ namespace GolAhora.Controllers
     public class ClassesController : ControllerBase
     {
         private readonly ClassService _classService;
+        private readonly ReservationService _reservationService;
 
-        public ClassesController(ClassService classService)
+        public ClassesController(ClassService classService, ReservationService reservationService)
         {
             _classService = classService;
+            _reservationService = reservationService;
         }
 
-        // RF35 ‚Äì POST api/classes
+        // RF35 ñ POST api/classes
         [HttpPost]
         public async Task<IActionResult> ProgramarClase([FromBody] ClassDTO dto)
         {
-            if (dto == null) return BadRequest(new { mensaje = "Los datos para programar la clase son inv√°lidos." });
+            if (dto == null) return BadRequest(new { mensaje = "Los datos para programar la clase son inv·lidos." });
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var (success, message, idClass) = await _classService.ProgramarClase(dto);
@@ -35,8 +38,8 @@ namespace GolAhora.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> ModificarClase(int id, [FromBody] ClassDTO dto)
         {
-            if (id <= 0) return BadRequest(new { mensaje = "Id de clase inv√°lido." });
-            if (dto == null) return BadRequest(new { mensaje = "Datos de clase inv√°lidos." });
+            if (id <= 0) return BadRequest(new { mensaje = "Id de clase inv·lido." });
+            if (dto == null) return BadRequest(new { mensaje = "Datos de clase inv·lidos." });
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var (success, message) = await _classService.ModificarClase(id, dto);
@@ -48,7 +51,7 @@ namespace GolAhora.Controllers
         [HttpPut("{id}/cancelar")]
         public async Task<IActionResult> CancelarClase(int id)
         {
-            if (id <= 0) return BadRequest(new { mensaje = "Id de clase inv√°lido." });
+            if (id <= 0) return BadRequest(new { mensaje = "Id de clase inv·lido." });
 
             var (success, message) = await _classService.CancelarClase(id);
             if (!success) return BadRequest(new { mensaje = message });
@@ -59,7 +62,7 @@ namespace GolAhora.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> ConsultarClase(int id)
         {
-            if (id <= 0) return BadRequest(new { mensaje = "Id de clase inv√°lido." });
+            if (id <= 0) return BadRequest(new { mensaje = "Id de clase inv·lido." });
 
             var dto = await _classService.ConsultarClase(id);
             if (dto == null) return NotFound(new { mensaje = "La clase no existe." });
@@ -70,8 +73,8 @@ namespace GolAhora.Controllers
         [HttpPost("{id}/agregar-alumno/{clientId}")]
         public async Task<IActionResult> AgregarAlumno(int id, int clientId)
         {
-            if (id <= 0) return BadRequest(new { mensaje = "Id de clase inv√°lido." });
-            if (clientId <= 0) return BadRequest(new { mensaje = "Id de cliente inv√°lido." });
+            if (id <= 0) return BadRequest(new { mensaje = "Id de clase inv·lido." });
+            if (clientId <= 0) return BadRequest(new { mensaje = "Id de cliente inv·lido." });
 
             var (success, message) = await _classService.AgregarAlumno(id, clientId);
             if (!success) return BadRequest(new { mensaje = message });
@@ -81,7 +84,7 @@ namespace GolAhora.Controllers
         public async Task<IActionResult> RegistrarAsistencia(int idClass, [FromBody] List<AssistanceDTO> dtos)
         {
             if (dtos == null || dtos.Count == 0)
-                return BadRequest("La lista de asistencia no contiene datos v√°lidos.");
+                return BadRequest("La lista de asistencia no contiene datos v·lidos.");
 
 
             var (success, message) = await _classService.RegistrarAsistencia(idClass, dtos);
@@ -99,5 +102,24 @@ namespace GolAhora.Controllers
             var clases = await _classService.ListarClases();
             return Ok(clases);
         }
-    }
+        [HttpGet("/api/clases")]
+        public Task<IActionResult> GetClasesApiContract() => _reservationService.GetClases();
+
+        [HttpPost("/api/clases")]
+        public Task<IActionResult> CreateClaseApiContract([FromBody] JsonElement body) => _reservationService.CreateClase(body);
+
+        [HttpPut("/api/clases/{id}")]
+        public Task<IActionResult> UpdateClaseApiContract(int id, [FromBody] JsonElement body) => _reservationService.UpdateClase(id, body);
+
+        [HttpPut("/api/clases/{id}/cancelar")]
+        public Task<IActionResult> CancelarClaseApiContract(int id) => _reservationService.CancelarClase(id);
+
+        [HttpPost("/api/clases/{id}/agregar-alumno/{clientId}")]
+        public Task<IActionResult> AddAlumnoApiContract(int id, int clientId) => _reservationService.AddAlumno(id, clientId);
+
+        [HttpPost("/api/clases/{id}/asistencia")]
+        public Task<IActionResult> SaveClaseAsistenciaApiContract(int id, [FromBody] JsonElement body) => _reservationService.SaveAsistencia(id, body);    }
 }
+
+
+

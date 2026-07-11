@@ -1,4 +1,4 @@
-﻿using GolAhora.Services;
+using GolAhora.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -71,3 +71,4 @@ namespace GolAhora.Controllers
         }
     }
 }
+

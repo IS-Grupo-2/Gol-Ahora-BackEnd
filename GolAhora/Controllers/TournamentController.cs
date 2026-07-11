@@ -1,4 +1,5 @@
-﻿using GolAhora.Services;
+using GolAhora.Services;
+using GolAhora.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,12 @@ namespace GolAhora.Controllers
     public class TournamentController : ControllerBase
     {
         private readonly TournamentService _torneoService;
+        private readonly MatchService _matchService;
 
-        public TournamentController(TournamentService torneoService)
+        public TournamentController(TournamentService torneoService, MatchService matchService)
         {
             _torneoService = torneoService;
+            _matchService = matchService;
         }
 
         [HttpPost]
@@ -69,5 +72,33 @@ namespace GolAhora.Controllers
             }
             return Ok(torneos);
         }
+        [HttpGet("/api/competencias")]
+        public async Task<IActionResult> GetCompetenciasApiContract() => ToActionResult(await _torneoService.GetCompetenciasApiContract());
+
+        [HttpPost("/api/competencias")]
+        public async Task<IActionResult> CreateCompetenciaApiContract([FromBody] CompetenciaRequest body) => ToActionResult(await _torneoService.CreateCompetenciaApiContract(body));
+
+        [HttpPut("/api/competencias/{id}")]
+        public async Task<IActionResult> UpdateCompetenciaApiContract(int id, [FromBody] CompetenciaRequest body) => ToActionResult(await _torneoService.UpdateCompetenciaApiContract(id, body));
+
+        [HttpDelete("/api/competencias/{id}")]
+        public async Task<IActionResult> DeleteCompetenciaApiContract(int id) => ToActionResult(await _torneoService.DeleteCompetenciaApiContract(id));
+
+        [HttpPost("/api/competencias/{competenciaId}/inscribir")]
+        public async Task<IActionResult> InscribirEquipoApiContract(int competenciaId, [FromBody] InscripcionEquipoRequest body) => ToActionResult(await _torneoService.InscribirEquipoApiContract(competenciaId, body));
+
+        [HttpPost("/api/competencias/{competenciaId}/fixture")]
+        public async Task<IActionResult> GenerarFixtureApiContract(int competenciaId) => ToActionResult(await _matchService.GenerarFixtureApiContract(competenciaId));
+
+        private IActionResult ToActionResult(ApiResult<object> result)
+        {
+            if (result.Success) return Ok(result.Data);
+            return StatusCode(result.StatusCode, new { message = result.Message });
+        }
     }
 }
+
+
+
+
+

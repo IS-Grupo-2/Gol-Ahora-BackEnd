@@ -1,6 +1,7 @@
-ï»¿using GolAhora.DTOs;
+using GolAhora.DTOs;
 using GolAhora.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace GolAhora.Controllers
 {
@@ -15,12 +16,12 @@ namespace GolAhora.Controllers
             _reservationService = reservationService;
         }
 
-        // RF19 + RF24 â€“ POST api/reservations
+        // RF19 + RF24 – POST api/reservations
         [HttpPost]
         public async Task<IActionResult> AgregarReservation([FromBody] ReservationDTO dto)
         {
             if (dto == null)
-                return BadRequest("Los datos de la reserva son invÃ¡lidos.");
+                return BadRequest("Los datos de la reserva son inválidos.");
 
             var (success, message) = await _reservationService.AgregarReservation(dto);
 
@@ -34,12 +35,12 @@ namespace GolAhora.Controllers
             return Ok(new { mensaje = message });
         }
 
-        // RF20a â€“ PUT api/reservations/{id}/horario
+        // RF20a – PUT api/reservations/{id}/horario
         [HttpPut("{id}/horario")]
         public async Task<IActionResult> ModificarHorario(int id, [FromBody] CambiarHorarioDTO dto)
         {
             if (dto == null)
-                return BadRequest("Los datos del horario son invÃ¡lidos.");
+                return BadRequest("Los datos del horario son inválidos.");
 
             var (success, message) = await _reservationService.ModificarHorario(id, dto);
 
@@ -53,12 +54,12 @@ namespace GolAhora.Controllers
             return Ok(new { mensaje = message });
         }
 
-        // RF20b â€“ PUT api/reservations/{id}/fecha
+        // RF20b – PUT api/reservations/{id}/fecha
         [HttpPut("{id}/fecha")]
         public async Task<IActionResult> ModificarFecha(int id, [FromBody] CambiarFechaDTO dto)
         {
             if (dto == null)
-                return BadRequest("Los datos de la fecha son invÃ¡lidos.");
+                return BadRequest("Los datos de la fecha son inválidos.");
 
             var (success, message) = await _reservationService.ModificarFecha(id, dto);
 
@@ -72,12 +73,12 @@ namespace GolAhora.Controllers
             return Ok(new { mensaje = message });
         }
 
-        // RF20c â€“ PUT api/reservations/{id}/ambos
+        // RF20c – PUT api/reservations/{id}/ambos
         [HttpPut("{id}/ambos")]
         public async Task<IActionResult> ModificarAmbos(int id, [FromBody] CambiarFechaYHorarioDTO dto)
         {
             if (dto == null)
-                return BadRequest("Los datos de la reserva son invÃ¡lidos.");
+                return BadRequest("Los datos de la reserva son inválidos.");
 
             var (success, message) = await _reservationService.ModificarAmbos(id, dto);
 
@@ -91,7 +92,7 @@ namespace GolAhora.Controllers
             return Ok(new { mensaje = message });
         }
 
-        // RF21 â€“ GET api/reservations
+        // RF21 – GET api/reservations
         [HttpGet]
         public async Task<IActionResult> ListarReservations()
         {
@@ -99,7 +100,7 @@ namespace GolAhora.Controllers
             return Ok(reservations);
         }
 
-        // RF22 + RF25 + RF26 â€“ DELETE api/reservations/{id}
+        // RF22 + RF25 + RF26 – DELETE api/reservations/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> EliminarReservation(int id)
         {
@@ -111,16 +112,33 @@ namespace GolAhora.Controllers
             return Ok(new { mensaje = message, montoFinal = montoFinal });
         }
 
-        // RF23 â€“ GET api/reservations/{id}
+        // RF23 – GET api/reservations/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> ConsultarReservation(int id)
         {
             var reservation = await _reservationService.ConsultarReservation(id);
 
             if (reservation == null)
-                return NotFound($"No se encontrÃ³ la reserva con ID {id}.");
+                return NotFound($"No se encontró la reserva con ID {id}.");
 
             return Ok(reservation);
         }
-    }
+        [HttpGet("/api/reservas")]
+        public Task<IActionResult> GetReservasApiContract() => _reservationService.GetReservas();
+
+        [HttpPost("/api/reservas")]
+        public Task<IActionResult> CreateReservaApiContract([FromBody] JsonElement body) => _reservationService.CreateReserva(body);
+
+        [HttpPut("/api/reservas/{id}")]
+        public Task<IActionResult> UpdateReservaApiContract(int id, [FromBody] JsonElement body) => _reservationService.UpdateReserva(id, body);
+
+        [HttpPut("/api/reservas/{id}/confirmar")]
+        public Task<IActionResult> ConfirmarReservaApiContract(int id, [FromBody] JsonElement body) => _reservationService.ConfirmarReserva(id, body);
+
+        [HttpPut("/api/reservas/{id}/cancelar")]
+        [HttpDelete("/api/reservas/{id}")]
+        public Task<IActionResult> CancelarReservaApiContract(int id) => _reservationService.CancelarReserva(id);    }
 }
+
+
+

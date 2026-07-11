@@ -40,5 +40,15 @@ namespace GolAhora.Controllers
             var stream = new MemoryStream(bytes);
             return File(stream, "text/plain", "Reporte_Reservas.txt");
         }
-    }
+        [HttpGet("/api/reportes/ingresos")]
+        public Task<IActionResult> ReporteIngresosApiContract([FromQuery] DateTime? desde, [FromQuery] DateTime? hasta) => _reporteService.ReporteIngresos(desde, hasta);
+
+        [HttpGet("/api/reportes/asistencias")]
+        public Task<IActionResult> ReporteAsistenciasApiContract([FromQuery] DateTime? desde, [FromQuery] DateTime? hasta) => _reporteService.ReporteAsistencias(desde, hasta);
+
+        [HttpGet("/api/reportes/reservas")]
+        public Task<IActionResult> ReporteReservasApiContract([FromQuery] DateTime? desde, [FromQuery] DateTime? hasta) => _reporteService.ReporteReservas(desde, hasta);    }
 }
+
+
+

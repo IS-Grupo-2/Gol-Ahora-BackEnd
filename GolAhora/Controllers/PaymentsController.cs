@@ -1,7 +1,8 @@
-ï»¿using GolAhora.DTOs;
+using GolAhora.DTOs;
 using GolAhora.Models;
 using GolAhora.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 
 namespace GolAhora.Controllers
@@ -22,7 +23,7 @@ namespace GolAhora.Controllers
         public async Task<IActionResult> RegistrarCobro([FromBody] PaymentDTO dto)
         {
             if (dto == null)
-                return BadRequest("Los datos del cobro son invÃ¡lidos.");
+                return BadRequest("Los datos del cobro son inválidos.");
 
             var (success, message) = await _paymentsService.RegistrarCobro(dto);
             if (!success)
@@ -31,12 +32,12 @@ namespace GolAhora.Controllers
             return Ok(new { mensaje = message });
         }
 
-        // RF45 â€“ PUT api/payments/{id}
+        // RF45 – PUT api/payments/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> ModificarCobro(int id, [FromBody] PaymentDTO dto)
         {
             if (dto == null)
-                return BadRequest("Los datos del cobro son invÃ¡lidos.");
+                return BadRequest("Los datos del cobro son inválidos.");
 
             var (success, message) = await _paymentsService.ModificarCobro(id, dto);
             if (!success)
@@ -45,7 +46,7 @@ namespace GolAhora.Controllers
             return Ok(new { mensaje = message });
         }
 
-        // RF46 â€“ GET api/payments/listar-basico
+        // RF46 – GET api/payments/listar-basico
         [HttpGet("listar-basico")]
         public async Task<IActionResult> ListarCobros()
         {
@@ -53,7 +54,7 @@ namespace GolAhora.Controllers
             return Ok(lista);
         }
 
-        // RF47 â€“ DELETE api/payments/{id} (Baja lÃ³gica)
+        // RF47 – DELETE api/payments/{id} (Baja lógica)
         [HttpDelete("{id}")]
         public async Task<IActionResult> DarDeBajaCobro(int id)
         {
@@ -70,7 +71,7 @@ namespace GolAhora.Controllers
         {
             var cobro = await _paymentsService.ConsultarCobro(id);
             if (cobro == null)
-                return NotFound($"No se encontrÃ³ el cobro con ID {id}.");
+                return NotFound($"No se encontró el cobro con ID {id}.");
 
             return Ok(cobro);
         }
@@ -88,7 +89,7 @@ namespace GolAhora.Controllers
         public async Task<IActionResult> AplicarDescuento(int idPayment, [FromBody] Discounts descuento)
         {
             if (descuento == null)
-                return BadRequest("Los datos del descuento son invÃ¡lidos.");
+                return BadRequest("Los datos del descuento son inválidos.");
 
             await _paymentsService.AplicarDescuento(idPayment, descuento);
             return Ok(new { mensaje = "Descuento aplicado correctamente y monto actualizado." });
@@ -123,11 +124,30 @@ namespace GolAhora.Controllers
             var ticketBytes = await _paymentsService.GeneratePaymentTicketAsync(id);
             if(ticketBytes == null)
             {
-                return NotFound(new { message = $"Pago con ID {id} no encontrado para impresiÃ³n." });
+                return NotFound(new { message = $"Pago con ID {id} no encontrado para impresión." });
             }
 
             var stream = new System.IO.MemoryStream(ticketBytes);
             return File(stream, "text/plain", $"Ticket_Cobro_{id}.txt");
         }
+        [HttpGet("/api/cobros")]
+        public Task<IActionResult> GetCobrosApiContract() => _paymentsService.GetCobros();
+
+        [HttpPost("/api/cobros")]
+        public Task<IActionResult> CreateCobroApiContract([FromBody] JsonElement body) => _paymentsService.CreateCobro(body);
+
+        [HttpPut("/api/cobros/{id}")]
+        public Task<IActionResult> UpdateCobroApiContract(int id, [FromBody] JsonElement body) => _paymentsService.UpdateCobro(id, body);
+
+        [HttpDelete("/api/cobros/{id}")]
+        public Task<IActionResult> DeleteCobroApiContract(int id) => _paymentsService.DeleteCobro(id);
     }
 }
+
+
+
+
+
+
+
+

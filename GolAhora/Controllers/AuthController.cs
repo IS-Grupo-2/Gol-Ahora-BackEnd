@@ -1,4 +1,4 @@
-﻿using GolAhora.DTOs;
+using GolAhora.DTOs;
 using GolAhora.Models;
 using GolAhora.Services;
 using Microsoft.AspNetCore.Identity;
@@ -70,9 +70,10 @@ namespace GolAhora.Controllers
             var result = await _authServices.LoginUser(dto);
 
             if (result == null)
-                return Unauthorized("Usuario o contraseña incorrectos.");
+                return Unauthorized("Usuario o contrase�a incorrectos.");
 
             return Ok(result);
         }
     }
 }
+

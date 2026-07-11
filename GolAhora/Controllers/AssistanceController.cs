@@ -1,6 +1,7 @@
-Ôªøusing GolAhora.DTOs;
+using GolAhora.DTOs;
 using GolAhora.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,10 +12,12 @@ namespace GolAhora.Controllers
     public class AssistanceController : ControllerBase
     {
         private readonly AssistanceService _assistanceService;
+        private readonly ReservationService _reservationService;
 
-        public AssistanceController(AssistanceService assistanceService)
+        public AssistanceController(AssistanceService assistanceService, ReservationService reservationService)
         {
             _assistanceService = assistanceService;
+            _reservationService = reservationService;
         }
 
         // POST: api/assistance/clase
@@ -22,7 +25,7 @@ namespace GolAhora.Controllers
         public async Task<IActionResult> RegistrarAsistencia(int idClass, [FromBody] List<AssistanceDTO> dtos)
         {
             if (dtos == null || dtos.Count == 0)
-                return BadRequest("La lista de asistencia no contiene datos v√°lidos.");
+                return BadRequest("La lista de asistencia no contiene datos v·lidos.");
 
             foreach (var dto in dtos)
             {
@@ -58,7 +61,7 @@ namespace GolAhora.Controllers
         public async Task<IActionResult> ConsultarAsistencia(int id)
         {
             var asistencia = await _assistanceService.ConsultarAsistencia(id);
-            if (asistencia == null) return NotFound($"No se encontr√≥ la asistencia con ID {id}.");
+            if (asistencia == null) return NotFound($"No se encontrÛ la asistencia con ID {id}.");
             return Ok(asistencia);
         }
 
@@ -67,5 +70,16 @@ namespace GolAhora.Controllers
             public bool isAssisted { get; set; }
             public string? observations { get; set; }
         }
-    }
+        [HttpGet("/api/asistencias")]
+        public Task<IActionResult> GetAsistenciasApiContract() => _reservationService.GetAsistencias();
+
+        [HttpPut("/api/asistencias/{id}")]
+        [HttpPost("/api/asistencias/{id}")]
+        public Task<IActionResult> SaveAsistenciaApiContract(int id, [FromBody] JsonElement body) => _reservationService.SaveAsistencia(id, body);    }
 }
+
+
+
+
+
+

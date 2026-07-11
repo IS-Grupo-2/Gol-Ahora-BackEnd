@@ -1,6 +1,7 @@
-﻿using GolAhora.DTOs;
+using GolAhora.DTOs;
 using GolAhora.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace GolAhora.Controllers;
 
@@ -9,10 +10,12 @@ namespace GolAhora.Controllers;
 public class DiscountsController : Controller
 {
     private readonly DiscountsService _discountsService;
+    private readonly PaymentsService _paymentsService;
 
-    public DiscountsController(DiscountsService discountsService)
+    public DiscountsController(DiscountsService discountsService, PaymentsService paymentsService)
     {
         _discountsService = discountsService;
+        _paymentsService = paymentsService;
     }
 
     // POST: api/Discounts --> RF50
@@ -55,4 +58,17 @@ public class DiscountsController : Controller
         var list = await _discountsService.GetAllDiscountsAsync();
         return Ok(list);
     }
-}
+    [HttpGet("/api/descuentos")]
+    public Task<IActionResult> GetDescuentosApiContract() => _paymentsService.GetDescuentos();
+
+    [HttpPost("/api/descuentos")]
+    public Task<IActionResult> CreateDescuentoApiContract([FromBody] JsonElement body) => _paymentsService.CreateDescuento(body);
+
+    [HttpPut("/api/descuentos/{id}")]
+    public Task<IActionResult> UpdateDescuentoApiContract(int id, [FromBody] JsonElement body) => _paymentsService.UpdateDescuento(id, body);
+
+    [HttpDelete("/api/descuentos/{id}")]
+    public Task<IActionResult> DeleteDescuentoApiContract(int id) => _paymentsService.DeleteDescuento(id);}
+
+
+
